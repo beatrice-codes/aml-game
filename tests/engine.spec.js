@@ -20,6 +20,11 @@ async function answerCorrectly(page, question) {
     for (let i = 0; i < question.nodes.length; i++) {
       await cards.nth(i).locator('.tier-btn.tier-' + question.nodes[i].correctTier).click();
     }
+  } else if (question.mechanic === 'multiselect') {
+    const correctIdx = question.options.map((o, i) => (o.correct ? i : -1)).filter((i) => i !== -1);
+    for (const idx of correctIdx) {
+      await page.locator('.option-btn').nth(idx).click();
+    }
   } else {
     const idx = question.options.findIndex((o) => o.correct);
     await page.locator('.option-btn').nth(idx).click();
@@ -34,6 +39,16 @@ async function answerIncorrectly(page, question) {
       const wrongTier = ['low', 'medium', 'high'].find((t) => t !== question.nodes[i].correctTier);
       await cards.nth(i).locator('.tier-btn.tier-' + wrongTier).click();
     }
+  } else if (question.mechanic === 'multiselect') {
+    // pick select_count wrong-or-partial options so the set doesn't exactly match the correct set
+    const wrongIdx = question.options.map((o, i) => (!o.correct ? i : -1)).filter((i) => i !== -1);
+    const correctIdx = question.options.map((o, i) => (o.correct ? i : -1)).filter((i) => i !== -1);
+    const pick = wrongIdx.length >= question.select_count
+      ? wrongIdx.slice(0, question.select_count)
+      : wrongIdx.concat(correctIdx).slice(0, question.select_count);
+    for (const idx of pick) {
+      await page.locator('.option-btn').nth(idx).click();
+    }
   } else {
     const idx = question.options.findIndex((o) => !o.correct);
     await page.locator('.option-btn').nth(idx).click();
@@ -41,13 +56,26 @@ async function answerIncorrectly(page, question) {
   await page.locator('[data-action="confirm-answer"]').click();
 }
 
+async function openMap(page) {
+  await page.goto('/');
+  await page.locator('[data-action="enter-app"]').click();
+}
+
 test.beforeEach(async ({ page }) => {
   await page.goto('/');
   await page.evaluate(() => localStorage.clear());
 });
 
-test('chapter map renders all 5 chapters, only the first unlocked', async ({ page }) => {
+test('home screen shows branding and a Start button that leads to the chapter map', async ({ page }) => {
   await page.goto('/');
+  await expect(page.locator('.home-title')).toHaveText('Compliance Grid');
+  await expect(page.locator('[data-action="enter-app"]')).toHaveText('Start ▶');
+  await page.locator('[data-action="enter-app"]').click();
+  await expect(page.locator('.chapter-card')).toHaveCount(5);
+});
+
+test('chapter map renders all 5 chapters, only the first unlocked', async ({ page }) => {
+  await openMap(page);
   await expect(page.locator('.app-title')).toHaveText('Compliance Grid');
   const cards = page.locator('.chapter-card');
   await expect(cards).toHaveCount(5);
@@ -58,7 +86,7 @@ test('chapter map renders all 5 chapters, only the first unlocked', async ({ pag
 });
 
 test('opening the first chapter shows its real briefing', async ({ page }) => {
-  await page.goto('/');
+  await openMap(page);
   await page.locator('.chapter-card').first().click();
   const b = chapter('foundations').briefing;
   await expect(page.locator('.briefing-title')).toHaveText(b.title);
@@ -67,7 +95,7 @@ test('opening the first chapter shows its real briefing', async ({ page }) => {
 });
 
 test('an incorrect answer shows the mistake, then a simpler followup, before advancing', async ({ page }) => {
-  await page.goto('/');
+  await openMap(page);
   const ch = chapter('foundations');
   const q1 = ch.questions[0];
 
@@ -91,7 +119,7 @@ test('an incorrect answer shows the mistake, then a simpler followup, before adv
 
 test('completing chapter 1 with all correct answers hits 100% and unlocks chapter 2', async ({ page }) => {
   test.setTimeout(120000);
-  await page.goto('/');
+  await openMap(page);
   const ch = chapter('foundations');
 
   await page.locator('.chapter-card').first().click();
@@ -114,7 +142,7 @@ test('completing chapter 1 with all correct answers hits 100% and unlocks chapte
 
 test('a tiergate question (in an unlocked later chapter) renders options and grades correctly', async ({ page }) => {
   test.setTimeout(120000);
-  await page.goto('/');
+  await openMap(page);
   const foundations = chapter('foundations');
   const readingRisk = chapter('reading_risk');
   const tiergateQ = readingRisk.questions.find((q) => q.mechanic === 'tiergate');
@@ -149,7 +177,7 @@ test('a tiergate question (in an unlocked later chapter) renders options and gra
 });
 
 test('pause freezes session and resume restores it exactly', async ({ page }) => {
-  await page.goto('/');
+  await openMap(page);
   await page.locator('.chapter-card').first().click();
   await page.locator('[data-action="start-chapter"]').click();
   const promptBefore = await page.locator('.task-prompt').textContent();
@@ -162,7 +190,7 @@ test('pause freezes session and resume restores it exactly', async ({ page }) =>
 });
 
 test('progress persists across reload and resumes at the exact question', async ({ page }) => {
-  await page.goto('/');
+  await openMap(page);
   const ch = chapter('foundations');
 
   await page.locator('.chapter-card').first().click();
@@ -173,6 +201,7 @@ test('progress persists across reload and resumes at the exact question', async 
   await page.locator('.overlay-card [data-action="back-to-map"]').click();
 
   await page.reload();
+  await page.locator('[data-action="enter-app"]').click();
   const expectedPct = Math.round((1 / ch.questions.length) * 100);
   const cards = page.locator('.chapter-card');
   await expect(cards.first().locator('.meta-row')).toContainText(expectedPct + '%');
@@ -183,7 +212,7 @@ test('progress persists across reload and resumes at the exact question', async 
 });
 
 test('a glossary term is tappable and shows its real definition', async ({ page }) => {
-  await page.goto('/');
+  await openMap(page);
   const ch = chapter('foundations');
   const usedTerm = CONTENT.glossary.find((g) => {
     const re = new RegExp('\\b' + g.term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'i');
@@ -216,7 +245,7 @@ test('every question in every chapter renders and grades without runtime errors'
   const errors = [];
   page.on('pageerror', (err) => errors.push(err.message));
 
-  await page.goto('/');
+  await openMap(page);
 
   for (const key of CHAPTER_ORDER) {
     const ch = chapter(key);

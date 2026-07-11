@@ -132,6 +132,16 @@
     align-items: center;
     justify-content: space-between;
   }
+  .chapter-card .row1-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .chapter-icon {
+    font-size: 24px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
   .chapter-card .num {
     font-family: var(--mono);
     font-size: 12px;
@@ -343,6 +353,60 @@
   }
   .option-btn:disabled { opacity: 1; }
 
+  .options.duo {
+    flex-direction: row;
+  }
+  .options.duo .option-btn {
+    flex: 1;
+    text-align: center;
+    font-weight: 700;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 64px;
+  }
+
+  .options.tier-style {
+    flex-direction: row;
+  }
+  .options.tier-style .option-btn {
+    flex: 1;
+    text-align: center;
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+  }
+  .option-btn.tier-low { color: var(--teal); }
+  .option-btn.tier-medium { color: var(--amber); }
+  .option-btn.tier-high { color: var(--red); }
+  .option-btn.tier-low.selected { background: var(--teal-dim); border-color: var(--teal); }
+  .option-btn.tier-medium.selected { background: var(--amber-dim); border-color: var(--amber); }
+  .option-btn.tier-high.selected { background: var(--red-dim); border-color: var(--red); }
+
+  .select-counter {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.03em;
+    color: var(--text-dim);
+    background: #1c1c25;
+    border: 1px solid var(--card-border);
+    padding: 5px 12px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+  }
+  .select-counter-done {
+    color: var(--violet);
+    border-color: var(--violet);
+  }
+
   .node-list {
     display: flex;
     flex-direction: column;
@@ -522,6 +586,59 @@
   }
 
   .footer-space { height: 24px; flex-shrink: 0; }
+
+  .home-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 24px 8px;
+    gap: 4px;
+  }
+  .home-badge {
+    width: 76px;
+    height: 76px;
+    border-radius: 24px;
+    background: linear-gradient(160deg, var(--violet-dim), #1c1c25);
+    border: 1px solid var(--card-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    margin-bottom: 18px;
+  }
+  .home-title {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: 10px;
+  }
+  .home-tagline {
+    color: var(--text-dim);
+    font-size: 15px;
+    line-height: 1.5;
+    max-width: 320px;
+    margin-bottom: 18px;
+  }
+  .home-meta {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-faint);
+    letter-spacing: 0.03em;
+  }
+  .home-progress {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--violet);
+    letter-spacing: 0.03em;
+    margin-top: 6px;
+  }
+  .home-wrap .btn-primary {
+    max-width: 260px;
+    margin-top: 28px;
+  }
 </style>
 </head>
 <body>
@@ -584,11 +701,19 @@
 
   /* ---------- app state ---------- */
   var state = {
-    screen: 'map',
+    screen: 'home',
     chapterKey: null,
     paused: false,
     session: null,     // { questionIndex, correctCount, answeredCount, streak, answered:false, selection, pendingFollowup, currentIsFollowup }
     introducedTerms: {}
+  };
+
+  var CHAPTER_ICON = {
+    foundations: '📘',
+    reading_risk: '🧭',
+    the_gate: '🚪',
+    enhanced_measures: '🚨',
+    the_flag: '🏁'
   };
 
   function getChapter(key) {
@@ -660,10 +785,33 @@
   var app = document.getElementById('app');
 
   function render() {
+    if (state.screen === 'home') return renderHome();
     if (state.screen === 'map') return renderMap();
     if (state.screen === 'briefing') return renderBriefing();
     if (state.screen === 'question') return renderQuestion();
     if (state.screen === 'complete') return renderComplete();
+  }
+
+  function renderHome() {
+    var totalChapters = APP_CONTENT.chapters.length;
+    var completed = 0;
+    var anyProgress = false;
+    APP_CONTENT.chapters.forEach(function (ch) {
+      var cp = chapterProgress(ch.chapter_key);
+      if (cp.everCompleted) completed += 1;
+      if (cp.everCompleted || cp.resume.questionIndex > 0) anyProgress = true;
+    });
+    var html = '<div class="home-wrap">';
+    html += '<div class="home-badge">🛡</div>';
+    html += '<h1 class="home-title">Compliance Grid</h1>';
+    html += '<p class="home-tagline">Learn the AML/CFT rules that keep your work compliant — one short round at a time.</p>';
+    html += '<div class="home-meta">' + totalChapters + ' chapters · 5-10 min each</div>';
+    if (anyProgress) {
+      html += '<div class="home-progress">' + completed + ' / ' + totalChapters + ' chapters complete</div>';
+    }
+    html += '<button class="btn-primary" data-action="enter-app">' + (anyProgress ? 'Continue ▶' : 'Start ▶') + '</button>';
+    html += '</div>';
+    app.innerHTML = html;
   }
 
   function topbar(opts) {
@@ -693,10 +841,10 @@
       var completionPct = cp.everCompleted ? 100 : Math.round((cp.resume.questionIndex / total) * 100);
       var action = unlocked ? ' data-action="open-chapter" data-chapter="' + ch.chapter_key + '"' : '';
       html += '<div class="chapter-card' + (unlocked ? '' : ' locked') + '"' + action + '>';
-      html += '<div class="row1"><div>';
+      html += '<div class="row1"><div class="row1-left"><span class="chapter-icon">' + (CHAPTER_ICON[ch.chapter_key] || '') + '</span><div>';
       html += '<div class="num">CHAPTER ' + (idx + 1) + ' / ' + CHAPTER_ORDER.length + '</div>';
       html += '<div class="name">' + escapeHtml(ch.briefing.title.split(':')[0].split('—')[0].trim() || ch.briefing.title) + '</div>';
-      html += '</div>';
+      html += '</div></div>';
       html += unlocked
         ? '<span class="chip">' + (cp.everCompleted ? '✓' : '▶') + '</span>'
         : '<span class="lock-badge">🔒 LOCKED</span>';
@@ -720,7 +868,7 @@
     var midway = !cp.everCompleted && cp.resume.questionIndex > 0;
     var html = topbar({ back: true, title: 'Chapter briefing' });
     html += '<div class="card">';
-    html += '<div class="briefing-eyebrow">Briefing</div>';
+    html += '<div class="briefing-eyebrow">' + (CHAPTER_ICON[ch.chapter_key] || '') + ' Briefing</div>';
     html += '<div class="briefing-title">' + escapeHtml(ch.briefing.title) + '</div>';
     html += '<div class="briefing-desc">' + escapeHtml(ch.briefing.description) + '</div>';
     html += '<ul class="objectives">';
@@ -785,18 +933,41 @@
     if (s.answered) renderFeedbackSheet(q, s);
   }
 
+  var DUO_LABEL_ICON = { pass: '✓ ', flag: '🚩 ', yes: '✓ ', no: '✕ ', true: '✓ ', false: '✕ ' };
+  var TIER_LABEL_CLASS = { simplified: 'tier-low', standard: 'tier-medium', enhanced: 'tier-high' };
+
   function renderOptions(q, s) {
-    var html = '<div class="options">';
+    var isMulti = q.mechanic === 'multiselect' && !s.currentIsFollowup;
+    var isTier = q.mechanic === 'tiergate' && !s.currentIsFollowup;
+    var isDuo = q.options.length === 2 && !isTier;
+    var html = '';
+
+    if (isMulti) {
+      var picked = Array.isArray(s.selection) ? s.selection.length : 0;
+      var done = picked >= q.select_count;
+      html += '<div class="select-counter' + (done ? ' select-counter-done' : '') + '">' +
+        picked + ' / ' + q.select_count + ' selected</div>';
+    }
+
+    html += '<div class="options' + (isDuo ? ' duo' : '') + (isTier ? ' tier-style' : '') + '">';
     q.options.forEach(function (opt, i) {
       var cls = 'option-btn';
+      var picked = isMulti
+        ? (Array.isArray(s.selection) && s.selection.indexOf(i) !== -1)
+        : (s.selection === i);
       if (!s.answered) {
-        if (s.selection === i) cls += ' selected';
+        if (picked) cls += ' selected';
       } else {
         if (opt.correct) cls += ' reveal-correct';
-        else if (s.selection === i) cls += ' reveal-wrong';
+        else if (picked) cls += ' reveal-wrong';
       }
+      if (isTier) {
+        var tierCls = TIER_LABEL_CLASS[(opt.tier || opt.label || '').toLowerCase()];
+        if (tierCls) cls += ' ' + tierCls;
+      }
+      var icon = isDuo ? (DUO_LABEL_ICON[(opt.label || '').toLowerCase().trim()] || '') : '';
       html += '<button class="' + cls + '" ' + (s.answered ? 'disabled' : '') +
-        ' data-action="select-option" data-index="' + i + '">' + escapeHtml(opt.label) + '</button>';
+        ' data-action="select-option" data-index="' + i + '">' + icon + escapeHtml(opt.label) + '</button>';
     });
     html += '</div>';
     return html;
@@ -831,12 +1002,23 @@
     if (q.mechanic === 'nodegrid' && !s.currentIsFollowup) {
       return q.nodes.every(function (_, i) { return !!(s.selection && s.selection[i]); });
     }
+    if (q.mechanic === 'multiselect' && !s.currentIsFollowup) {
+      return Array.isArray(s.selection) && s.selection.length === q.select_count;
+    }
     return s.selection !== null && s.selection !== undefined;
   }
 
   function gradeCurrent(q, s) {
     if (q.mechanic === 'nodegrid' && !s.currentIsFollowup) {
       return q.nodes.every(function (node, i) { return s.selection[i] === node.correctTier; });
+    }
+    if (q.mechanic === 'multiselect' && !s.currentIsFollowup) {
+      var correctIdx = [];
+      q.options.forEach(function (opt, i) { if (opt.correct) correctIdx.push(i); });
+      var selected = s.selection.slice().sort();
+      correctIdx.sort();
+      if (selected.length !== correctIdx.length) return false;
+      return selected.every(function (v, i) { return v === correctIdx[i]; });
     }
     return !!(q.options[s.selection] && q.options[s.selection].correct);
   }
@@ -1019,7 +1201,10 @@
   }
 
   function handleAction(action, el) {
-    if (action === 'open-chapter') {
+    if (action === 'enter-app') {
+      state.screen = 'map';
+      render();
+    } else if (action === 'open-chapter') {
       state.chapterKey = el.getAttribute('data-chapter');
       state.screen = 'briefing';
       render();
@@ -1040,7 +1225,17 @@
       var po2 = document.getElementById('pause-overlay'); if (po2) po2.remove();
     } else if (action === 'select-option') {
       if (state.session.answered) return;
-      state.session.selection = parseInt(el.getAttribute('data-index'), 10);
+      var qNow = currentQuestion();
+      var idx = parseInt(el.getAttribute('data-index'), 10);
+      if (qNow.mechanic === 'multiselect' && !state.session.currentIsFollowup) {
+        if (!Array.isArray(state.session.selection)) state.session.selection = [];
+        var pos = state.session.selection.indexOf(idx);
+        if (pos !== -1) state.session.selection.splice(pos, 1);
+        else if (state.session.selection.length < qNow.select_count) state.session.selection.push(idx);
+        vibrate(8);
+      } else {
+        state.session.selection = idx;
+      }
       render();
     } else if (action === 'select-node-tier') {
       if (state.session.answered) return;
