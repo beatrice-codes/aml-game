@@ -108,6 +108,37 @@
     margin-bottom: 20px;
   }
 
+  .game-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px 0 26px;
+    text-align: center;
+  }
+  .game-logo .mark {
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+    background: linear-gradient(160deg, var(--violet-dim), #1c1c25);
+    border: 1px solid var(--card-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+    flex-shrink: 0;
+  }
+  .game-logo .word {
+    font-size: 23px;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    background: linear-gradient(120deg, var(--text) 25%, var(--violet) 95%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
   .chapter-list {
     display: flex;
     flex-direction: column;
@@ -126,7 +157,6 @@
     position: relative;
     overflow: hidden;
   }
-  .chapter-card.locked { opacity: 0.55; }
   .chapter-card .row1 {
     display: flex;
     align-items: center;
@@ -178,11 +208,6 @@
     height: 100%;
     background: var(--violet);
     border-radius: 3px;
-  }
-  .lock-badge {
-    font-size: 11px;
-    color: var(--text-faint);
-    font-family: var(--mono);
   }
   .chip {
     display: inline-flex;
@@ -407,48 +432,6 @@
     border-color: var(--violet);
   }
 
-  .node-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 6px;
-  }
-  .node-card {
-    background: #1c1c25;
-    border: 1.5px solid var(--card-border);
-    border-radius: var(--radius-md);
-    padding: 13px 15px;
-  }
-  .node-label {
-    font-size: 13.5px;
-    line-height: 1.4;
-    margin-bottom: 10px;
-  }
-  .tier-row {
-    display: flex;
-    gap: 8px;
-  }
-  .tier-btn {
-    flex: 1;
-    padding: 9px 4px;
-    border-radius: var(--radius-sm);
-    border: 1.5px solid var(--card-border);
-    font-size: 12px;
-    font-weight: 600;
-    text-align: center;
-    font-family: var(--mono);
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-  }
-  .tier-btn.tier-low { color: var(--teal); }
-  .tier-btn.tier-medium { color: var(--amber); }
-  .tier-btn.tier-high { color: var(--red); }
-  .tier-btn.tier-selected.tier-low { background: var(--teal-dim); border-color: var(--teal); }
-  .tier-btn.tier-selected.tier-medium { background: var(--amber-dim); border-color: var(--amber); }
-  .tier-btn.tier-selected.tier-high { background: var(--red-dim); border-color: var(--red); }
-  .tier-btn.tier-reveal-correct { outline: 2px solid var(--teal); }
-  .tier-btn.tier-reveal-wrong { outline: 2px solid var(--red); }
-
   .gloss {
     color: var(--violet);
     border-bottom: 1px dotted var(--violet);
@@ -556,8 +539,99 @@
     gap: 6px;
     font-family: var(--mono);
     font-size: 12px;
+    font-weight: 700;
     color: var(--amber);
     margin-bottom: 12px;
+    animation: streak-pop .28s ease-out;
+  }
+  @keyframes streak-pop {
+    0% { transform: scale(0.85) translateY(2px); opacity: 0.4; }
+    100% { transform: scale(1) translateY(0); opacity: 1; }
+  }
+
+  .option-btn.reveal-correct {
+    animation: correct-pop .32s ease-out;
+  }
+  @keyframes correct-pop {
+    0% { transform: scale(1); }
+    45% { transform: scale(1.035); }
+    100% { transform: scale(1); }
+  }
+  .option-btn.reveal-wrong {
+    animation: wrong-shake .28s ease-out;
+  }
+  @keyframes wrong-shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+  }
+
+  .feedback-label .fb-icon {
+    display: inline-block;
+    animation: pop-in .3s ease-out;
+  }
+  @keyframes pop-in {
+    0% { transform: scale(0.3); opacity: 0; }
+    60% { transform: scale(1.15); opacity: 1; }
+    100% { transform: scale(1); }
+  }
+
+  /* ---------- quickcall reflex mechanic ---------- */
+  .quickcall-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .quickcall-progress {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 0.04em;
+    margin-bottom: 8px;
+  }
+  .quickcall-timer {
+    height: 4px;
+    border-radius: 3px;
+    background: #232330;
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+  .quickcall-timer-fill {
+    height: 100%;
+    background: var(--violet);
+    border-radius: 3px;
+    width: 100%;
+    transform-origin: left;
+    animation: timer-shrink 4.2s linear forwards;
+  }
+  @keyframes timer-shrink {
+    from { transform: scaleX(1); }
+    to { transform: scaleX(0); }
+  }
+  .quickcall-scenario {
+    background: #1c1c25;
+    border: 1.5px solid var(--card-border);
+    border-radius: var(--radius-md);
+    padding: 20px 18px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 18px;
+    text-align: center;
+  }
+  .quickcall-options {
+    display: flex;
+    gap: 10px;
+  }
+  .quickcall-options .option-btn {
+    flex: 1;
+    text-align: center;
+    font-weight: 700;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 76px;
   }
 
   .summary-stat-row {
@@ -583,6 +657,19 @@
     text-transform: uppercase;
     letter-spacing: 0.04em;
     margin-top: 3px;
+  }
+  .summary-stat.highlight {
+    background: var(--amber-dim);
+  }
+  .summary-stat.highlight .n {
+    color: var(--amber);
+  }
+  .complete-payoff {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--violet);
+    letter-spacing: 0.02em;
+    margin-bottom: 4px;
   }
 
   .footer-space { height: 24px; flex-shrink: 0; }
@@ -651,7 +738,6 @@
   var APP_CONTENT = window.__COMPLIANCE_GRID_CONTENT__ || { chapters: [], glossary: [] };
 
   var CHAPTER_ORDER = ['foundations', 'reading_risk', 'the_gate', 'enhanced_measures', 'the_flag'];
-  var UNLOCK_THRESHOLD = 60;
 
   /* ---------- storage ---------- */
   var STORAGE_KEY = 'complianceGridProgress_v1';
@@ -691,12 +777,6 @@
   function chapterProgress(key) {
     if (!progress.chapters[key]) progress.chapters[key] = defaultChapterProgress();
     return progress.chapters[key];
-  }
-
-  function isUnlocked(index) {
-    if (index === 0) return true;
-    var prevKey = CHAPTER_ORDER[index - 1];
-    return chapterProgress(prevKey).bestAccuracy >= UNLOCK_THRESHOLD;
   }
 
   /* ---------- app state ---------- */
@@ -765,6 +845,25 @@
     try { if ('vibrate' in navigator) navigator.vibrate(pattern); } catch (e) {}
   }
 
+  /* ---------- shuffle: randomize option order per question, per showing ---------- */
+  function shuffleArray(arr) {
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+    }
+    return arr;
+  }
+
+  function shuffleQuestionOptions(q) {
+    if (!q) return;
+    if (Array.isArray(q.options)) shuffleArray(q.options);
+    if (Array.isArray(q.items)) {
+      q.items.forEach(function (item) {
+        if (Array.isArray(item.options)) shuffleArray(item.options);
+      });
+    }
+  }
+
   /* ---------- toast ---------- */
   var toastTimer = null;
   function showToast(msg) {
@@ -804,7 +903,7 @@
     var html = '<div class="home-wrap">';
     html += '<div class="home-badge">🛡</div>';
     html += '<h1 class="home-title">Compliance Grid</h1>';
-    html += '<p class="home-tagline">Learn the AML/CFT rules that keep your work compliant — one short round at a time.</p>';
+    html += '<p class="home-tagline">Learn to stop money laundering by playing the system that stops it.</p>';
     html += '<div class="home-meta">' + totalChapters + ' chapters · 5-10 min each</div>';
     if (anyProgress) {
       html += '<div class="home-progress">' + completed + ' / ' + totalChapters + ' chapters complete</div>';
@@ -828,34 +927,25 @@
 
   function renderMap() {
     var html = topbar({});
-    html += '<h1 class="app-title">Compliance Grid</h1>';
-    html += '<p class="app-subtitle">AML/CFT training — Central Bank of Cyprus Directive 2025</p>';
+    html += '<div class="game-logo"><span class="mark">🛡</span><span class="word">Compliance Grid</span></div>';
     html += '<div class="chapter-list">';
     APP_CONTENT.chapters.slice().sort(function (a, b) {
       return CHAPTER_ORDER.indexOf(a.chapter_key) - CHAPTER_ORDER.indexOf(b.chapter_key);
     }).forEach(function (ch, i) {
       var idx = CHAPTER_ORDER.indexOf(ch.chapter_key);
-      var unlocked = isUnlocked(idx);
       var cp = chapterProgress(ch.chapter_key);
       var total = ch.questions.length;
       var completionPct = cp.everCompleted ? 100 : Math.round((cp.resume.questionIndex / total) * 100);
-      var action = unlocked ? ' data-action="open-chapter" data-chapter="' + ch.chapter_key + '"' : '';
-      html += '<div class="chapter-card' + (unlocked ? '' : ' locked') + '"' + action + '>';
+      var action = ' data-action="open-chapter" data-chapter="' + ch.chapter_key + '"';
+      html += '<div class="chapter-card"' + action + '>';
       html += '<div class="row1"><div class="row1-left"><span class="chapter-icon">' + (CHAPTER_ICON[ch.chapter_key] || '') + '</span><div>';
-      html += '<div class="num">CHAPTER ' + (idx + 1) + ' / ' + CHAPTER_ORDER.length + '</div>';
+      html += '<div class="num">CHAPTER ' + (idx + 1) + '</div>';
       html += '<div class="name">' + escapeHtml(ch.briefing.title.split(':')[0].split('—')[0].trim() || ch.briefing.title) + '</div>';
       html += '</div></div>';
-      html += unlocked
-        ? '<span class="chip">' + (cp.everCompleted ? '✓' : '▶') + '</span>'
-        : '<span class="lock-badge">🔒 LOCKED</span>';
+      html += '<span class="chip">' + (cp.everCompleted ? '✓' : '▶') + '</span>';
       html += '</div>';
-      if (unlocked) {
-        html += '<div class="progress-track"><div class="progress-fill" style="width:' + Math.min(completionPct, 100) + '%"></div></div>';
-        html += '<div class="meta-row"><span>PROGRESS <b>' + completionPct + '%</b></span><span>BEST <b>' + Math.round(cp.bestAccuracy) + '%</b></span></div>';
-      } else {
-        var prevTitle = getChapter(CHAPTER_ORDER[idx - 1]).briefing.title;
-        html += '<div class="topic">Reach ' + UNLOCK_THRESHOLD + '%+ accuracy in “' + escapeHtml(prevTitle) + '” to unlock.</div>';
-      }
+      html += '<div class="progress-track"><div class="progress-fill" style="width:' + Math.min(completionPct, 100) + '%"></div></div>';
+      html += '<div class="meta-row"><span>PROGRESS <b>' + completionPct + '%</b></span><span>BEST <b>' + Math.round(cp.bestAccuracy) + '%</b></span></div>';
       html += '</div>';
     });
     html += '</div><div class="footer-space"></div>';
@@ -901,36 +991,71 @@
 
     var html = topbar({ back: true, pause: true, title: ch.briefing.title });
 
-    if (s.streak >= 3) {
+    if (s.streak >= 2) {
       html += '<div class="streak-strip">🔥 ' + s.streak + ' in a row</div>';
     }
+
+    var isQuickcall = q.mechanic === 'quickcall' && !s.currentIsFollowup;
 
     html += '<div class="q-meta">';
     if (!s.currentIsFollowup) {
       html += '<span>QUESTION ' + (s.questionIndex + 1) + ' / ' + ch.questions.length + '</span>';
-      html += '<span class="diff-tag diff-' + q.difficulty + '">' + q.difficulty + '</span>';
+      html += isQuickcall
+        ? '<span class="diff-tag diff-hard">⚡ quick call</span>'
+        : '<span class="diff-tag diff-' + q.difficulty + '">' + q.difficulty + '</span>';
     } else {
       html += '<span>FOLLOW-UP — SAME CONCEPT</span><span></span>';
     }
     html += '</div>';
 
     html += '<div class="card">';
-    html += '<div class="task-prompt">' + annotateGlossary(q.task_prompt) + '</div>';
-    if (q.scenario) html += '<div class="scenario">' + annotateGlossary(q.scenario) + '</div>';
-
-    if (q.mechanic === 'nodegrid' && !s.currentIsFollowup) {
-      html += renderNodegrid(q, s);
+    if (isQuickcall) {
+      html += renderQuickcall(q, s);
     } else {
+      html += '<div class="task-prompt">' + annotateGlossary(q.task_prompt) + '</div>';
+      if (q.scenario) html += '<div class="scenario">' + annotateGlossary(q.scenario) + '</div>';
       html += renderOptions(q, s);
     }
     html += '</div>';
 
-    html += '<button class="btn-primary" data-action="confirm-answer" ' + (canConfirm(q, s) ? '' : 'disabled') + '>✓ Confirm</button>';
+    if (isQuickcall) {
+      var itemAnswered = s.quickcallItemSelection !== null && s.quickcallItemSelection !== undefined;
+      var isLastItem = s.quickcallIndex >= q.items.length - 1;
+      html += '<button class="btn-primary" data-action="quickcall-next" ' + (itemAnswered ? '' : 'disabled') + '>' +
+        (itemAnswered ? (isLastItem ? 'See results ▶' : 'Next ⚡') : 'Tap an answer above') + '</button>';
+    } else {
+      html += '<button class="btn-primary" data-action="confirm-answer" ' + (canConfirm(q, s) ? '' : 'disabled') + '>✓ Confirm</button>';
+    }
     html += '<div class="footer-space"></div>';
 
     app.innerHTML = html;
 
     if (s.answered) renderFeedbackSheet(q, s);
+  }
+
+  function renderQuickcall(q, s) {
+    var item = q.items[s.quickcallIndex];
+    var html = '<div class="quickcall-wrap">';
+    html += '<div class="task-prompt">' + annotateGlossary(q.task_prompt) + '</div>';
+    html += '<div class="quickcall-progress">CALL ' + (s.quickcallIndex + 1) + ' / ' + q.items.length + '</div>';
+    var answered = s.quickcallItemSelection !== null && s.quickcallItemSelection !== undefined;
+    if (!answered) {
+      html += '<div class="quickcall-timer"><div class="quickcall-timer-fill"></div></div>';
+    }
+    html += '<div class="quickcall-scenario">' + annotateGlossary(item.label) + '</div>';
+    html += '<div class="options quickcall-options">';
+    item.options.forEach(function (opt, i) {
+      var cls = 'option-btn';
+      var picked = s.quickcallItemSelection === i;
+      if (answered) {
+        if (opt.correct) cls += ' reveal-correct';
+        else if (picked) cls += ' reveal-wrong';
+      }
+      html += '<button class="' + cls + '" ' + (answered ? 'disabled' : '') +
+        ' data-action="select-quickcall-option" data-index="' + i + '">' + escapeHtml(opt.label) + '</button>';
+    });
+    html += '</div></div>';
+    return html;
   }
 
   var DUO_LABEL_ICON = { pass: '✓ ', flag: '🚩 ', yes: '✓ ', no: '✕ ', true: '✓ ', false: '✕ ' };
@@ -973,35 +1098,8 @@
     return html;
   }
 
-  function renderNodegrid(q, s) {
-    var html = '<div class="node-list">';
-    q.nodes.forEach(function (node, ni) {
-      html += '<div class="node-card"><div class="node-label">' + annotateGlossary(node.label) + '</div>';
-      html += '<div class="tier-row">';
-      ['low', 'medium', 'high'].forEach(function (tier) {
-        var cls = 'tier-btn tier-' + tier;
-        var chosen = (s.selection || [])[ni] === tier;
-        if (!s.answered) {
-          if (chosen) cls += ' tier-selected';
-        } else {
-          if (tier === node.correctTier) cls += ' tier-reveal-correct';
-          if (chosen && tier !== node.correctTier) cls += ' tier-reveal-wrong';
-          if (chosen && tier === node.correctTier) cls += ' tier-selected';
-        }
-        html += '<button class="' + cls + '" ' + (s.answered ? 'disabled' : '') +
-          ' data-action="select-node-tier" data-node="' + ni + '" data-tier="' + tier + '">' + tier + '</button>';
-      });
-      html += '</div></div>';
-    });
-    html += '</div>';
-    return html;
-  }
-
   function canConfirm(q, s) {
     if (s.answered) return false;
-    if (q.mechanic === 'nodegrid' && !s.currentIsFollowup) {
-      return q.nodes.every(function (_, i) { return !!(s.selection && s.selection[i]); });
-    }
     if (q.mechanic === 'multiselect' && !s.currentIsFollowup) {
       return Array.isArray(s.selection) && s.selection.length === q.select_count;
     }
@@ -1009,9 +1107,6 @@
   }
 
   function gradeCurrent(q, s) {
-    if (q.mechanic === 'nodegrid' && !s.currentIsFollowup) {
-      return q.nodes.every(function (node, i) { return s.selection[i] === node.correctTier; });
-    }
     if (q.mechanic === 'multiselect' && !s.currentIsFollowup) {
       var correctIdx = [];
       q.options.forEach(function (opt, i) { if (opt.correct) correctIdx.push(i); });
@@ -1040,7 +1135,7 @@
     }
     sheet.innerHTML =
       '<div class="inner">' +
-      '<div class="feedback-label ' + (correct ? 'ok' : 'no') + '">' + (correct ? '✓ Correct' : '✗ Not quite') + '</div>' +
+      '<div class="feedback-label ' + (correct ? 'ok' : 'no') + '"><span class="fb-icon">' + (correct ? '✓' : '✗') + '</span> ' + (correct ? 'Correct' : 'Not quite') + '</div>' +
       '<div class="feedback-text">' + body + '</div>' +
       '<div class="feedback-cite">' + escapeHtml(q.article_citation || '') + '</div>' +
       '<button class="btn-primary" data-action="continue">Continue →</button>' +
@@ -1058,29 +1153,55 @@
     var cp = chapterProgress(state.chapterKey);
     var idx = CHAPTER_ORDER.indexOf(state.chapterKey);
     var nextKey = CHAPTER_ORDER[idx + 1];
-    var unlockedNext = nextKey && cp.bestAccuracy >= UNLOCK_THRESHOLD;
+    var accuracy = Math.round(state.session.accuracyThisRun);
+    var isBest = state.session.accuracyThisRun >= cp.bestAccuracy;
 
     var html = topbar({ back: true, title: 'Chapter complete' });
     html += '<div class="card">';
     html += '<div class="briefing-eyebrow">' + escapeHtml(ch.briefing.title) + '</div>';
     html += '<div class="briefing-title">Chapter complete</div>';
+    if (accuracy >= 80) {
+      html += '<div class="complete-payoff">🔥 Strong round' + (isBest ? ' — new personal best' : '') + '</div>';
+    } else if (isBest && state.session.answeredCount) {
+      html += '<div class="complete-payoff">✨ New personal best</div>';
+    }
     html += '<div class="summary-stat-row">';
-    html += '<div class="summary-stat"><div class="n">' + Math.round(state.session.accuracyThisRun) + '%</div><div class="l">Accuracy</div></div>';
+    html += '<div class="summary-stat"><div class="n" data-countup="' + accuracy + '">0%</div><div class="l">Accuracy</div></div>';
     html += '<div class="summary-stat"><div class="n">' + Math.round(cp.bestAccuracy) + '%</div><div class="l">Best</div></div>';
-    html += '<div class="summary-stat"><div class="n">' + cp.bestStreak + '</div><div class="l">Best streak</div></div>';
+    html += '<div class="summary-stat highlight"><div class="n">🔥 ' + cp.bestStreak + '</div><div class="l">Best streak</div></div>';
     html += '</div>';
-    if (cp.bestAccuracy >= UNLOCK_THRESHOLD && nextKey) {
-      html += '<div class="briefing-desc">Next chapter unlocked: “' + escapeHtml(getChapter(nextKey).briefing.title) + '”.</div>';
-    } else if (nextKey) {
-      html += '<div class="briefing-desc">Reach ' + UNLOCK_THRESHOLD + '%+ accuracy to unlock the next chapter. Replay anytime.</div>';
+    if (nextKey) {
+      html += '<div class="briefing-desc">Every chapter is open anytime — up next: “' + escapeHtml(getChapter(nextKey).briefing.title) + '”.</div>';
     } else {
-      html += '<div class="briefing-desc">This was the final chapter. Replay any chapter anytime from the map.</div>';
+      html += '<div class="briefing-desc">That was the final chapter. Jump into any chapter anytime from the map.</div>';
     }
     html += '</div>';
-    html += '<button class="btn-primary" data-action="back-to-map">Back to map</button>';
+    if (nextKey) {
+      html += '<button class="btn-primary" data-action="open-chapter" data-chapter="' + nextKey + '">Next chapter ▶</button>';
+      html += '<button class="btn-secondary" data-action="back-to-map">Back to map</button>';
+    } else {
+      html += '<button class="btn-primary" data-action="back-to-map">Back to map</button>';
+    }
     html += '<button class="btn-secondary" data-action="restart-chapter" data-chapter="' + state.chapterKey + '">⟳ Replay chapter</button>';
     html += '<div class="footer-space"></div>';
     app.innerHTML = html;
+    animateCountUp();
+  }
+
+  function animateCountUp() {
+    var el = document.querySelector('[data-countup]');
+    if (!el) return;
+    var target = parseInt(el.getAttribute('data-countup'), 10) || 0;
+    var start = null;
+    var duration = 650;
+    function step(ts) {
+      if (start === null) start = ts;
+      var progress = Math.min(1, (ts - start) / duration);
+      var eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(target * eased) + '%';
+      if (progress < 1) window.requestAnimationFrame(step);
+    }
+    window.requestAnimationFrame(step);
   }
 
   function renderPauseOverlay() {
@@ -1132,13 +1253,23 @@
       currentIsFollowup: false,
       pendingFollowup: null,
       lastCorrect: null,
-      accuracyThisRun: 0
+      accuracyThisRun: 0,
+      quickcallIndex: 0,
+      quickcallItemSelection: null,
+      quickcallResults: []
     };
     if (state.session.questionIndex >= ch.questions.length) {
       state.session.questionIndex = 0;
     }
+    shuffleQuestionOptions(ch.questions[state.session.questionIndex]);
     state.screen = 'question';
     render();
+  }
+
+  function resetQuickcallState(s) {
+    s.quickcallIndex = 0;
+    s.quickcallItemSelection = null;
+    s.quickcallResults = [];
   }
 
   function persistResume() {
@@ -1175,8 +1306,10 @@
     s.questionIndex += 1;
     s.answered = false;
     s.selection = null;
+    resetQuickcallState(s);
     persistResume();
     if (s.questionIndex >= ch.questions.length) { finishChapter(); return; }
+    shuffleQuestionOptions(ch.questions[s.questionIndex]);
     render();
   }
 
@@ -1189,14 +1322,17 @@
       s.pendingFollowup = q.followup_question;
       s.answered = false;
       s.selection = null;
+      shuffleQuestionOptions(q.followup_question);
       render();
       return;
     }
     s.questionIndex += 1;
     s.answered = false;
     s.selection = null;
+    resetQuickcallState(s);
     persistResume();
     if (s.questionIndex >= ch.questions.length) { finishChapter(); return; }
+    shuffleQuestionOptions(ch.questions[s.questionIndex]);
     render();
   }
 
@@ -1237,11 +1373,33 @@
         state.session.selection = idx;
       }
       render();
-    } else if (action === 'select-node-tier') {
-      if (state.session.answered) return;
-      if (!Array.isArray(state.session.selection)) state.session.selection = [];
-      state.session.selection[parseInt(el.getAttribute('data-node'), 10)] = el.getAttribute('data-tier');
-      vibrate(8);
+    } else if (action === 'select-quickcall-option') {
+      var sq = state.session;
+      if (sq.quickcallItemSelection !== null && sq.quickcallItemSelection !== undefined) return;
+      var qq = currentQuestion();
+      var itemIdx = sq.quickcallIndex;
+      var optIdx = parseInt(el.getAttribute('data-index'), 10);
+      sq.quickcallItemSelection = optIdx;
+      var itemCorrect = !!(qq.items[itemIdx].options[optIdx] && qq.items[itemIdx].options[optIdx].correct);
+      sq.quickcallResults[itemIdx] = itemCorrect;
+      vibrate(itemCorrect ? 12 : [15, 30]);
+      render();
+    } else if (action === 'quickcall-next') {
+      var s3 = state.session;
+      var q3 = currentQuestion();
+      if (s3.quickcallItemSelection === null || s3.quickcallItemSelection === undefined) return;
+      if (s3.quickcallIndex < q3.items.length - 1) {
+        s3.quickcallIndex += 1;
+        s3.quickcallItemSelection = null;
+        render();
+        return;
+      }
+      var aggregate = s3.quickcallResults.length === q3.items.length && s3.quickcallResults.every(function (r) { return r === true; });
+      s3.lastCorrect = aggregate;
+      s3.answered = true;
+      s3.answeredCount += 1;
+      if (aggregate) { s3.correctCount += 1; s3.streak += 1; } else { s3.streak = 0; }
+      vibrate(aggregate ? 18 : [20, 40, 20]);
       render();
     } else if (action === 'confirm-answer') {
       var q = currentQuestion();
