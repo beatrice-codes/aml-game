@@ -1,0 +1,10 @@
+node_modules/
+test-results/
+playwright-report/
+.DS_Store
+.claude/
+
+# unrelated legacy freeCodeCamp exercise, not part of this project
+/index.html
+/mystyle.css
+/cat-app.code-workspace
