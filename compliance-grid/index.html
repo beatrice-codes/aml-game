@@ -102,10 +102,18 @@
     letter-spacing: -0.01em;
     margin: 8px 0 2px;
   }
+  .app-tagline {
+    font-size: 14.5px;
+    font-style: italic;
+    color: var(--violet);
+    margin: 2px 0 8px;
+    line-height: 1.4;
+  }
   .app-subtitle {
     color: var(--text-dim);
     font-size: 14px;
     margin-bottom: 20px;
+    line-height: 1.5;
   }
 
   .chapter-list {
@@ -126,7 +134,6 @@
     position: relative;
     overflow: hidden;
   }
-  .chapter-card.locked { opacity: 0.55; }
   .chapter-card .row1 {
     display: flex;
     align-items: center;
@@ -163,16 +170,12 @@
     background: #232330;
     overflow: hidden;
     margin-top: 2px;
+    margin-bottom: 12px;
   }
   .progress-fill {
     height: 100%;
     background: var(--violet);
     border-radius: 3px;
-  }
-  .lock-badge {
-    font-size: 11px;
-    color: var(--text-faint);
-    font-family: var(--mono);
   }
   .chip {
     display: inline-flex;
@@ -310,6 +313,12 @@
     margin-bottom: 16px;
   }
 
+  .checklist-hint {
+    font-size: 12.5px;
+    color: var(--text-faint);
+    margin-bottom: 10px;
+  }
+
   .options {
     display: flex;
     flex-direction: column;
@@ -327,8 +336,6 @@
     transition: border-color .15s, background .15s;
     min-height: 48px;
   }
-  .option-btn.passflag-pass { }
-  .option-btn.passflag-flag { }
   .option-btn.selected {
     border-color: var(--violet);
     background: var(--violet-dim);
@@ -342,6 +349,11 @@
     background: var(--red-dim);
   }
   .option-btn:disabled { opacity: 1; }
+  .chk-mark {
+    display: inline-block;
+    width: 20px;
+    margin-right: 6px;
+  }
 
   .node-list {
     display: flex;
@@ -530,20 +542,22 @@
 (function () {
   'use strict';
 
-  /* ---------- content (placeholder — replaced with verified question bank) ---------- */
+  /* ---------- content ---------- */
   var APP_CONTENT = window.__COMPLIANCE_GRID_CONTENT__ || { chapters: [], glossary: [] };
 
-  var CHAPTER_ORDER = ['foundations', 'reading_risk', 'the_gate', 'enhanced_measures', 'the_flag'];
-  var UNLOCK_THRESHOLD = 60;
+  var CHAPTER_ORDER = ['foundations', 'sow', 'the_gate', 'enhanced_measures', 'the_flag'];
 
   /* ---------- storage ---------- */
-  var STORAGE_KEY = 'complianceGridProgress_v1';
+  var STORAGE_KEY = 'complianceGridProgress_v2';
 
   function defaultChapterProgress() {
     return {
       everCompleted: false,
       bestAccuracy: 0,
       bestStreak: 0,
+      lastRunAccuracy: 0,
+      lastMistakes: [],
+      lastDifficultyStats: null,
       resume: { questionIndex: 0, correctCount: 0, answeredCount: 0, streak: 0 }
     };
   }
@@ -576,18 +590,12 @@
     return progress.chapters[key];
   }
 
-  function isUnlocked(index) {
-    if (index === 0) return true;
-    var prevKey = CHAPTER_ORDER[index - 1];
-    return chapterProgress(prevKey).bestAccuracy >= UNLOCK_THRESHOLD;
-  }
-
   /* ---------- app state ---------- */
   var state = {
     screen: 'map',
     chapterKey: null,
     paused: false,
-    session: null,     // { questionIndex, correctCount, answeredCount, streak, answered:false, selection, pendingFollowup, currentIsFollowup }
+    session: null,     // { questionIndex, correctCount, answeredCount, streak, answered, selection, optionOrder, pendingFollowup, currentIsFollowup, missedThisRun, difficultyStats }
     introducedTerms: {}
   };
 
@@ -663,7 +671,9 @@
     if (state.screen === 'map') return renderMap();
     if (state.screen === 'briefing') return renderBriefing();
     if (state.screen === 'question') return renderQuestion();
-    if (state.screen === 'complete') return renderComplete();
+    if (state.screen === 'retry-offer') return renderRetryOffer();
+    if (state.screen === 'summary') return renderSummary();
+    if (state.screen === 'mistakes') return renderMistakes();
   }
 
   function topbar(opts) {
@@ -678,36 +688,32 @@
       '<span class="title">' + (opts.title || '') + '</span>' + right + '</div>';
   }
 
+  function shortTitle(ch) {
+    return ch.briefing.title.split(':')[0].split('—')[0].trim() || ch.briefing.title;
+  }
+
   function renderMap() {
     var html = topbar({});
     html += '<h1 class="app-title">Compliance Grid</h1>';
-    html += '<p class="app-subtitle">AML/CFT training — Central Bank of Cyprus Directive 2025</p>';
+    html += '<p class="app-tagline">Learn to stop money laundering by playing the system that stops it.</p>';
+    html += '<p class="app-subtitle">A training game for everyone at Pay.com — no AML background needed. Play any chapter, in any order, at your own pace.</p>';
     html += '<div class="chapter-list">';
     APP_CONTENT.chapters.slice().sort(function (a, b) {
       return CHAPTER_ORDER.indexOf(a.chapter_key) - CHAPTER_ORDER.indexOf(b.chapter_key);
-    }).forEach(function (ch, i) {
+    }).forEach(function (ch) {
       var idx = CHAPTER_ORDER.indexOf(ch.chapter_key);
-      var unlocked = isUnlocked(idx);
       var cp = chapterProgress(ch.chapter_key);
       var total = ch.questions.length;
       var completionPct = cp.everCompleted ? 100 : Math.round((cp.resume.questionIndex / total) * 100);
-      var action = unlocked ? ' data-action="open-chapter" data-chapter="' + ch.chapter_key + '"' : '';
-      html += '<div class="chapter-card' + (unlocked ? '' : ' locked') + '"' + action + '>';
+      html += '<div class="chapter-card" data-action="open-chapter" data-chapter="' + ch.chapter_key + '">';
       html += '<div class="row1"><div>';
       html += '<div class="num">CHAPTER ' + (idx + 1) + ' / ' + CHAPTER_ORDER.length + '</div>';
-      html += '<div class="name">' + escapeHtml(ch.briefing.title.split(':')[0].split('—')[0].trim() || ch.briefing.title) + '</div>';
+      html += '<div class="name">' + escapeHtml(shortTitle(ch)) + '</div>';
       html += '</div>';
-      html += unlocked
-        ? '<span class="chip">' + (cp.everCompleted ? '✓' : '▶') + '</span>'
-        : '<span class="lock-badge">🔒 LOCKED</span>';
+      html += '<span class="chip">' + (cp.everCompleted ? '✓' : '▶') + '</span>';
       html += '</div>';
-      if (unlocked) {
-        html += '<div class="progress-track"><div class="progress-fill" style="width:' + Math.min(completionPct, 100) + '%"></div></div>';
-        html += '<div class="meta-row"><span>PROGRESS <b>' + completionPct + '%</b></span><span>BEST <b>' + Math.round(cp.bestAccuracy) + '%</b></span></div>';
-      } else {
-        var prevTitle = getChapter(CHAPTER_ORDER[idx - 1]).briefing.title;
-        html += '<div class="topic">Reach ' + UNLOCK_THRESHOLD + '%+ accuracy in “' + escapeHtml(prevTitle) + '” to unlock.</div>';
-      }
+      html += '<div class="progress-track"><div class="progress-fill" style="width:' + Math.min(completionPct, 100) + '%"></div></div>';
+      html += '<div class="meta-row"><span>PROGRESS <b>' + completionPct + '%</b></span><span>BEST <b>' + Math.round(cp.bestAccuracy) + '%</b></span></div>';
       html += '</div>';
     });
     html += '</div><div class="footer-space"></div>';
@@ -744,6 +750,48 @@
     return ch.questions[s.questionIndex];
   }
 
+  function shuffleIndices(n) {
+    var arr = [];
+    for (var i = 0; i < n; i++) arr.push(i);
+    for (var i2 = arr.length - 1; i2 > 0; i2--) {
+      var j = Math.floor(Math.random() * (i2 + 1));
+      var tmp = arr[i2]; arr[i2] = arr[j]; arr[j] = tmp;
+    }
+    return arr;
+  }
+
+  function resetQuestionState() {
+    var s = state.session;
+    var q = currentQuestion();
+    s.answered = false;
+    s.lastCorrect = null;
+    var isChecklist = q.mechanic === 'checklist' && !s.currentIsFollowup;
+    var isNodegrid = q.mechanic === 'nodegrid' && !s.currentIsFollowup;
+    s.selection = (isChecklist || isNodegrid) ? [] : null;
+    s.optionOrder = (!isNodegrid && q.options) ? shuffleIndices(q.options.length) : null;
+  }
+
+  function describeAnswer(q, s) {
+    if (q.mechanic === 'nodegrid') {
+      var yours = q.nodes.map(function (n, i) {
+        return n.label.split(/[—-]/)[0].trim() + ': ' + ((s.selection || [])[i] || '—');
+      }).join('; ');
+      var correctN = q.nodes.map(function (n) {
+        return n.label.split(/[—-]/)[0].trim() + ': ' + n.correctTier;
+      }).join('; ');
+      return { yours: yours, correct: correctN };
+    }
+    if (q.mechanic === 'checklist') {
+      var sel = s.selection || [];
+      var yoursL = sel.map(function (i) { return q.options[i].label; }).join(', ') || '(nothing selected)';
+      var corrL = q.options.filter(function (o) { return o.correct; }).map(function (o) { return o.label; }).join(', ');
+      return { yours: yoursL, correct: corrL };
+    }
+    var yoursOpt = q.options[s.selection];
+    var corrOpt = q.options.filter(function (o) { return o.correct; })[0];
+    return { yours: yoursOpt ? yoursOpt.label : '—', correct: corrOpt ? corrOpt.label : '—' };
+  }
+
   function renderQuestion() {
     var ch = getChapter(state.chapterKey);
     var s = state.session;
@@ -752,6 +800,11 @@
     markIntroduced(state.chapterKey, (q.scenario || '') + ' ' + q.task_prompt);
 
     var html = topbar({ back: true, pause: true, title: ch.briefing.title });
+
+    if (!s.currentIsFollowup) {
+      var pct = Math.round((s.questionIndex / ch.questions.length) * 100);
+      html += '<div class="progress-track"><div class="progress-fill" style="width:' + pct + '%"></div></div>';
+    }
 
     if (s.streak >= 3) {
       html += '<div class="streak-strip">🔥 ' + s.streak + ' in a row</div>';
@@ -772,6 +825,8 @@
 
     if (q.mechanic === 'nodegrid' && !s.currentIsFollowup) {
       html += renderNodegrid(q, s);
+    } else if (q.mechanic === 'checklist' && !s.currentIsFollowup) {
+      html += renderChecklist(q, s);
     } else {
       html += renderOptions(q, s);
     }
@@ -786,8 +841,10 @@
   }
 
   function renderOptions(q, s) {
+    var order = s.optionOrder || q.options.map(function (_, i) { return i; });
     var html = '<div class="options">';
-    q.options.forEach(function (opt, i) {
+    order.forEach(function (i) {
+      var opt = q.options[i];
       var cls = 'option-btn';
       if (!s.answered) {
         if (s.selection === i) cls += ' selected';
@@ -797,6 +854,31 @@
       }
       html += '<button class="' + cls + '" ' + (s.answered ? 'disabled' : '') +
         ' data-action="select-option" data-index="' + i + '">' + escapeHtml(opt.label) + '</button>';
+    });
+    html += '</div>';
+    return html;
+  }
+
+  function renderChecklist(q, s) {
+    var order = s.optionOrder || q.options.map(function (_, i) { return i; });
+    var sel = s.selection || [];
+    var html = '<div class="checklist-hint">Select every option that applies, then confirm.</div>';
+    html += '<div class="options">';
+    order.forEach(function (i) {
+      var opt = q.options[i];
+      var chosen = sel.indexOf(i) !== -1;
+      var cls = 'option-btn checklist-btn';
+      var mark;
+      if (!s.answered) {
+        if (chosen) cls += ' selected';
+        mark = chosen ? '☑' : '☐';
+      } else {
+        if (opt.correct) cls += ' reveal-correct';
+        else if (chosen) cls += ' reveal-wrong';
+        mark = opt.correct ? '✓' : (chosen ? '✗' : '☐');
+      }
+      html += '<button class="' + cls + '" ' + (s.answered ? 'disabled' : '') +
+        ' data-action="select-checklist" data-index="' + i + '"><span class="chk-mark">' + mark + '</span>' + escapeHtml(opt.label) + '</button>';
     });
     html += '</div>';
     return html;
@@ -831,12 +913,22 @@
     if (q.mechanic === 'nodegrid' && !s.currentIsFollowup) {
       return q.nodes.every(function (_, i) { return !!(s.selection && s.selection[i]); });
     }
+    if (q.mechanic === 'checklist' && !s.currentIsFollowup) {
+      return Array.isArray(s.selection) && s.selection.length > 0;
+    }
     return s.selection !== null && s.selection !== undefined;
   }
 
   function gradeCurrent(q, s) {
     if (q.mechanic === 'nodegrid' && !s.currentIsFollowup) {
       return q.nodes.every(function (node, i) { return s.selection[i] === node.correctTier; });
+    }
+    if (q.mechanic === 'checklist' && !s.currentIsFollowup) {
+      var correctIdxs = [];
+      q.options.forEach(function (o, i) { if (o.correct) correctIdxs.push(i); });
+      var sel = (s.selection || []).slice().sort(function (a, b) { return a - b; });
+      var corr = correctIdxs.slice().sort(function (a, b) { return a - b; });
+      return sel.length === corr.length && sel.every(function (v, i) { return v === corr[i]; });
     }
     return !!(q.options[s.selection] && q.options[s.selection].correct);
   }
@@ -871,32 +963,84 @@
     if (el) el.remove();
   }
 
-  function renderComplete() {
+  function renderRetryOffer() {
+    var ch = getChapter(state.chapterKey);
+    var html = topbar({ back: true, pause: true, title: ch.briefing.title });
+    html += '<div class="card">';
+    html += '<div class="task-prompt">Want another shot at this concept?</div>';
+    html += '<div class="scenario">Here’s a simpler follow-up question on the same idea — a good way to lock it in before moving on. Totally optional.</div>';
+    html += '</div>';
+    html += '<button class="btn-primary" data-action="accept-retry">Try a simpler one →</button>';
+    html += '<button class="btn-secondary" data-action="decline-retry">No thanks, next question</button>';
+    html += '<div class="footer-space"></div>';
+    app.innerHTML = html;
+  }
+
+  function feedbackLine(cp) {
+    var m = (cp.lastMistakes || []).length;
+    if (m === 0) return 'Strong grasp of this chapter — every question was answered correctly on the first try.';
+    var stats = cp.lastDifficultyStats || {};
+    var weakest = null, weakestRate = 2;
+    ['easy', 'medium', 'hard'].forEach(function (d) {
+      var st = stats[d];
+      if (st && st.total) {
+        var rate = st.correct / st.total;
+        if (rate < weakestRate) { weakestRate = rate; weakest = d; }
+      }
+    });
+    var extra = weakest ? (' Focus area: ' + weakest + '-level questions.') : '';
+    return m + ' question' + (m === 1 ? '' : 's') + ' needed a second attempt.' + extra;
+  }
+
+  function renderDifficultyBreakdown(stats) {
+    var html = '<div class="meta-row" style="margin-top:10px;">';
+    ['easy', 'medium', 'hard'].forEach(function (d) {
+      var st = stats[d] || { correct: 0, total: 0 };
+      html += '<span>' + d.toUpperCase() + ' <b>' + st.correct + '/' + st.total + '</b></span>';
+    });
+    html += '</div>';
+    return html;
+  }
+
+  function renderSummary() {
     var ch = getChapter(state.chapterKey);
     var cp = chapterProgress(state.chapterKey);
-    var idx = CHAPTER_ORDER.indexOf(state.chapterKey);
-    var nextKey = CHAPTER_ORDER[idx + 1];
-    var unlockedNext = nextKey && cp.bestAccuracy >= UNLOCK_THRESHOLD;
-
-    var html = topbar({ back: true, title: 'Chapter complete' });
+    var html = topbar({ back: true, title: 'Your results' });
     html += '<div class="card">';
-    html += '<div class="briefing-eyebrow">' + escapeHtml(ch.briefing.title) + '</div>';
+    html += '<div class="briefing-eyebrow">' + escapeHtml(shortTitle(ch)) + '</div>';
     html += '<div class="briefing-title">Chapter complete</div>';
     html += '<div class="summary-stat-row">';
-    html += '<div class="summary-stat"><div class="n">' + Math.round(state.session.accuracyThisRun) + '%</div><div class="l">Accuracy</div></div>';
-    html += '<div class="summary-stat"><div class="n">' + Math.round(cp.bestAccuracy) + '%</div><div class="l">Best</div></div>';
-    html += '<div class="summary-stat"><div class="n">' + cp.bestStreak + '</div><div class="l">Best streak</div></div>';
+    html += '<div class="summary-stat"><div class="n">' + Math.round(cp.lastRunAccuracy || 0) + '%</div><div class="l">Last score</div></div>';
+    html += '<div class="summary-stat"><div class="n">' + Math.round(cp.bestAccuracy || 0) + '%</div><div class="l">Best</div></div>';
+    html += '<div class="summary-stat"><div class="n">' + (cp.bestStreak || 0) + '</div><div class="l">Best streak</div></div>';
     html += '</div>';
-    if (cp.bestAccuracy >= UNLOCK_THRESHOLD && nextKey) {
-      html += '<div class="briefing-desc">Next chapter unlocked: “' + escapeHtml(getChapter(nextKey).briefing.title) + '”.</div>';
-    } else if (nextKey) {
-      html += '<div class="briefing-desc">Reach ' + UNLOCK_THRESHOLD + '%+ accuracy to unlock the next chapter. Replay anytime.</div>';
-    } else {
-      html += '<div class="briefing-desc">This was the final chapter. Replay any chapter anytime from the map.</div>';
+    html += '<div class="briefing-desc">' + escapeHtml(feedbackLine(cp)) + '</div>';
+    if (cp.lastDifficultyStats) html += renderDifficultyBreakdown(cp.lastDifficultyStats);
+    html += '</div>';
+    html += '<button class="btn-primary" data-action="restart-chapter" data-chapter="' + ch.chapter_key + '">▶ Play again</button>';
+    if (cp.lastMistakes && cp.lastMistakes.length) {
+      html += '<button class="btn-secondary" data-action="review-mistakes">🔍 Review mistakes (' + cp.lastMistakes.length + ')</button>';
     }
-    html += '</div>';
-    html += '<button class="btn-primary" data-action="back-to-map">Back to map</button>';
-    html += '<button class="btn-secondary" data-action="restart-chapter" data-chapter="' + state.chapterKey + '">⟳ Replay chapter</button>';
+    html += '<button class="btn-secondary" data-action="view-briefing" data-chapter="' + ch.chapter_key + '">ℹ️ About this chapter</button>';
+    html += '<div class="footer-space"></div>';
+    app.innerHTML = html;
+  }
+
+  function renderMistakes() {
+    var cp = chapterProgress(state.chapterKey);
+    var html = topbar({ back: true, title: 'Review mistakes' });
+    (cp.lastMistakes || []).forEach(function (m) {
+      html += '<div class="card" style="margin-bottom:12px;">';
+      html += '<div class="task-prompt">' + annotateGlossary(m.prompt) + '</div>';
+      html += '<div class="scenario"><b>You answered:</b> ' + escapeHtml(m.yourAnswer) + '<br><b>Correct answer:</b> ' + escapeHtml(m.correctAnswer) + '</div>';
+      html += '<div class="feedback-text">' + annotateGlossary(m.explanation || '') + '</div>';
+      html += '<div class="feedback-cite">' + escapeHtml(m.citation || '') + '</div>';
+      html += '</div>';
+    });
+    if (!cp.lastMistakes || !cp.lastMistakes.length) {
+      html += '<div class="card"><div class="briefing-desc">No mistakes to review — nice work.</div></div>';
+    }
+    html += '<button class="btn-primary" data-action="back-to-summary">← Back to results</button>';
     html += '<div class="footer-space"></div>';
     app.innerHTML = html;
   }
@@ -947,14 +1091,18 @@
       streak: cp.resume.streak || 0,
       answered: false,
       selection: null,
+      optionOrder: null,
       currentIsFollowup: false,
       pendingFollowup: null,
       lastCorrect: null,
-      accuracyThisRun: 0
+      accuracyThisRun: 0,
+      missedThisRun: [],
+      difficultyStats: { easy: { correct: 0, total: 0 }, medium: { correct: 0, total: 0 }, hard: { correct: 0, total: 0 } }
     };
     if (state.session.questionIndex >= ch.questions.length) {
       state.session.questionIndex = 0;
     }
+    resetQuestionState();
     state.screen = 'question';
     render();
   }
@@ -979,49 +1127,50 @@
     cp.everCompleted = true;
     cp.bestAccuracy = Math.max(cp.bestAccuracy, accuracy);
     cp.bestStreak = Math.max(cp.bestStreak, s.streak);
+    cp.lastRunAccuracy = accuracy;
+    cp.lastMistakes = s.missedThisRun.slice();
+    cp.lastDifficultyStats = s.difficultyStats;
     cp.resume = { questionIndex: 0, correctCount: 0, answeredCount: 0, streak: 0 };
     saveProgress(progress);
-    state.screen = 'complete';
+    state.screen = 'summary';
+    render();
+  }
+
+  function goToNextPrimaryQuestion() {
+    var ch = getChapter(state.chapterKey);
+    var s = state.session;
+    s.questionIndex += 1;
+    persistResume();
+    if (s.questionIndex >= ch.questions.length) { finishChapter(); return; }
+    resetQuestionState();
+    state.screen = 'question';
     render();
   }
 
   function advanceAfterFollowup() {
-    var ch = getChapter(state.chapterKey);
     var s = state.session;
     s.currentIsFollowup = false;
     s.pendingFollowup = null;
-    s.questionIndex += 1;
-    s.answered = false;
-    s.selection = null;
-    persistResume();
-    if (s.questionIndex >= ch.questions.length) { finishChapter(); return; }
-    render();
+    goToNextPrimaryQuestion();
   }
 
-  function advanceAfterPrimary(wasCorrect) {
+  function handlePrimaryContinue() {
     var ch = getChapter(state.chapterKey);
     var s = state.session;
     var q = ch.questions[s.questionIndex];
-    if (!wasCorrect && q.followup_question) {
-      s.currentIsFollowup = true;
-      s.pendingFollowup = q.followup_question;
-      s.answered = false;
-      s.selection = null;
+    if (s.lastCorrect || !q.followup_question) {
+      goToNextPrimaryQuestion();
+    } else {
+      state.screen = 'retry-offer';
       render();
-      return;
     }
-    s.questionIndex += 1;
-    s.answered = false;
-    s.selection = null;
-    persistResume();
-    if (s.questionIndex >= ch.questions.length) { finishChapter(); return; }
-    render();
   }
 
   function handleAction(action, el) {
     if (action === 'open-chapter') {
       state.chapterKey = el.getAttribute('data-chapter');
-      state.screen = 'briefing';
+      var cpOpen = chapterProgress(state.chapterKey);
+      state.screen = cpOpen.everCompleted ? 'summary' : 'briefing';
       render();
     } else if (action === 'back-to-map') {
       removeFeedbackSheet();
@@ -1032,6 +1181,15 @@
       startChapterSession(el.getAttribute('data-chapter'), false);
     } else if (action === 'restart-chapter') {
       startChapterSession(el.getAttribute('data-chapter'), true);
+    } else if (action === 'view-briefing') {
+      state.screen = 'briefing';
+      render();
+    } else if (action === 'review-mistakes') {
+      state.screen = 'mistakes';
+      render();
+    } else if (action === 'back-to-summary') {
+      state.screen = 'summary';
+      render();
     } else if (action === 'pause') {
       state.paused = true;
       renderPauseOverlay();
@@ -1041,6 +1199,14 @@
     } else if (action === 'select-option') {
       if (state.session.answered) return;
       state.session.selection = parseInt(el.getAttribute('data-index'), 10);
+      render();
+    } else if (action === 'select-checklist') {
+      if (state.session.answered) return;
+      var idxC = parseInt(el.getAttribute('data-index'), 10);
+      if (!Array.isArray(state.session.selection)) state.session.selection = [];
+      var posC = state.session.selection.indexOf(idxC);
+      if (posC === -1) state.session.selection.push(idxC); else state.session.selection.splice(posC, 1);
+      vibrate(6);
       render();
     } else if (action === 'select-node-tier') {
       if (state.session.answered) return;
@@ -1058,16 +1224,40 @@
       if (!s.currentIsFollowup) {
         s.answeredCount += 1;
         if (correct) { s.correctCount += 1; s.streak += 1; } else { s.streak = 0; }
+        var diff = (q.difficulty && s.difficultyStats[q.difficulty]) ? q.difficulty : null;
+        if (diff) {
+          s.difficultyStats[diff].total += 1;
+          if (correct) s.difficultyStats[diff].correct += 1;
+        }
+        if (!correct) {
+          var desc = describeAnswer(q, s);
+          s.missedThisRun.push({
+            id: q.id,
+            prompt: q.task_prompt,
+            yourAnswer: desc.yours,
+            correctAnswer: desc.correct,
+            explanation: q.incorrect_feedback,
+            citation: q.article_citation
+          });
+        }
       }
       vibrate(correct ? 18 : [20, 40, 20]);
       render();
     } else if (action === 'continue') {
       removeFeedbackSheet();
-      var s2 = state.session;
-      var wasFollowup = s2.currentIsFollowup;
-      var wasCorrect = s2.lastCorrect;
-      if (wasFollowup) advanceAfterFollowup();
-      else advanceAfterPrimary(wasCorrect);
+      if (state.session.currentIsFollowup) advanceAfterFollowup();
+      else handlePrimaryContinue();
+    } else if (action === 'accept-retry') {
+      var chR = getChapter(state.chapterKey);
+      var sR = state.session;
+      var qR = chR.questions[sR.questionIndex];
+      sR.currentIsFollowup = true;
+      sR.pendingFollowup = qR.followup_question;
+      resetQuestionState();
+      state.screen = 'question';
+      render();
+    } else if (action === 'decline-retry') {
+      goToNextPrimaryQuestion();
     } else if (action === 'show-glossary') {
       renderGlossaryPopover(el.getAttribute('data-term'));
     } else if (action === 'close-glossary') {
@@ -1080,9 +1270,6 @@
     if (!el) return;
     handleAction(el.getAttribute('data-action'), el);
   });
-
-  /* ---------- glossary auto-surface on new terms ---------- */
-  var origRenderQuestion = renderQuestion;
 
   render();
 })();
