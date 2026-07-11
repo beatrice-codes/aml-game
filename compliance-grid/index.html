@@ -171,6 +171,8 @@
     font-size: 24px;
     line-height: 1;
     flex-shrink: 0;
+    color: var(--text-dim);
+    display: inline-flex;
   }
   .chapter-card .num {
     font-family: var(--mono);
@@ -197,18 +199,19 @@
     margin-top: 2px;
   }
   .chapter-card .meta-row b { color: var(--text); }
-  .progress-track {
+  .chapter-card .meta-row .card-streak { color: var(--amber); font-weight: 700; }
+  .segment-track {
+    display: flex;
+    gap: 4px;
+    margin-top: 2px;
+  }
+  .segment {
+    flex: 1;
     height: 5px;
     border-radius: 3px;
     background: #232330;
-    overflow: hidden;
-    margin-top: 2px;
   }
-  .progress-fill {
-    height: 100%;
-    background: var(--violet);
-    border-radius: 3px;
-  }
+  .segment.filled { background: var(--violet); }
   .chip {
     display: inline-flex;
     align-items: center;
@@ -234,7 +237,11 @@
     letter-spacing: 0.06em;
     color: var(--violet);
     text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 6px;
   }
+  .briefing-eyebrow svg { width: 14px; height: 14px; flex-shrink: 0; }
   .briefing-title {
     font-size: 24px;
     font-weight: 700;
@@ -392,27 +399,6 @@
     min-height: 64px;
   }
 
-  .options.tier-style {
-    flex-direction: row;
-  }
-  .options.tier-style .option-btn {
-    flex: 1;
-    text-align: center;
-    font-family: var(--mono);
-    font-weight: 700;
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-    justify-content: center;
-    display: flex;
-    align-items: center;
-  }
-  .option-btn.tier-low { color: var(--teal); }
-  .option-btn.tier-medium { color: var(--amber); }
-  .option-btn.tier-high { color: var(--red); }
-  .option-btn.tier-low.selected { background: var(--teal-dim); border-color: var(--teal); }
-  .option-btn.tier-medium.selected { background: var(--amber-dim); border-color: var(--amber); }
-  .option-btn.tier-high.selected { background: var(--red-dim); border-color: var(--red); }
 
   .select-counter {
     display: inline-flex;
@@ -779,6 +765,147 @@
     max-width: 260px;
     margin-top: 28px;
   }
+
+  /* ---------- tiergate: assemble due-diligence steps, gate responds ---------- */
+  .tiergate-wrap { margin-bottom: 6px; }
+  .gate-visual {
+    position: relative;
+    height: 92px;
+    border-radius: var(--radius-md);
+    background: #1c1c25;
+    border: 1.5px solid var(--card-border);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+  .gate-leaf {
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 50%;
+    background: linear-gradient(160deg, var(--teal-dim), #1c1c25);
+    border: 1px solid var(--card-border);
+    transition: transform .35s cubic-bezier(.2,.8,.2,1), background .35s;
+  }
+  .gate-leaf.gate-left { left: 0; }
+  .gate-leaf.gate-right { right: 0; }
+  .gate-visual.tier-standard .gate-leaf { background: linear-gradient(160deg, var(--amber-dim), #1c1c25); }
+  .gate-visual.tier-enhanced .gate-leaf { background: linear-gradient(160deg, var(--red-dim), #1c1c25); }
+  .gate-tier-label {
+    position: relative;
+    z-index: 2;
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 12.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 20px;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    transition: color .2s;
+  }
+  .gate-visual.tier-simplified .gate-tier-label { color: var(--teal); }
+  .gate-visual.tier-standard .gate-tier-label { color: var(--amber); }
+  .gate-visual.tier-enhanced .gate-tier-label { color: var(--red); }
+
+  .tier-steps { display: flex; flex-direction: column; gap: 8px; margin-bottom: 6px; }
+  .step-chip {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-align: left;
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: var(--radius-sm);
+    background: #1c1c25;
+    border: 1.5px solid var(--card-border);
+    font-size: 13.5px;
+    color: var(--text-dim);
+    transition: border-color .15s, background .15s, color .15s;
+  }
+  .step-chip .chk {
+    width: 18px; height: 18px;
+    border-radius: 5px;
+    border: 1.5px solid var(--text-faint);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+  }
+  .step-chip.active { color: var(--text); border-color: var(--violet); background: var(--violet-dim); }
+  .step-chip.active .chk { background: var(--violet); border-color: var(--violet); color: #0a0a0d; }
+  .step-chip.locked { opacity: 0.6; }
+  .step-chip .step-note { color: var(--text-faint); font-size: 11px; margin-left: 2px; }
+
+  /* ---------- passflag: drag-to-decide stamp ---------- */
+  .passflag-wrap { margin-bottom: 6px; }
+  .passflag-track { display: flex; align-items: stretch; gap: 8px; }
+  .passflag-side {
+    flex: 1;
+    min-height: 116px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    text-align: center;
+  }
+  .passflag-side .ic { font-size: 22px; }
+  .passflag-side.side-pass { color: var(--teal); }
+  .passflag-side.side-flag { color: var(--red); }
+  .passflag-side.selected.side-pass { background: var(--teal-dim); border-color: var(--teal); }
+  .passflag-side.selected.side-flag { background: var(--red-dim); border-color: var(--red); }
+  .passflag-side.selected:not(.reveal-correct):not(.reveal-wrong) { animation: passflag-pop .22s ease-out; }
+  @keyframes passflag-pop {
+    0% { transform: scale(0.9); }
+    55% { transform: scale(1.06); }
+    100% { transform: scale(1); }
+  }
+  .passflag-stage {
+    width: 92px;
+    flex-shrink: 0;
+    min-height: 116px;
+    border-radius: var(--radius-md);
+    background: #1c1c25;
+    border: 1.5px solid var(--card-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .passflag-stamp {
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    border: 2.5px solid var(--text-faint);
+    color: var(--text-dim);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+    background: var(--card);
+    transition: transform .18s, border-color .18s, color .18s, background .18s;
+  }
+  .passflag-stamp:active { cursor: grabbing; }
+  .passflag-stamp.disabled { cursor: default; }
+  .passflag-stamp.lean-a[data-tone-a="pass"], .passflag-stamp.lean-b[data-tone-b="pass"] {
+    border-color: var(--teal); color: var(--teal); background: var(--teal-dim);
+  }
+  .passflag-stamp.lean-a[data-tone-a="flag"], .passflag-stamp.lean-b[data-tone-b="flag"] {
+    border-color: var(--red); color: var(--red); background: var(--red-dim);
+  }
+  .passflag-hint {
+    text-align: center;
+    font-size: 11.5px;
+    color: var(--text-faint);
+    margin-top: 10px;
+    min-height: 14px;
+  }
 </style>
 </head>
 <body>
@@ -841,13 +968,28 @@
     introducedTerms: {}
   };
 
+  var ICON_ATTRS = 'viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" ' +
+    'stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"';
+
+  // Monochrome line icons (one restrained tone, styled via CSS `color` on .chapter-icon) —
+  // literal shapes: open book, compass, door/gate, alert triangle, flag/pennant.
   var CHAPTER_ICON = {
-    foundations: '📘',
-    reading_risk: '🧭',
-    the_gate: '🚪',
-    enhanced_measures: '🚨',
-    the_flag: '🏁'
+    foundations: '<svg ' + ICON_ATTRS + '><path d="M12 5.5c-1.8-1.3-4-2-6.5-2A2 2 0 0 0 3.5 5.5v12a2 2 0 0 1 2-2c2.2 0 4.4.6 6 2m0-12c1.8-1.3 4-2 6.5-2a2 2 0 0 1 2 2v12a2 2 0 0 0-2-2c-2.2 0-4.4.6-6 2m0-12v12"/></svg>',
+    reading_risk: '<svg ' + ICON_ATTRS + '><circle cx="12" cy="12" r="8.5"/><path d="M14.3 9.7 12.7 12.7 9.7 14.3l1.6-3z"/></svg>',
+    the_gate: '<svg ' + ICON_ATTRS + '><rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M9.3 3v18"/><circle cx="7.2" cy="12" r="0.75" fill="currentColor" stroke="none"/></svg>',
+    enhanced_measures: '<svg ' + ICON_ATTRS + '><path d="M12 4 3 20h18L12 4z"/><path d="M12 10.3v4.4"/><circle cx="12" cy="17.2" r="0.75" fill="currentColor" stroke="none"/></svg>',
+    the_flag: '<svg ' + ICON_ATTRS + '><path d="M6 3v18"/><path d="M6 4.2h11l-3 3.8 3 3.8H6"/></svg>'
   };
+
+  // Brand mark: an abstract grid-of-four (echoing "Compliance Grid") inside a gate-like
+  // frame, reused at both the home badge and chapter-map logo sizes. No emoji, no clip-art.
+  var BRAND_MARK = '<svg viewBox="0 0 32 32" width="58%" height="58%" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+    '<rect x="1" y="1" width="30" height="30" rx="9" stroke="var(--text-dim)" stroke-width="1.4" opacity="0.4"/>' +
+    '<rect x="6" y="6" width="8.4" height="8.4" rx="2.4" fill="var(--violet)"/>' +
+    '<rect x="17.6" y="6" width="8.4" height="8.4" rx="2.4" fill="var(--teal)"/>' +
+    '<rect x="6" y="17.6" width="8.4" height="8.4" rx="2.4" fill="var(--amber)"/>' +
+    '<rect x="17.6" y="17.6" width="8.4" height="8.4" rx="2.4" fill="var(--red)"/>' +
+    '</svg>';
 
   function getChapter(key) {
     for (var i = 0; i < APP_CONTENT.chapters.length; i++) {
@@ -954,7 +1096,7 @@
       if (cp.everCompleted || cp.resume.questionIndex > 0) anyProgress = true;
     });
     var html = '<div class="home-wrap">';
-    html += '<div class="home-badge">🛡</div>';
+    html += '<div class="home-badge">' + BRAND_MARK + '</div>';
     html += '<h1 class="home-title">Compliance Grid</h1>';
     html += '<p class="home-tagline">Learn to stop money laundering by playing the system that stops it.</p>';
     html += '<div class="home-meta">' + totalChapters + ' chapters · 5-10 min each</div>';
@@ -980,7 +1122,7 @@
 
   function renderMap() {
     var html = topbar({});
-    html += '<div class="game-logo"><span class="mark">🛡</span><span class="word">Compliance Grid</span></div>';
+    html += '<div class="game-logo"><span class="mark">' + BRAND_MARK + '</span><span class="word">Compliance Grid</span></div>';
     html += '<div class="chapter-list">';
     APP_CONTENT.chapters.slice().sort(function (a, b) {
       return CHAPTER_ORDER.indexOf(a.chapter_key) - CHAPTER_ORDER.indexOf(b.chapter_key);
@@ -997,8 +1139,14 @@
       html += '</div></div>';
       html += '<span class="chip">' + (cp.everCompleted ? '✓' : '▶') + '</span>';
       html += '</div>';
-      html += '<div class="progress-track"><div class="progress-fill" style="width:' + Math.min(completionPct, 100) + '%"></div></div>';
-      html += '<div class="meta-row"><span>PROGRESS <b>' + completionPct + '%</b></span><span>BEST <b>' + Math.round(cp.bestAccuracy) + '%</b></span></div>';
+      var filled = cp.everCompleted ? total : cp.resume.questionIndex;
+      html += '<div class="segment-track">';
+      for (var si = 0; si < total; si++) {
+        html += '<div class="segment' + (si < filled ? ' filled' : '') + '"></div>';
+      }
+      html += '</div>';
+      html += '<div class="meta-row"><span>PROGRESS <b>' + completionPct + '%</b></span>' +
+        (cp.bestStreak >= 2 ? '<span class="card-streak">🔥 ' + cp.bestStreak + '</span>' : '') + '</div>';
       html += '</div>';
     });
     html += '</div><div class="footer-space"></div>';
@@ -1115,12 +1263,90 @@
   }
 
   var DUO_LABEL_ICON = { pass: '✓ ', flag: '🚩 ', yes: '✓ ', no: '✕ ', true: '✓ ', false: '✕ ' };
-  var TIER_LABEL_CLASS = { simplified: 'tier-low', standard: 'tier-medium', enhanced: 'tier-high' };
+  var DUO_LABEL_TONE = { pass: 'pass', yes: 'pass', true: 'pass', flag: 'flag', no: 'flag', false: 'flag' };
+
+  var TIER_STEPS = [
+    { label: 'Verify identity', locked: true },
+    { label: 'Verify address', locked: false },
+    { label: 'Confirm source of funds', locked: false },
+    { label: 'Enhanced ongoing monitoring', locked: false }
+  ];
+
+  function tierForActiveCount(n) {
+    if (n <= 1) return 'simplified';
+    if (n <= 3) return 'standard';
+    return 'enhanced';
+  }
+
+  function ensureTierSteps(s) {
+    if (!Array.isArray(s.tierSteps)) s.tierSteps = [true, false, false, false];
+    return s.tierSteps;
+  }
+
+  function syncTierSelection(q, s) {
+    var steps = ensureTierSteps(s);
+    var activeCount = steps.filter(Boolean).length;
+    var tierKey = tierForActiveCount(activeCount);
+    s.selection = q.options.findIndex(function (o) { return (o.tier || o.label || '').toLowerCase() === tierKey; });
+  }
+
+  function renderTierGate(q, s) {
+    var steps = ensureTierSteps(s);
+    if (!s.answered) syncTierSelection(q, s);
+    var activeCount = steps.filter(Boolean).length;
+    var tierKey = tierForActiveCount(activeCount);
+    var pct = Math.round((activeCount - 1) / (steps.length - 1) * 46);
+    var html = '<div class="tiergate-wrap">';
+    html += '<div class="gate-visual tier-' + tierKey + '">';
+    html += '<div class="gate-leaf gate-left" style="transform: translateX(-' + pct + '%)"></div>';
+    html += '<div class="gate-leaf gate-right" style="transform: translateX(' + pct + '%)"></div>';
+    html += '<div class="gate-tier-label">' + tierKey + '</div>';
+    html += '</div>';
+    html += '<div class="tier-steps">';
+    TIER_STEPS.forEach(function (step, i) {
+      var active = !!steps[i];
+      var cls = 'step-chip' + (active ? ' active' : '') + (step.locked ? ' locked' : '');
+      html += '<button class="' + cls + '" ' + ((s.answered || step.locked) ? 'disabled' : '') +
+        ' data-action="toggle-tier-step" data-step="' + i + '">' +
+        '<span class="chk">' + (active ? '✓' : '') + '</span>' + escapeHtml(step.label) +
+        (step.locked ? ' <span class="step-note">(always required)</span>' : '') +
+        '</button>';
+    });
+    html += '</div></div>';
+    return html;
+  }
+
+  function renderPassflag(q, s) {
+    var opt0 = q.options[0], opt1 = q.options[1];
+    var tone0 = DUO_LABEL_TONE[(opt0.label || '').toLowerCase().trim()] || 'pass';
+    var tone1 = DUO_LABEL_TONE[(opt1.label || '').toLowerCase().trim()] || 'flag';
+    function sideHtml(opt, i, tone) {
+      var picked = s.selection === i;
+      var cls = 'option-btn passflag-side side-' + tone;
+      if (!s.answered) { if (picked) cls += ' selected'; }
+      else { if (opt.correct) cls += ' reveal-correct'; else if (picked) cls += ' reveal-wrong'; }
+      var icon = DUO_LABEL_ICON[(opt.label || '').toLowerCase().trim()] || (tone === 'pass' ? '✓ ' : '🚩 ');
+      return '<button class="' + cls + '" ' + (s.answered ? 'disabled' : '') +
+        ' data-action="select-option" data-index="' + i + '"><span class="ic">' + icon + '</span>' + escapeHtml(opt.label) + '</button>';
+    }
+    var html = '<div class="passflag-wrap"><div class="passflag-track">';
+    html += sideHtml(opt0, 0, tone0);
+    html += '<div class="passflag-stage"><div class="passflag-stamp' + (s.answered ? ' disabled' : '') +
+      '" data-tone-a="' + tone0 + '" data-tone-b="' + tone1 + '">⇄</div></div>';
+    html += sideHtml(opt1, 1, tone1);
+    html += '</div>';
+    html += '<div class="passflag-hint">' + (s.answered ? '' : 'Drag the stamp, or tap a side') + '</div>';
+    html += '</div>';
+    return html;
+  }
 
   function renderOptions(q, s) {
+    if (!s.currentIsFollowup) {
+      if (q.mechanic === 'tiergate') return renderTierGate(q, s);
+      if (q.mechanic === 'passflag') return renderPassflag(q, s);
+    }
     var isMulti = q.mechanic === 'multiselect' && !s.currentIsFollowup;
-    var isTier = q.mechanic === 'tiergate' && !s.currentIsFollowup;
-    var isDuo = q.options.length === 2 && !isTier;
+    var isDuo = q.options.length === 2;
     var html = '';
 
     if (isMulti) {
@@ -1130,7 +1356,7 @@
         picked + ' / ' + q.select_count + ' selected</div>';
     }
 
-    html += '<div class="options' + (isDuo ? ' duo' : '') + (isTier ? ' tier-style' : '') + '">';
+    html += '<div class="options' + (isDuo ? ' duo' : '') + '">';
     q.options.forEach(function (opt, i) {
       var cls = 'option-btn';
       var picked = isMulti
@@ -1141,10 +1367,6 @@
       } else {
         if (opt.correct) cls += ' reveal-correct';
         else if (picked) cls += ' reveal-wrong';
-      }
-      if (isTier) {
-        var tierCls = TIER_LABEL_CLASS[(opt.tier || opt.label || '').toLowerCase()];
-        if (tierCls) cls += ' ' + tierCls;
       }
       var icon = isDuo ? (DUO_LABEL_ICON[(opt.label || '').toLowerCase().trim()] || '') : '';
       html += '<button class="' + cls + '" ' + (s.answered ? 'disabled' : '') +
@@ -1342,7 +1564,8 @@
       quickcallIndex: 0,
       quickcallItemSelection: null,
       quickcallResults: [],
-      feedbackMinimized: false
+      feedbackMinimized: false,
+      tierSteps: null
     };
     if (state.session.questionIndex >= ch.questions.length) {
       state.session.questionIndex = 0;
@@ -1410,6 +1633,7 @@
     s.answered = false;
     s.selection = null;
     s.feedbackMinimized = false;
+    s.tierSteps = null;
     resetQuickcallState(s);
     persistResume();
     if (s.questionIndex >= ch.questions.length) { finishChapter(); return; }
@@ -1465,6 +1689,16 @@
       } else {
         state.session.selection = idx;
       }
+      render();
+    } else if (action === 'toggle-tier-step') {
+      if (state.session.answered) return;
+      var qTier = currentQuestion();
+      var stepIdx = parseInt(el.getAttribute('data-step'), 10);
+      if (TIER_STEPS[stepIdx] && TIER_STEPS[stepIdx].locked) return;
+      var steps = ensureTierSteps(state.session);
+      steps[stepIdx] = !steps[stepIdx];
+      syncTierSelection(qTier, state.session);
+      vibrate(8);
       render();
     } else if (action === 'select-quickcall-option') {
       var sq = state.session;
@@ -1543,6 +1777,38 @@
     var el = e.target.closest('[data-action]');
     if (!el) return;
     handleAction(el.getAttribute('data-action'), el);
+  });
+
+  /* ---------- passflag: drag-to-decide gesture (delegated, survives re-render) ---------- */
+  var dragState = null;
+  document.addEventListener('pointerdown', function (e) {
+    var stampEl = e.target.closest('.passflag-stamp');
+    if (!stampEl || stampEl.classList.contains('disabled')) return;
+    var stage = stampEl.closest('.passflag-stage');
+    dragState = { stampEl: stampEl, startX: e.clientX, dx: 0, max: stage ? stage.clientWidth / 2 + 30 : 100 };
+    stampEl.style.transition = 'none';
+  });
+  document.addEventListener('pointermove', function (e) {
+    if (!dragState) return;
+    var dx = e.clientX - dragState.startX;
+    dx = Math.max(-dragState.max, Math.min(dragState.max, dx));
+    dragState.dx = dx;
+    dragState.stampEl.style.transform = 'translateX(' + dx + 'px) rotate(' + (dx / 12) + 'deg)';
+    dragState.stampEl.classList.remove('lean-a', 'lean-b');
+    if (Math.abs(dx) > 14) dragState.stampEl.classList.add(dx < 0 ? 'lean-a' : 'lean-b');
+  });
+  document.addEventListener('pointerup', function () {
+    if (!dragState) return;
+    var ds = dragState;
+    dragState = null;
+    ds.stampEl.style.transition = '';
+    ds.stampEl.style.transform = '';
+    ds.stampEl.classList.remove('lean-a', 'lean-b');
+    if (Math.abs(ds.dx) > 46) {
+      var idx = ds.dx < 0 ? 0 : 1;
+      var zone = document.querySelector('.passflag-side[data-index="' + idx + '"]');
+      if (zone) handleAction('select-option', zone);
+    }
   });
 
   /* ---------- glossary auto-surface on new terms ---------- */

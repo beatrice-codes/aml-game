@@ -89,6 +89,22 @@ Each chapter was drafted from the translated source articles, then independently
 - Article 66 requires Suspicion Reports to be submitted 'within a reasonable timeframe' per MOKAS's own instructions 'from time to time' — no fixed number of days is specified in the source text, so operational SLAs for 'reasonable' must be set by reference to MOKAS's current guidance rather than treated as fixed by this Directive itself.
 - No 'tiergate' (Simplified/Standard/Enhanced) question was built for this chapter: this chapter's assigned source articles (Part 8 cash thresholds, Part 12 suspicious-activity reporting) do not themselves specify a CDD tier decision — Article 55 only requires that 'full CDD (per Part 7)' be complete before approving a large cash transaction, without stating which tier applies — so no tier classification was asserted beyond what the source text supports.
 
+## Sprint v4 — Merchant-Onboarding Backfill & Rework Pass (2026-07-11)
+
+This pass cut 8 questions with no honest merchant-onboarding equivalent (currency-bureau thresholds, refugee ID documents, physical branch cash handling — `gate-q1`, `gate-q12`, `flag-01`, `flag-03`, `flag-04`, `flag-05`, `flag-09`, `flag-10`) and backfilled their slots, plus reworded 7 further items to frame retail-banking scenarios as merchant-acquiring ones. As with the rest of this file, this is a same-day drafting log, not a substitute for a compliance sign-off pass before wider rollout to colleagues — see the note in the sprint's own build prompt.
+
+**Backfilled (8) — new content, not reworded:**
+
+- `gate-q1`: now tests the Article 37 shell-company definition (no genuine economic activity, no physical presence beyond a mailing address), replacing the cut currency-exchange threshold question. Grounded in the same Article 37 text already used elsewhere in this chapter (`gate-q13`).
+- `gate-q12`: now tests Article 36's requirement that every partner/authorised individual in a sole-trader-or-partnership merchant be identity-verified to the same standard as a natural person, replacing the cut refugee-ID-document question.
+- `flag-01`, `flag-04`, `flag-09` (mcq/mcq/multiselect) and `flag-03`, `flag-05`, `flag-10` (passflag): all six drawn from Annex III, Part A(4) ("merchant acquiring") — the refund/reversal-rate anomaly, the sudden unexplained volume/size change, the mailing-address-only registration, the dormant-account activity burst, and the post-onboarding address change paired with mismatched activity. Annex III is the single best-fitting source in the whole directive for a payments-processor audience, being literally titled around accepting payment transactions from merchants.
+- `the_flag-quickcall`: all four items rebuilt around the same Annex III red flags (refund-rate match, mailing address, disclosed seasonal volume, unexplained refund spike), replacing the original cash-threshold quick calls.
+
+**Reworded only (7) — same slot, same citation, same correct answer, actor changed to a merchant:**
+
+- `gate-q3` (Art. 25, dormant-account reactivation trigger), `gate-q9` (Art. 41, confirmed-low-risk → Simplified), `gate-q10` (Art. 26/41, no-finding → Standard default), `gate-q15` (Art. 33, every joint-holder/signatory must be ID-verified), `gate-q16` (Art. 34, representative/agent authorisation must be on file), and `the_gate-quickcall` (Art. 27/37/41 risk-tiering quick calls): retail actors (a customer, a joint account, a third party with power of attorney) reframed as merchant-acquiring actors (a merchant, a sole trader/LTD, a merchant's directors/signatories, a representative acting for a merchant). No factual, citation, or correct-answer changes.
+- `eq_04` (Art. 43, structuring-to-avoid-threshold red flag): reworded from a retail depositor to a merchant's settlement account; same structuring logic and citation.
+
 ---
 
-**Totals:** 13 corrections applied during verification, 28 translation ambiguities flagged for compliance sign-off.
+**Totals:** 13 corrections applied during verification, 28 translation ambiguities flagged for compliance sign-off. Sprint v4 (above): 8 items backfilled, 7 reworded — pending compliance sign-off before wider rollout.

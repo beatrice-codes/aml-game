@@ -907,48 +907,48 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "difficulty": "easy",
           "mechanic": "mcq",
           "scenario": "",
-          "task_prompt": "At what amount does a currency purchase/sale trigger due diligence, under Article 24?",
+          "task_prompt": "Which of these is a defining feature of a 'shell company' under Article 37?",
           "options": [
             {
-              "label": "€500",
-              "correct": false
-            },
-            {
-              "label": "€1,000",
+              "label": "No genuine economic activity, and no physical presence beyond a mailing address",
               "correct": true
             },
             {
-              "label": "€5,000",
+              "label": "It was incorporated more than 10 years ago",
               "correct": false
             },
             {
-              "label": "€15,000",
+              "label": "It has fewer than 5 employees",
+              "correct": false
+            },
+            {
+              "label": "It operates in more than one country",
               "correct": false
             }
           ],
-          "article_citation": "Art. 24",
-          "correct_feedback": "Correct — the trigger is €1,000 or more per transaction (Article 11 of the CBC's 2014 Currency Exchange Offices Directive).",
-          "incorrect_feedback": "Not quite — the real threshold is €1,000 or more per transaction (Article 11 of the CBC's 2014 Currency Exchange Offices Directive).",
+          "article_citation": "Art. 37",
+          "correct_feedback": "Correct — a shell company under Article 37 has no genuine economic activity and no real physical presence, beyond perhaps a mailing address.",
+          "incorrect_feedback": "Not quite — Article 37 defines a shell company by the absence of genuine economic activity and any real physical presence beyond a mailing address, not by age, headcount, or geography.",
           "followup_question": {
-            "task_prompt": "Is €1,000+ the correct threshold for currency transactions?",
+            "task_prompt": "True or false: a company can be a 'shell company' even if it has a mailing address?",
             "options": [
               {
-                "label": "Yes — €1,000 or more",
+                "label": "True",
                 "correct": true
               },
               {
-                "label": "No — the threshold is €5,000",
+                "label": "False",
                 "correct": false
               }
             ],
-            "article_citation": "Art. 24"
+            "article_citation": "Art. 37"
           }
         },
         {
           "id": "gate-q10",
           "difficulty": "easy",
           "mechanic": "tiergate",
-          "scenario": "New personal account, no risk flags, but no formal low-risk finding made either.",
+          "scenario": "New merchant account, no risk flags, but no formal low-risk finding made either.",
           "task_prompt": "With no low-risk finding or high-risk trigger, which CDD tier applies?",
           "options": [
             {
@@ -989,8 +989,8 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "id": "gate-q15",
           "difficulty": "easy",
           "mechanic": "passflag",
-          "scenario": "A joint account is opened; only the primary holder's identity is verified.",
-          "task_prompt": "Does verifying just one joint holder meet ID requirements?",
+          "scenario": "A merchant account has multiple directors/signatories; only one has had identity verified.",
+          "task_prompt": "Does verifying just one signatory meet ID requirements?",
           "options": [
             {
               "label": "Pass",
@@ -1002,17 +1002,17 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
             }
           ],
           "article_citation": "Art. 33",
-          "correct_feedback": "Correct — every joint holder (and anyone authorised to operate the account) must be identity-verified, regardless of usage.",
-          "incorrect_feedback": "Not quite — this is a gap; every joint holder and authorised operator must be identity-verified, not just the primary user.",
+          "correct_feedback": "Correct — every director/signatory (and anyone authorised to operate the account) must be identity-verified, regardless of usage.",
+          "incorrect_feedback": "Not quite — this is a gap; every director/signatory and authorised operator must be identity-verified, not just one.",
           "followup_question": {
-            "task_prompt": "For a 3-holder joint account, how many must be identity-verified?",
+            "task_prompt": "For a merchant account with three signatories, how many must be identity-verified?",
             "options": [
               {
-                "label": "Only the primary holder",
+                "label": "Only the primary signatory",
                 "correct": false
               },
               {
-                "label": "All three holders",
+                "label": "All three signatories",
                 "correct": true
               }
             ],
@@ -1023,7 +1023,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "id": "gate-q9",
           "difficulty": "medium",
           "mechanic": "tiergate",
-          "scenario": "A capped, single-shopping-centre gift card is confirmed low risk, no ML/TF suspicion.",
+          "scenario": "A merchant is a well-established LTD selling low-risk goods, with no subscription products, clean financials, healthy revenue, an active public presence, and a low chargeback rate — confirmed low risk, no ML/TF suspicion.",
           "task_prompt": "Which CDD tier applies here?",
           "options": [
             {
@@ -1043,8 +1043,8 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
             }
           ],
           "article_citation": "Art. 41",
-          "correct_feedback": "Correct — a single-use product like this gift card qualifies for Simplified Due Diligence once low risk and no suspicion are confirmed.",
-          "incorrect_feedback": "Not quite — confirmed low risk and no suspicion here permit Simplified Due Diligence for this single-use product.",
+          "correct_feedback": "Correct — a merchant like this qualifies for Simplified Due Diligence once low risk and no suspicion are confirmed.",
+          "incorrect_feedback": "Not quite — confirmed low risk and no suspicion here permit Simplified Due Diligence for this merchant.",
           "followup_question": {
             "task_prompt": "Can Simplified Due Diligence apply if there's ML/TF suspicion?",
             "options": [
@@ -1064,7 +1064,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "id": "gate-q3",
           "difficulty": "medium",
           "mechanic": "passflag",
-          "scenario": "An 18-month-dormant account is reactivated; the customer also requests a new credit product.",
+          "scenario": "An 18-month-dormant merchant account resumes processing volume, and the merchant also requests a new payment product.",
           "task_prompt": "Does this trigger a mandatory ID/profile update check?",
           "options": [
             {
@@ -1098,49 +1098,49 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "id": "gate-q12",
           "difficulty": "medium",
           "mechanic": "mcq",
-          "scenario": "A refugee's ID document authenticity is in doubt, under the Article 32 regime.",
-          "task_prompt": "What is the entity prohibited from doing to verify the document's authenticity?",
+          "scenario": "A merchant applies for onboarding as a sole trader; the business has two partners who both have authority over the account.",
+          "task_prompt": "Whose identity must be verified, under Article 36?",
           "options": [
             {
-              "label": "Approaching the embassy/consulate of the origin country",
+              "label": "Both partners, verified the same way as any natural person",
               "correct": true
             },
             {
-              "label": "Approaching the Cypriot issuing authority, with written consent",
+              "label": "Only the partner who signs the application form",
               "correct": false
             },
             {
-              "label": "Requesting the customer provide an updated document",
+              "label": "Neither — sole traders and partnerships are exempt from identity checks",
               "correct": false
             },
             {
-              "label": "Filing a note in the customer's file",
+              "label": "Only whichever partner holds the larger ownership share",
               "correct": false
             }
           ],
-          "article_citation": "Art. 32",
-          "correct_feedback": "Correct — the origin country's embassy/consulate is off-limits; only the Cypriot issuing authority may be approached, with written consent.",
-          "incorrect_feedback": "Not quite — that's allowed. What's banned is contacting the origin country's embassy/consulate; only the Cypriot authority may be used, with consent.",
+          "article_citation": "Art. 36",
+          "correct_feedback": "Correct — Article 36 requires verifying the identity of every partner or individual with authority over the account, the same way as for any natural person.",
+          "incorrect_feedback": "Not quite — Article 36 requires identifying every partner or authorized individual, not just one signatory or the largest shareholder.",
           "followup_question": {
-            "task_prompt": "Can the entity approach the Cypriot issuing authority instead, with consent?",
+            "task_prompt": "Does a sole trader/partnership get lighter identity checks than an individual?",
             "options": [
               {
-                "label": "Yes",
+                "label": "No — same standard applies",
                 "correct": true
               },
               {
-                "label": "No",
+                "label": "Yes — checks are simplified",
                 "correct": false
               }
             ],
-            "article_citation": "Art. 32"
+            "article_citation": "Art. 36"
           }
         },
         {
           "id": "gate-q16",
           "difficulty": "medium",
           "mechanic": "passflag",
-          "scenario": "A third party operates an account via power of attorney, but no authorisation copy is kept.",
+          "scenario": "A representative/agent acts for a merchant, but no authorisation document is on file.",
           "task_prompt": "Is this acceptable practice, or should it be flagged as a compliance gap?",
           "options": [
             {
@@ -1153,13 +1153,13 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
             }
           ],
           "article_citation": "Art. 34",
-          "correct_feedback": "Correct — a copy of the authorisation agreement must be obtained and kept whenever a third party acts under power of attorney.",
-          "incorrect_feedback": "Not quite — a copy of the authorisation agreement must be obtained and kept before the third party can act.",
+          "correct_feedback": "Correct — a copy of the authorisation agreement must be obtained and kept whenever a representative/agent acts for a merchant.",
+          "incorrect_feedback": "Not quite — a copy of the authorisation agreement must be obtained and kept before the representative/agent can act.",
           "followup_question": {
             "task_prompt": "Is a copy required even for just one transaction?",
             "options": [
               {
-                "label": "Yes — it applies whenever a third party acts",
+                "label": "Yes — it applies whenever a representative/agent acts",
                 "correct": true
               },
               {
@@ -1262,7 +1262,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "task_prompt": "Quick calls — sort each customer's risk tier under Articles 27, 37 & 41. Tap fast.",
           "items": [
             {
-              "label": "Individual receiving a fixed monthly state benefit, in a dedicated account.",
+              "label": "Small, stable sole-trader merchant with modest, steady turnover and no risk flags.",
               "options": [
                 {
                   "label": "Low risk",
@@ -1279,7 +1279,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
               ]
             },
             {
-              "label": "New retail customer, no risk indicators, but no low-risk finding made.",
+              "label": "New merchant, no risk indicators, but no low-risk finding made.",
               "options": [
                 {
                   "label": "Low risk",
@@ -1330,7 +1330,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
               ]
             },
             {
-              "label": "Customer topping up a single-use, low-value shopping-centre gift card.",
+              "label": "Well-established LTD selling low-risk goods: no subscriptions, clean financials, healthy revenue, active public presence, low chargebacks.",
               "options": [
                 {
                   "label": "Low risk",
@@ -1348,8 +1348,8 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
             }
           ],
           "article_citation": "Art. 27; Art. 37; Art. 41",
-          "correct_feedback": "Correct across the board — benefits and single-use low-value products are low risk; an unflagged new customer with no finding is medium (standard) risk; a qualifying shell company and a self-assessed high-risk remote customer are both high risk.",
-          "incorrect_feedback": "One or more calls were off — benefits and single-use low-value products are low risk; an unflagged new customer is medium (standard) risk; a qualifying shell company and a self-assessed high-risk remote customer are both high risk."
+          "correct_feedback": "Correct across the board — a stable sole trader and a confirmed low-risk merchant are low risk; an unflagged new merchant with no finding is medium (standard) risk; a qualifying shell company and a self-assessed high-risk remote customer are both high risk.",
+          "incorrect_feedback": "One or more calls were off — a stable sole trader and a confirmed low-risk merchant are low risk; an unflagged new merchant is medium (standard) risk; a qualifying shell company and a self-assessed high-risk remote customer are both high risk."
         }
       ]
     },
@@ -1541,7 +1541,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "id": "eq_04",
           "difficulty": "medium",
           "mechanic": "passflag",
-          "scenario": "A retail customer suddenly makes many cash deposits just under the reporting threshold in one week.",
+          "scenario": "A merchant's settlement account shows a sudden pattern of transactions structured to stay just under the reporting threshold, in one week.",
           "task_prompt": "Flag this pattern for enhanced due diligence, or does it pass?",
           "article_citation": "Art. 43",
           "options": [
@@ -1555,7 +1555,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
             }
           ],
           "correct_feedback": "Correct — transactions structured to dodge reporting thresholds, with no economic justification, are a textbook 'unusual' pattern requiring EDD — e.g. establishing their purpose and increasing monitoring.",
-          "incorrect_feedback": "Not quite — this is a textbook 'unusual' pattern: frequent small transactions structured to dodge thresholds, with no economic justification. It should be flagged, not passed.",
+          "incorrect_feedback": "Not quite — this is a textbook 'unusual' pattern: frequent transactions structured to dodge thresholds, with no economic justification. It should be flagged, not passed.",
           "followup_question": {
             "task_prompt": "Is structuring transactions to dodge reporting thresholds an example of an 'unusual' pattern?",
             "options": [
@@ -1853,83 +1853,83 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "difficulty": "easy",
           "mechanic": "mcq",
           "scenario": "",
-          "task_prompt": "At what cash amount must source-of-funds checks start, under Article 53?",
-          "article_citation": "Art. 53",
+          "task_prompt": "Which of these is a genuine red flag for a merchant-acquiring relationship, per Annex III?",
+          "article_citation": "Annex III (merchant acquiring)",
           "options": [
             {
-              "label": "€5,000",
-              "correct": false
-            },
-            {
-              "label": "€10,000",
+              "label": "A merchant's refund/reversal rate doesn't match its own history or similar merchants' typical rates",
               "correct": true
             },
             {
-              "label": "€15,000",
+              "label": "A merchant processes transactions only during normal business hours",
               "correct": false
             },
             {
-              "label": "€100,000",
+              "label": "A merchant's sales volume stays flat month to month",
+              "correct": false
+            },
+            {
+              "label": "A merchant renews its trade license on time",
               "correct": false
             }
           ],
-          "correct_feedback": "Correct — €10,000 (or the foreign-currency equivalent) triggers source, purpose and profile checks.",
-          "incorrect_feedback": "Not quite — the real threshold is €10,000 (or the foreign-currency equivalent).",
+          "correct_feedback": "Correct — an unusual refund/reversal pattern versus the merchant's own history, or versus similar merchants, is a listed red flag.",
+          "incorrect_feedback": "Not quite — the red flag is an unusual refund/reversal pattern; the other options describe entirely normal merchant behavior.",
           "followup_question": {
-            "task_prompt": "True or false: Article 53 checks only apply at/above €10,000, never below.",
+            "task_prompt": "Is an unusually high refund rate (versus similar merchants) worth a closer look?",
             "options": [
               {
-                "label": "True",
-                "correct": false
+                "label": "Yes",
+                "correct": true
               },
               {
-                "label": "False — also checked below €10,000 if ML/TF suspicion arises",
-                "correct": true
+                "label": "No",
+                "correct": false
               }
             ],
-            "article_citation": "Art. 53"
+            "article_citation": "Annex III (merchant acquiring)"
           }
         },
         {
           "id": "flag-04",
-          "difficulty": "easy",
+          "difficulty": "medium",
           "mechanic": "mcq",
           "scenario": "",
-          "task_prompt": "At what amount does a foreign-currency cash transaction need Compliance Officer approval, under Article 55?",
-          "article_citation": "Art. 55",
+          "task_prompt": "What should raise concern about a merchant's transaction activity, per Annex III?",
+          "article_citation": "Annex III (merchant acquiring)",
           "options": [
             {
-              "label": "€50,000",
-              "correct": false
-            },
-            {
-              "label": "€75,000",
-              "correct": false
-            },
-            {
-              "label": "€100,000",
+              "label": "A sudden, unexplained change in transaction volume or average transaction size since onboarding",
               "correct": true
             },
             {
-              "label": "€150,000",
+              "label": "A gradual, seasonal increase disclosed at onboarding",
+              "correct": false
+            },
+            {
+              "label": "Transactions spread evenly across the week",
+              "correct": false
+            },
+            {
+              "label": "A steady, small number of daily transactions",
               "correct": false
             }
           ],
-          "correct_feedback": "Correct — €100,000+ single foreign-currency cash transactions need the Compliance Officer's written approval first.",
-          "incorrect_feedback": "Not quite — the threshold is exactly €100,000; below that, this approval rule doesn't apply (though Art. 53-54 rules may still).",
+          "correct_feedback": "Correct — sudden, unexplained shifts in volume or average ticket size versus what was declared at onboarding is the listed red flag.",
+          "incorrect_feedback": "Not quite — the red flag is a sudden, unexplained change versus the merchant's declared profile, not ordinary or disclosed patterns.",
           "followup_question": {
-            "task_prompt": "True or false: €100,000 can be reached by a single transaction or cumulative ones in a year.",
+            "task_prompt": "Does a disclosed, expected seasonal spike count as this red flag?",
             "options": [
               {
-                "label": "True",
+                "label": "No",
                 "correct": true
               },
               {
-                "label": "False",
+                "label": "Yes",
                 "correct": false
               }
             ],
-            "article_citation": "Art. 55"
+            "article_citation": "Annex III (merchant acquiring)"
           }
         },
         {
@@ -1976,11 +1976,11 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
         },
         {
           "id": "flag-03",
-          "difficulty": "medium",
+          "difficulty": "easy",
           "mechanic": "passflag",
-          "scenario": "A customer brings €12,000 cash from abroad, with no customs paperwork.",
-          "task_prompt": "Flag this transaction, or let it pass?",
-          "article_citation": "Art. 54",
+          "scenario": "A merchant's registered business address turns out to be just a mailing address, with no real connection to how the business actually operates.",
+          "task_prompt": "Flag this, or let it pass?",
+          "article_citation": "Annex III (merchant acquiring)",
           "options": [
             {
               "label": "Pass",
@@ -1991,60 +1991,28 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
               "correct": true
             }
           ],
-          "correct_feedback": "Correct — Flag. €12,000 exceeds the €10,000 threshold; without the Declaration, cash must be refused and Customs notified.",
-          "incorrect_feedback": "Not quite — a missing declaration isn't a minor detail. Cash of €10,000+ from abroad needs it, or must be refused and Customs notified.",
-          "followup_question": {
-            "task_prompt": "What threshold makes the Declaration mandatory?",
-            "options": [
-              {
-                "label": "€1,000",
-                "correct": false
-              },
-              {
-                "label": "€10,000 (or the foreign-currency equivalent)",
-                "correct": true
-              },
-              {
-                "label": "€100,000",
-                "correct": false
-              }
-            ],
-            "article_citation": "Art. 54"
-          }
+          "correct_feedback": "Correct to flag — a declared address that's only a mailing address, disconnected from the actual business, is a listed red flag.",
+          "incorrect_feedback": "This should have been flagged — a mailing-address-only registration disconnected from the real business is a listed merchant-acquiring red flag."
         },
         {
           "id": "flag-10",
           "difficulty": "medium",
           "mechanic": "passflag",
-          "scenario": "A Cyprus public-law legal person deposits €120,000 in foreign-currency cash.",
-          "task_prompt": "Flag this deposit for approval, or let it pass?",
-          "article_citation": "Art. 56",
+          "scenario": "Shortly after onboarding, a merchant changes its registered address, and its actual activity doesn't match what it declared at sign-up.",
+          "task_prompt": "Flag this, or let it pass?",
+          "article_citation": "Annex III (merchant acquiring)",
           "options": [
             {
               "label": "Pass",
-              "correct": true
+              "correct": false
             },
             {
               "label": "Flag",
-              "correct": false
+              "correct": true
             }
           ],
-          "correct_feedback": "Correct — Pass. Public-law legal persons are exempt from Articles 53-55, so no approval is needed.",
-          "incorrect_feedback": "Not quite — check exemptions first. Public-law legal persons are exempt from Articles 53-55, so no approval is needed.",
-          "followup_question": {
-            "task_prompt": "Which THREE depositor categories are exempted from Articles 53-55 under Article 56?",
-            "options": [
-              {
-                "label": "Government, Cyprus public-law persons, and other credit institutions",
-                "correct": true
-              },
-              {
-                "label": "All corporate customers",
-                "correct": false
-              }
-            ],
-            "article_citation": "Art. 56"
-          }
+          "correct_feedback": "Correct to flag — an address change soon after onboarding combined with activity that doesn't match the declared profile is a listed red flag.",
+          "incorrect_feedback": "This should have been flagged — a post-onboarding address change plus mismatched activity is a listed merchant-acquiring red flag."
         },
         {
           "id": "flag-18",
@@ -2090,130 +2058,100 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
         },
         {
           "id": "flag-09",
-          "difficulty": "easy",
+          "difficulty": "hard",
           "mechanic": "multiselect",
+          "select_count": 3,
           "scenario": "",
-          "task_prompt": "Which of these are exempt from Articles 53-55 under Article 56? Select all that apply.",
+          "task_prompt": "Which of these are genuine merchant-acquiring red flags, per Annex III? Select all that apply.",
           "options": [
             {
-              "label": "Government of the Republic of Cyprus",
+              "label": "Declared address is just a mailing address, unconnected to the business",
               "correct": true
             },
             {
-              "label": "Cyprus public-law legal persons",
+              "label": "Refund/chargeback pattern doesn't match the merchant's own history or peers",
               "correct": true
             },
             {
-              "label": "Other credit institutions in Cyprus",
+              "label": "Sudden, unexplained change in transaction volume or size",
               "correct": true
             },
             {
-              "label": "A privately owned money remittance business",
+              "label": "Consistently low chargeback rate",
+              "correct": false
+            },
+            {
+              "label": "On-time renewal of the merchant's trade license",
               "correct": false
             }
           ],
-          "select_count": 3,
-          "article_citation": "Art. 56",
-          "correct_feedback": "Correct — Article 56 exempts only these three categories. A private money remittance business stays fully subject to Articles 53-55.",
-          "incorrect_feedback": "Not quite — Article 56 exempts only: the Government, Cyprus public-law legal persons, and other Cyprus credit institutions.",
-          "followup_question": {
-            "task_prompt": "How many categories are exempted under Article 56?",
-            "options": [
-              {
-                "label": "Two",
-                "correct": false
-              },
-              {
-                "label": "Three",
-                "correct": true
-              },
-              {
-                "label": "Five",
-                "correct": false
-              }
-            ],
-            "article_citation": "Art. 56"
-          }
+          "article_citation": "Annex III (merchant acquiring)",
+          "correct_feedback": "Correct — these three are the listed red flags; a low chargeback rate and an on-time license renewal are both healthy signs, not concerns.",
+          "incorrect_feedback": "Not quite — the three genuine red flags are the address mismatch, the refund/chargeback anomaly, and the unexplained volume change."
         },
         {
           "id": "the_flag-quickcall",
           "difficulty": "hard",
           "mechanic": "quickcall",
           "scenario": "",
-          "task_prompt": "Quick calls — routine, needs checks, or needs approval? Tap fast.",
+          "task_prompt": "Quick calls — routine, or escalate? Tap fast.",
           "items": [
             {
-              "label": "€6,000 deposit, consistent with profile, no suspicion.",
+              "label": "Refund rate matches similar merchants — nothing unusual.",
               "options": [
                 {
                   "label": "Routine",
                   "correct": true
                 },
                 {
-                  "label": "Needs checks",
-                  "correct": false
-                },
-                {
-                  "label": "Needs approval",
+                  "label": "Escalate",
                   "correct": false
                 }
               ]
             },
             {
-              "label": "€3,000 deposit, inconsistent with declared occupation/income.",
+              "label": "Registered address is only a mailing address, unconnected to the business.",
               "options": [
                 {
                   "label": "Routine",
                   "correct": false
                 },
                 {
-                  "label": "Needs checks",
+                  "label": "Escalate",
+                  "correct": true
+                }
+              ]
+            },
+            {
+              "label": "Modest volume increase, matching a seasonal pattern disclosed at onboarding.",
+              "options": [
+                {
+                  "label": "Routine",
                   "correct": true
                 },
                 {
-                  "label": "Needs approval",
+                  "label": "Escalate",
                   "correct": false
                 }
               ]
             },
             {
-              "label": "€45,000 deposit, consistent with business profile, needs standard checks.",
+              "label": "Sudden refund spike right after a burst of new sales, no clear explanation.",
               "options": [
                 {
                   "label": "Routine",
                   "correct": false
                 },
                 {
-                  "label": "Needs checks",
-                  "correct": true
-                },
-                {
-                  "label": "Needs approval",
-                  "correct": false
-                }
-              ]
-            },
-            {
-              "label": "€100,000 single foreign-currency deposit from abroad.",
-              "options": [
-                {
-                  "label": "Routine",
-                  "correct": false
-                },
-                {
-                  "label": "Needs checks",
-                  "correct": false
-                },
-                {
-                  "label": "Needs approval",
+                  "label": "Escalate",
                   "correct": true
                 }
               ]
             }
           ],
-          "article_citation": "Art. 53-55",
-          "correct_feedback": "Correct across the board — suspicion triggers checks even below €10,000; amounts crossing €10,000 need threshold checks; only €100,000+ needs Article 55 Compliance Officer approval.",
-          "incorrect_feedback": "One or more calls were off — amount alone doesn't set the tier: suspicion triggers checks even under €10,000, and only €100,000+ needs Article 55 approval."
+          "article_citation": "Annex III (merchant acquiring)",
+          "correct_feedback": "Correct across the board — matched refund rates and disclosed seasonal patterns are routine; a mailing-address-only registration and an unexplained refund spike both warrant escalation.",
+          "incorrect_feedback": "One or more calls were off — routine patterns are ones that match the merchant's own profile or history; anything unexplained (an address disconnected from the business, or a sudden refund spike) should be escalated."
         },
         {
           "id": "flag-19",
@@ -2251,11 +2189,11 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
         },
         {
           "id": "flag-05",
-          "difficulty": "hard",
+          "difficulty": "medium",
           "mechanic": "passflag",
-          "scenario": "Client's deposits total €95,000 this year; a new €20,000 deposit would hit €115,000.",
-          "task_prompt": "Flag this transaction for approval, or let it pass?",
-          "article_citation": "Art. 55",
+          "scenario": "A merchant account that's been dormant for months suddenly shows a burst of activity, with no clear business explanation.",
+          "task_prompt": "Flag this, or let it pass?",
+          "article_citation": "Annex III (merchant acquiring)",
           "options": [
             {
               "label": "Pass",
@@ -2266,22 +2204,8 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
               "correct": true
             }
           ],
-          "correct_feedback": "Correct — Flag. €100,000 also applies cumulatively per year, not just per transaction; €115,000 crosses it, so approval is required.",
-          "incorrect_feedback": "Not quite — don't just check the €20,000 alone. €100,000 also counts cumulatively per year, and this total (€115,000) crosses it.",
-          "followup_question": {
-            "task_prompt": "Does €100,000 count only single transactions, or cumulative ones too?",
-            "options": [
-              {
-                "label": "Only single transactions",
-                "correct": false
-              },
-              {
-                "label": "Also cumulative transactions within the same year",
-                "correct": true
-              }
-            ],
-            "article_citation": "Art. 55"
-          }
+          "correct_feedback": "Correct to flag — a sudden burst of activity on a previously dormant merchant account, without explanation, is a listed red flag.",
+          "incorrect_feedback": "This should have been flagged — unexplained activity on a dormant merchant account is a listed merchant-acquiring red flag."
         }
       ]
     }
