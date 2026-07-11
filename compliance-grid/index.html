@@ -465,18 +465,36 @@
     from { transform: translateY(16px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
   }
+  .feedback-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
   .feedback-label {
     font-family: var(--mono);
     font-size: 12px;
     letter-spacing: 0.05em;
     text-transform: uppercase;
-    margin-bottom: 8px;
     display: flex;
     align-items: center;
     gap: 8px;
   }
   .feedback-label.ok { color: var(--teal); }
   .feedback-label.no { color: var(--red); }
+  .feedback-minimize {
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    background: #1c1c25;
+    border: 1px solid var(--card-border);
+    color: var(--text-dim);
+    flex-shrink: 0;
+  }
   .feedback-text {
     font-size: 14.5px;
     line-height: 1.55;
@@ -490,6 +508,41 @@
     color: var(--text-faint);
     margin-bottom: 16px;
   }
+  .feedback-choice-row {
+    display: flex;
+    gap: 10px;
+  }
+  .feedback-choice-row .btn-primary,
+  .feedback-choice-row .btn-secondary {
+    margin-top: 0;
+  }
+
+  .feedback-tab {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 20;
+    display: flex;
+    justify-content: center;
+    padding: 0 12px calc(16px + env(safe-area-inset-bottom, 0));
+    pointer-events: none;
+  }
+  .feedback-tab button {
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 30px;
+    padding: 11px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.45);
+    animation: sheet-up .18s ease-out;
+  }
+  .feedback-tab .fb-icon.ok { color: var(--teal); }
+  .feedback-tab .fb-icon.no { color: var(--red); }
 
   .overlay {
     position: fixed;
@@ -1030,7 +1083,10 @@
 
     app.innerHTML = html;
 
-    if (s.answered) renderFeedbackSheet(q, s);
+    if (s.answered) {
+      if (s.feedbackMinimized) renderFeedbackTab(q, s);
+      else renderFeedbackSheet(q, s);
+    }
   }
 
   function renderQuickcall(q, s) {
@@ -1119,6 +1175,7 @@
   }
 
   function renderFeedbackSheet(q, s) {
+    removeFeedbackTab();
     var correct = s.lastCorrect;
     var sheet = document.createElement('div');
     sheet.className = 'feedback-sheet';
@@ -1133,18 +1190,46 @@
     } else {
       body = annotateGlossary(correct ? q.correct_feedback : q.incorrect_feedback);
     }
+    var offerChoice = !correct && !s.currentIsFollowup && !!q.followup_question;
+    var actions = offerChoice
+      ? '<div class="feedback-choice-row">' +
+        '<button class="btn-primary" data-action="continue-followup">Try an easier one →</button>' +
+        '<button class="btn-secondary" data-action="continue-skip">Skip →</button>' +
+        '</div>'
+      : '<button class="btn-primary" data-action="continue">Continue →</button>';
     sheet.innerHTML =
       '<div class="inner">' +
+      '<div class="feedback-header">' +
       '<div class="feedback-label ' + (correct ? 'ok' : 'no') + '"><span class="fb-icon">' + (correct ? '✓' : '✗') + '</span> ' + (correct ? 'Correct' : 'Not quite') + '</div>' +
+      '<button class="feedback-minimize" data-action="minimize-feedback" aria-label="Minimize">⌄</button>' +
+      '</div>' +
       '<div class="feedback-text">' + body + '</div>' +
       '<div class="feedback-cite">' + escapeHtml(q.article_citation || '') + '</div>' +
-      '<button class="btn-primary" data-action="continue">Continue →</button>' +
+      actions +
       '</div>';
     document.body.appendChild(sheet);
   }
 
+  function renderFeedbackTab(q, s) {
+    removeFeedbackSheet();
+    var correct = s.lastCorrect;
+    var tab = document.createElement('div');
+    tab.className = 'feedback-tab';
+    tab.innerHTML =
+      '<button data-action="expand-feedback">' +
+      '<span class="fb-icon ' + (correct ? 'ok' : 'no') + '">' + (correct ? '✓' : '✗') + '</span>' +
+      '<span>' + (correct ? 'Correct' : 'Not quite') + ' — tap to view</span>' +
+      '</button>';
+    document.body.appendChild(tab);
+  }
+
   function removeFeedbackSheet() {
     var el = document.querySelector('.feedback-sheet');
+    if (el) el.remove();
+  }
+
+  function removeFeedbackTab() {
+    var el = document.querySelector('.feedback-tab');
     if (el) el.remove();
   }
 
@@ -1256,7 +1341,8 @@
       accuracyThisRun: 0,
       quickcallIndex: 0,
       quickcallItemSelection: null,
-      quickcallResults: []
+      quickcallResults: [],
+      feedbackMinimized: false
     };
     if (state.session.questionIndex >= ch.questions.length) {
       state.session.questionIndex = 0;
@@ -1303,9 +1389,27 @@
     var s = state.session;
     s.currentIsFollowup = false;
     s.pendingFollowup = null;
+    advanceToNextQuestion();
+  }
+
+  function enterFollowup(q) {
+    var s = state.session;
+    s.currentIsFollowup = true;
+    s.pendingFollowup = q.followup_question;
+    s.answered = false;
+    s.selection = null;
+    s.feedbackMinimized = false;
+    shuffleQuestionOptions(q.followup_question);
+    render();
+  }
+
+  function advanceToNextQuestion() {
+    var ch = getChapter(state.chapterKey);
+    var s = state.session;
     s.questionIndex += 1;
     s.answered = false;
     s.selection = null;
+    s.feedbackMinimized = false;
     resetQuickcallState(s);
     persistResume();
     if (s.questionIndex >= ch.questions.length) { finishChapter(); return; }
@@ -1318,22 +1422,10 @@
     var s = state.session;
     var q = ch.questions[s.questionIndex];
     if (!wasCorrect && q.followup_question) {
-      s.currentIsFollowup = true;
-      s.pendingFollowup = q.followup_question;
-      s.answered = false;
-      s.selection = null;
-      shuffleQuestionOptions(q.followup_question);
-      render();
+      enterFollowup(q);
       return;
     }
-    s.questionIndex += 1;
-    s.answered = false;
-    s.selection = null;
-    resetQuickcallState(s);
-    persistResume();
-    if (s.questionIndex >= ch.questions.length) { finishChapter(); return; }
-    shuffleQuestionOptions(ch.questions[s.questionIndex]);
-    render();
+    advanceToNextQuestion();
   }
 
   function handleAction(action, el) {
@@ -1346,6 +1438,7 @@
       render();
     } else if (action === 'back-to-map') {
       removeFeedbackSheet();
+      removeFeedbackTab();
       var po = document.getElementById('pause-overlay'); if (po) po.remove();
       state.screen = 'map';
       render();
@@ -1397,6 +1490,7 @@
       var aggregate = s3.quickcallResults.length === q3.items.length && s3.quickcallResults.every(function (r) { return r === true; });
       s3.lastCorrect = aggregate;
       s3.answered = true;
+      s3.feedbackMinimized = false;
       s3.answeredCount += 1;
       if (aggregate) { s3.correctCount += 1; s3.streak += 1; } else { s3.streak = 0; }
       vibrate(aggregate ? 18 : [20, 40, 20]);
@@ -1408,19 +1502,36 @@
       var correct = gradeCurrent(q, s);
       s.lastCorrect = correct;
       s.answered = true;
+      s.feedbackMinimized = false;
       if (!s.currentIsFollowup) {
         s.answeredCount += 1;
         if (correct) { s.correctCount += 1; s.streak += 1; } else { s.streak = 0; }
       }
       vibrate(correct ? 18 : [20, 40, 20]);
       render();
+    } else if (action === 'minimize-feedback') {
+      state.session.feedbackMinimized = true;
+      render();
+    } else if (action === 'expand-feedback') {
+      state.session.feedbackMinimized = false;
+      render();
     } else if (action === 'continue') {
       removeFeedbackSheet();
+      removeFeedbackTab();
       var s2 = state.session;
       var wasFollowup = s2.currentIsFollowup;
       var wasCorrect = s2.lastCorrect;
       if (wasFollowup) advanceAfterFollowup();
       else advanceAfterPrimary(wasCorrect);
+    } else if (action === 'continue-followup') {
+      removeFeedbackSheet();
+      removeFeedbackTab();
+      var ch4 = getChapter(state.chapterKey);
+      enterFollowup(ch4.questions[state.session.questionIndex]);
+    } else if (action === 'continue-skip') {
+      removeFeedbackSheet();
+      removeFeedbackTab();
+      advanceToNextQuestion();
     } else if (action === 'show-glossary') {
       renderGlossaryPopover(el.getAttribute('data-term'));
     } else if (action === 'close-glossary') {
