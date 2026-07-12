@@ -16,7 +16,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
         {
           "id": "foundations-q1",
           "difficulty": "easy",
-          "mechanic": "mcq",
+          "mechanic": "spot_outlier",
           "scenario": "",
           "task_prompt": "What is this Directive's official short title?",
           "options": [
@@ -66,49 +66,44 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
         {
           "id": "foundations-q2",
           "difficulty": "easy",
-          "mechanic": "mcq",
+          "mechanic": "match_term",
           "scenario": "",
-          "task_prompt": "Who counts as 'senior management' under Article 2?",
-          "options": [
-            {
-              "label": "Whoever runs day-to-day management — including the CEO",
-              "correct": true
-            },
-            {
-              "label": "All customer-facing employees",
-              "correct": false
-            },
-            {
-              "label": "Only the Compliance Officer and Deputy Compliance Officer",
-              "correct": false
-            },
-            {
-              "label": "Shareholders with a substantial interest",
-              "correct": false
-            }
-          ],
+          "task_prompt": "Match each term to its definition.",
           "article_citation": "Art. 2",
-          "correct_feedback": "Correct — senior management means those running day-to-day operations, including the CEO.",
-          "incorrect_feedback": "Not quite — senior management means whoever runs day-to-day operations, including the CEO — not customer-facing staff or shareholders.",
-          "followup_question": {
-            "task_prompt": "Does 'senior management' include the CEO?",
-            "options": [
-              {
-                "label": "Yes",
-                "correct": true
-              },
-              {
-                "label": "No",
-                "correct": false
-              }
-            ],
-            "article_citation": "Art. 2"
-          }
+          "correct_feedback": "All five matched — these are core Article 2 definitions you'll see throughout the game.",
+          "incorrect_feedback": "",
+          "pairs": [
+            {
+              "term": "Senior management",
+              "definition": "Defined in Article 2 as the persons responsible for the day-to-day management of an obliged entity, including the CEO and/or executive members of the management body.",
+              "source": "Art. 2"
+            },
+            {
+              "term": "the Law",
+              "definition": "Shorthand defined in Article 2 for the Prevention and Suppression of Money Laundering Activities Laws of 2007 to 2024 — the primary Cypriot AML/CFT statute this Directive implements in more detail.",
+              "source": "Art. 2"
+            },
+            {
+              "term": "UBO (Ultimate Beneficial Owner)",
+              "definition": "The natural person(s) who ultimately own or control a customer entity (or on whose behalf a transaction is conducted) — in practice, anyone owning or controlling 25% or more of a company's capital or voting rights, or otherwise exercising significant influence.",
+              "source": "Art. 2 of the Law (cross-referenced at Arts. 26, 37, 44, 45, 48)"
+            },
+            {
+              "term": "Source of Wealth",
+              "definition": "The origin of a person's total wealth, not just one transaction — required for PEPs and high-risk relationships",
+              "source": "Art. 42, 46"
+            },
+            {
+              "term": "Source of Funds",
+              "definition": "Where the money for a specific transaction or relationship came from",
+              "source": "Art. 26"
+            }
+          ]
         },
         {
           "id": "foundations-q3",
           "difficulty": "easy",
-          "mechanic": "mcq",
+          "mechanic": "stamp",
           "scenario": "",
           "task_prompt": "What's the minimum shareholding that counts as a 'substantial interest'?",
           "options": [
@@ -148,51 +143,9 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           }
         },
         {
-          "id": "foundations-q12",
-          "difficulty": "easy",
-          "mechanic": "mcq",
-          "scenario": "",
-          "task_prompt": "What does 'the Law' refer to, per Article 2?",
-          "options": [
-            {
-              "label": "The Prevention and Suppression of Money Laundering Activities Laws 2007-2024",
-              "correct": true
-            },
-            {
-              "label": "This Directive itself (K.Δ.Π. 120/2025)",
-              "correct": false
-            },
-            {
-              "label": "EU Directive 2015/849",
-              "correct": false
-            },
-            {
-              "label": "The Central Bank of Cyprus Laws 2002-2024",
-              "correct": false
-            }
-          ],
-          "article_citation": "Art. 2",
-          "correct_feedback": "Correct — 'the Law' means the Prevention and Suppression of Money Laundering Activities Laws 2007-2024.",
-          "incorrect_feedback": "Not quite — those are separate instruments; 'the Law' means the Money Laundering Activities Laws 2007-2024.",
-          "followup_question": {
-            "task_prompt": "Does 'the Law' mean the Money Laundering Activities Laws 2007-2024?",
-            "options": [
-              {
-                "label": "Yes",
-                "correct": true
-              },
-              {
-                "label": "No",
-                "correct": false
-              }
-            ],
-            "article_citation": "Art. 2"
-          }
-        },
-        {
           "id": "foundations-q5",
           "difficulty": "medium",
-          "mechanic": "multiselect",
+          "mechanic": "stamp",
           "scenario": "",
           "task_prompt": "Which of these are CBC-supervised 'obliged entity' categories? Select all that apply.",
           "options": [
@@ -243,7 +196,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
         {
           "id": "foundations-q16",
           "difficulty": "medium",
-          "mechanic": "passflag",
+          "mechanic": "calm_alert",
           "scenario": "ExchangeCo runs two Cyprus shopfronts converting cash and remitting funds abroad.",
           "task_prompt": "Is ExchangeCo an 'obliged entity' under Article 3? Pass or Flag.",
           "options": [
@@ -277,44 +230,13 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
         {
           "id": "foundations-q8",
           "difficulty": "medium",
-          "mechanic": "mcq",
+          "mechanic": "flip_card",
           "scenario": "",
-          "task_prompt": "What must entities weigh when applying Article 5's requirements?",
-          "options": [
-            {
-              "label": "Nature, size, complexity of activities, and ML/TF risk level",
-              "correct": true
-            },
-            {
-              "label": "Only total customer count",
-              "correct": false
-            },
-            {
-              "label": "Only whether part of a corporate group",
-              "correct": false
-            },
-            {
-              "label": "Only head-office location",
-              "correct": false
-            }
-          ],
+          "task_prompt": "Article 5 requires weighing nature, size, complexity, AND ML/TF risk level together — not just one factor.",
           "article_citation": "Art. 5",
-          "correct_feedback": "Correct — Article 5 requires weighing nature, size, complexity, and ML/TF risk together.",
-          "incorrect_feedback": "Not quite — that's only one factor. Article 5 requires weighing nature, size, complexity, and risk together.",
-          "followup_question": {
-            "task_prompt": "Must entities factor in the 'degree of risk' under Article 5?",
-            "options": [
-              {
-                "label": "Yes",
-                "correct": true
-              },
-              {
-                "label": "No",
-                "correct": false
-              }
-            ],
-            "article_citation": "Art. 5"
-          }
+          "claim": "Article 5 requires weighing nature, size, complexity, AND ML/TF risk level together — not just one factor.",
+          "answer": true,
+          "why": "Correct — Article 5 requires weighing nature, size, complexity, and risk together; no single factor (like customer count or group membership) is enough on its own."
         },
         {
           "id": "foundations-quickcall",
@@ -382,7 +304,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
         {
           "id": "foundations-q15",
           "difficulty": "hard",
-          "mechanic": "mcq",
+          "mechanic": "spot_outlier",
           "scenario": "A Compliance Officer must decide if an onboarding case is a 'customer at a distance.'",
           "task_prompt": "Which scenario fits Article 2's 'customer at a distance' definition?",
           "options": [
@@ -424,7 +346,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
         {
           "id": "foundations-q6",
           "difficulty": "hard",
-          "mechanic": "mcq",
+          "mechanic": "spot_outlier",
           "scenario": "Article 3's lettering runs (a)-(f), then jumps to (h) — there's no (g).",
           "task_prompt": "What's the right response to a missing subparagraph (g)?",
           "options": [
@@ -481,133 +403,51 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
         {
           "id": "rr-01",
           "difficulty": "easy",
-          "mechanic": "mcq",
+          "mechanic": "match_term",
           "scenario": "",
-          "task_prompt": "Which risk assessments must obliged entities carry out, under Article 18?",
-          "options": [
+          "task_prompt": "Match each term to its definition.",
+          "article_citation": "Art. 18; Art. 19",
+          "correct_feedback": "Both matched — Article 18 requires both a business-wide assessment AND an individual one per relationship; neither substitutes for the other.",
+          "incorrect_feedback": "",
+          "pairs": [
             {
-              "label": "Only a business-wide risk assessment",
-              "correct": false
+              "term": "Business-wide risk assessment",
+              "definition": "An assessment of the ML/TF risk arising from the nature and complexity of an entity's activities as a whole, as distinct from any single relationship.",
+              "source": "Art. 18"
             },
             {
-              "label": "Only an individual assessment per relationship/transaction",
-              "correct": false
-            },
-            {
-              "label": "Both business-wide AND individual (per relationship) assessments",
-              "correct": true
-            },
-            {
-              "label": "A single combined assessment merging both into one report",
-              "correct": false
+              "term": "Individual risk assessment",
+              "definition": "An assessment of the ML/TF risk arising from establishing a specific business relationship or executing a specific individual transaction; it must contribute to, but can never substitute for, the business-wide assessment.",
+              "source": "Art. 18, Art. 19"
             }
-          ],
-          "article_citation": "Art. 18",
-          "correct_feedback": "Correct — Article 18 requires both: a business-wide assessment, plus a separate individual assessment per relationship or transaction.",
-          "incorrect_feedback": "Not quite — it's not either/or. Article 18 requires both a business-wide assessment and an individual one per relationship.",
-          "followup_question": {
-            "task_prompt": "True or false: an individual assessment can replace the business-wide one.",
-            "options": [
-              {
-                "label": "True",
-                "correct": false
-              },
-              {
-                "label": "False",
-                "correct": true
-              }
-            ],
-            "article_citation": "Art. 19"
-          }
+          ]
         },
         {
           "id": "rr-04",
           "difficulty": "easy",
-          "mechanic": "mcq",
+          "mechanic": "flip_card",
           "scenario": "",
-          "task_prompt": "Who is responsible for identifying and assessing ML/TF risks, under Article 19?",
-          "options": [
-            {
-              "label": "The Compliance Officer, with senior management and other units' support",
-              "correct": true
-            },
-            {
-              "label": "The external auditor",
-              "correct": false
-            },
-            {
-              "label": "The Central Bank of Cyprus",
-              "correct": false
-            },
-            {
-              "label": "The management body alone",
-              "correct": false
-            }
-          ],
+          "task_prompt": "The Compliance Officer identifies and assesses ML/TF risk entirely alone, without support from senior management or other units.",
           "article_citation": "Art. 19",
-          "correct_feedback": "Correct — Article 19 places this on the Compliance Officer, supported by senior management and other units.",
-          "incorrect_feedback": "Not quite — this sits with the Compliance Officer, supported by senior management and other units. The CBC only supervises, it doesn't assess.",
-          "followup_question": {
-            "task_prompt": "Does the Compliance Officer do this entirely alone?",
-            "options": [
-              {
-                "label": "No — management and other units must support",
-                "correct": true
-              },
-              {
-                "label": "Yes — entirely alone",
-                "correct": false
-              }
-            ],
-            "article_citation": "Art. 19"
-          }
+          "claim": "The Compliance Officer identifies and assesses ML/TF risk entirely alone, without support from senior management or other units.",
+          "answer": false,
+          "why": "False — Article 19 places the responsibility on the Compliance Officer, but with senior management and other units required to support that work."
         },
         {
           "id": "rr-18",
           "difficulty": "easy",
-          "mechanic": "mcq",
+          "mechanic": "flip_card",
           "scenario": "",
-          "task_prompt": "What determines how often controls-effectiveness is assessed, per Article 21?",
-          "options": [
-            {
-              "label": "A fixed CBC calendar for all entities",
-              "correct": false
-            },
-            {
-              "label": "The level of risk the entity faces",
-              "correct": true
-            },
-            {
-              "label": "The entity's annual revenue only",
-              "correct": false
-            },
-            {
-              "label": "Whichever frequency the external auditor recommends",
-              "correct": false
-            }
-          ],
+          "task_prompt": "A higher-risk entity must assess the effectiveness of its controls more often than a lower-risk one.",
           "article_citation": "Art. 21",
-          "correct_feedback": "Correct — frequency and intensity must match the entity's own risk level, not a fixed schedule.",
-          "incorrect_feedback": "Not quite — there's no fixed schedule tied to revenue or auditor preference. It must match the entity's own risk level.",
-          "followup_question": {
-            "task_prompt": "Should a higher-risk entity assess controls more often than a lower-risk one?",
-            "options": [
-              {
-                "label": "Yes",
-                "correct": true
-              },
-              {
-                "label": "No, all entities use the same fixed schedule",
-                "correct": false
-              }
-            ],
-            "article_citation": "Art. 21"
-          }
+          "claim": "A higher-risk entity must assess the effectiveness of its controls more often than a lower-risk one.",
+          "answer": true,
+          "why": "Correct — Article 21 ties the frequency and intensity of control assessments to the entity's own risk level, not a fixed CBC calendar."
         },
         {
           "id": "rr-07",
           "difficulty": "medium",
-          "mechanic": "passflag",
+          "mechanic": "calm_alert",
           "scenario": "A Compliance Officer rates overall ML/TF risk using only the National Risk Assessment, no other sources.",
           "task_prompt": "Pass or flag: rating risk using only one source (the NRA)?",
           "options": [
@@ -641,49 +481,18 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
         {
           "id": "rr-08",
           "difficulty": "medium",
-          "mechanic": "mcq",
+          "mechanic": "flip_card",
           "scenario": "",
-          "task_prompt": "An entity outsources its risk-scoring IT system. What must it still do, per Article 19?",
-          "options": [
-            {
-              "label": "Nothing — outsourcing the system outsources responsibility too",
-              "correct": false
-            },
-            {
-              "label": "Understand it, ensure GDPR compliance, and show CBC scores reflect its own risk view",
-              "correct": true
-            },
-            {
-              "label": "Rely on the vendor's methodology without review, if CBC-licensed",
-              "correct": false
-            },
-            {
-              "label": "Use the system only for low-risk customers",
-              "correct": false
-            }
-          ],
+          "task_prompt": "Outsourcing a risk-scoring IT system relieves the entity of the duty to understand how it works.",
           "article_citation": "Art. 19",
-          "correct_feedback": "Correct — even outsourced, the entity must understand the system, ensure GDPR compliance, and show the CBC its scores reflect its own view.",
-          "incorrect_feedback": "Not quite — outsourcing doesn't reduce obligations. The entity must still understand the system, ensure GDPR compliance, and prove its scores reflect its own view.",
-          "followup_question": {
-            "task_prompt": "Does outsourcing the system relieve the entity of understanding it?",
-            "options": [
-              {
-                "label": "No",
-                "correct": true
-              },
-              {
-                "label": "Yes",
-                "correct": false
-              }
-            ],
-            "article_citation": "Art. 19"
-          }
+          "claim": "Outsourcing a risk-scoring IT system relieves the entity of the duty to understand how it works.",
+          "answer": false,
+          "why": "False — even outsourced, Article 19 still requires the entity to understand the system, ensure GDPR compliance, and show the CBC its scores reflect its own view of risk."
         },
         {
           "id": "rr-10",
           "difficulty": "medium",
-          "mechanic": "tiergate",
+          "mechanic": "build_gate",
           "scenario": "A currency-exchange customer, normally lower-risk, shows signs of structuring deposits to launder money.",
           "task_prompt": "Which due-diligence tier now applies, under Article 20?",
           "options": [
@@ -724,7 +533,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
         {
           "id": "rr-19",
           "difficulty": "medium",
-          "mechanic": "multiselect",
+          "mechanic": "stamp",
           "scenario": "",
           "task_prompt": "Which of these bar Simplified Due Diligence under Article 20? Select all that apply.",
           "options": [
@@ -771,7 +580,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
         {
           "id": "rr-13",
           "difficulty": "hard",
-          "mechanic": "passflag",
+          "mechanic": "calm_alert",
           "scenario": "An entity's risk-scoring model is built so no segment can ever score 'high-risk.'",
           "task_prompt": "Pass or flag: a model designed so nothing can ever score high-risk?",
           "options": [
@@ -856,7 +665,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
         {
           "id": "rr-17",
           "difficulty": "hard",
-          "mechanic": "passflag",
+          "mechanic": "calm_alert",
           "scenario": "A Compliance Officer skips the annual reassessment, believing nothing has changed since last year.",
           "task_prompt": "Pass or flag: skipping the annual reassessment because nothing seems to have changed?",
           "options": [
@@ -905,7 +714,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
         {
           "id": "gate-q1",
           "difficulty": "easy",
-          "mechanic": "mcq",
+          "mechanic": "spot_outlier",
           "scenario": "",
           "task_prompt": "Which of these is a defining feature of a 'shell company' under Article 37?",
           "options": [
@@ -947,7 +756,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
         {
           "id": "gate-q10",
           "difficulty": "easy",
-          "mechanic": "tiergate",
+          "mechanic": "build_gate",
           "scenario": "New merchant account, no risk flags, but no formal low-risk finding made either.",
           "task_prompt": "With no low-risk finding or high-risk trigger, which CDD tier applies?",
           "options": [
@@ -988,7 +797,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
         {
           "id": "gate-q15",
           "difficulty": "easy",
-          "mechanic": "passflag",
+          "mechanic": "calm_alert",
           "scenario": "A merchant account has multiple directors/signatories; only one has had identity verified.",
           "task_prompt": "Does verifying just one signatory meet ID requirements?",
           "options": [
@@ -1022,7 +831,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
         {
           "id": "gate-q9",
           "difficulty": "medium",
-          "mechanic": "tiergate",
+          "mechanic": "build_gate",
           "scenario": "A merchant is a well-established LTD selling low-risk goods, with no subscription products, clean financials, healthy revenue, an active public presence, and a low chargeback rate — confirmed low risk, no ML/TF suspicion.",
           "task_prompt": "Which CDD tier applies here?",
           "options": [
@@ -1063,7 +872,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
         {
           "id": "gate-q3",
           "difficulty": "medium",
-          "mechanic": "passflag",
+          "mechanic": "calm_alert",
           "scenario": "An 18-month-dormant merchant account resumes processing volume, and the merchant also requests a new payment product.",
           "task_prompt": "Does this trigger a mandatory ID/profile update check?",
           "options": [
@@ -1097,49 +906,18 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
         {
           "id": "gate-q12",
           "difficulty": "medium",
-          "mechanic": "mcq",
+          "mechanic": "flip_card",
           "scenario": "A merchant applies for onboarding as a sole trader; the business has two partners who both have authority over the account.",
-          "task_prompt": "Whose identity must be verified, under Article 36?",
-          "options": [
-            {
-              "label": "Both partners, verified the same way as any natural person",
-              "correct": true
-            },
-            {
-              "label": "Only the partner who signs the application form",
-              "correct": false
-            },
-            {
-              "label": "Neither — sole traders and partnerships are exempt from identity checks",
-              "correct": false
-            },
-            {
-              "label": "Only whichever partner holds the larger ownership share",
-              "correct": false
-            }
-          ],
+          "task_prompt": "Every partner or authorised individual in a sole-trader/partnership merchant must be identity-verified, the same as any natural person.",
           "article_citation": "Art. 36",
-          "correct_feedback": "Correct — Article 36 requires verifying the identity of every partner or individual with authority over the account, the same way as for any natural person.",
-          "incorrect_feedback": "Not quite — Article 36 requires identifying every partner or authorized individual, not just one signatory or the largest shareholder.",
-          "followup_question": {
-            "task_prompt": "Does a sole trader/partnership get lighter identity checks than an individual?",
-            "options": [
-              {
-                "label": "No — same standard applies",
-                "correct": true
-              },
-              {
-                "label": "Yes — checks are simplified",
-                "correct": false
-              }
-            ],
-            "article_citation": "Art. 36"
-          }
+          "claim": "Every partner or authorised individual in a sole-trader/partnership merchant must be identity-verified, the same as any natural person.",
+          "answer": true,
+          "why": "Correct — Article 36 requires verifying every partner or authorised individual, not just whoever signs the form or holds the largest share."
         },
         {
           "id": "gate-q16",
           "difficulty": "medium",
-          "mechanic": "passflag",
+          "mechanic": "calm_alert",
           "scenario": "A representative/agent acts for a merchant, but no authorisation document is on file.",
           "task_prompt": "Is this acceptable practice, or should it be flagged as a compliance gap?",
           "options": [
@@ -1369,137 +1147,67 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
         {
           "id": "eq_01",
           "difficulty": "easy",
-          "mechanic": "mcq",
+          "mechanic": "match_term",
           "scenario": "",
-          "task_prompt": "How often must a high-risk relationship's classification be reviewed, at minimum?",
-          "article_citation": "Art. 42",
-          "options": [
+          "task_prompt": "Match each term to its definition.",
+          "article_citation": "Art. 41; Art. 42; Art. 46",
+          "correct_feedback": "All three matched — PEPs are a mandatory EDD trigger, and SDD is barred wherever EDD is required.",
+          "incorrect_feedback": "",
+          "pairs": [
             {
-              "label": "Every six months",
-              "correct": false
+              "term": "PEP (Politically Exposed Person)",
+              "definition": "An individual who holds, or has held, a prominent public function (or their family members/close associates), creating higher exposure to corruption-related money-laundering risk.",
+              "source": "Art. 46 (cross-referencing Art. 64(1)(c) of the Law and Art. 20a(3) of Directive (EU) 2015/849)"
             },
             {
-              "label": "At least once a year",
-              "correct": true
+              "term": "EDD (Enhanced Due Diligence)",
+              "definition": "Additional, more intensive customer-checking measures applied on top of standard due diligence wherever ML/TF risk is assessed as higher; supplementary to, never a replacement for, standard measures.",
+              "source": "Art. 42"
             },
             {
-              "label": "Every two years",
-              "correct": false
-            },
-            {
-              "label": "Only when the customer requests a new product or service",
-              "correct": false
+              "term": "SDD (Simplified Due Diligence)",
+              "definition": "A reduced-intensity form of due diligence that may be applied only where risk is confirmed low and no ML/TF suspicion exists; never a full exemption from monitoring.",
+              "source": "Art. 41; Art. 45"
             }
-          ],
-          "correct_feedback": "Correct — high-risk relationships must be reviewed and updated at least annually, sooner if warranted.",
-          "incorrect_feedback": "Not quite — there's a firm floor. High-risk relationships must be reviewed at least once a year, more often if warranted.",
-          "followup_question": {
-            "task_prompt": "True or false: two years without review is fine if nothing unusual has happened?",
-            "options": [
-              {
-                "label": "False — minimum is annual",
-                "correct": true
-              },
-              {
-                "label": "True — two years is fine without red flags",
-                "correct": false
-              }
-            ],
-            "article_citation": "Art. 42"
-          }
+          ]
         },
         {
           "id": "eq_02",
           "difficulty": "easy",
-          "mechanic": "mcq",
+          "mechanic": "flip_card",
           "scenario": "",
-          "task_prompt": "How often must an entity rescan its client base to catch new PEPs, at minimum?",
+          "task_prompt": "An entity must rescan its whole client base for new PEPs at least once a month.",
           "article_citation": "Art. 46",
-          "options": [
-            {
-              "label": "At least once a week",
-              "correct": false
-            },
-            {
-              "label": "At least once a month",
-              "correct": true
-            },
-            {
-              "label": "At least once a quarter",
-              "correct": false
-            },
-            {
-              "label": "At least once a year",
-              "correct": false
-            }
-          ],
-          "correct_feedback": "Correct — the client base must be rescanned monthly for new PEPs, separate from the annual full review of existing PEP relationships.",
-          "incorrect_feedback": "Not quite — don't confuse this with the annual review of an existing PEP's profile. The whole client base must be rescanned monthly for new PEPs.",
-          "followup_question": {
-            "task_prompt": "Which is more frequent: scanning for new PEPs, or the full review of an existing PEP's profile?",
-            "options": [
-              {
-                "label": "New-PEP scan (monthly) is more frequent",
-                "correct": true
-              },
-              {
-                "label": "Full PEP review (annual) is more frequent",
-                "correct": false
-              },
-              {
-                "label": "Same frequency",
-                "correct": false
-              }
-            ],
-            "article_citation": "Art. 46"
-          }
+          "claim": "An entity must rescan its whole client base for new PEPs at least once a month.",
+          "answer": true,
+          "why": "Correct — the whole client base must be rescanned monthly for new PEPs, separate from (and more frequent than) the annual review of an existing PEP's profile."
         },
         {
           "id": "eq_08",
           "difficulty": "easy",
-          "mechanic": "mcq",
+          "mechanic": "match_term",
           "scenario": "",
-          "task_prompt": "Before a correspondent relationship starts, what must the respondent NOT be, per Article 2 of the Law?",
-          "article_citation": "Art. 48",
-          "options": [
+          "task_prompt": "Match each term to its definition.",
+          "article_citation": "Art. 37; Art. 48",
+          "correct_feedback": "Both matched — a \"shell bank\" (Art. 2 of the Law, checked before correspondent relationships) is a distinct concept from a \"shell company\" (Art. 37).",
+          "incorrect_feedback": "",
+          "pairs": [
             {
-              "label": "A shell bank",
-              "correct": true
+              "term": "Shell bank",
+              "definition": "A credit institution (or equivalent) incorporated in a jurisdiction where it has no physical presence or meaningful management, and which is unaffiliated with any regulated financial group; correspondent institutions must confirm respondents are not shell banks.",
+              "source": "Art. 2 of the Law, cross-referenced at Art. 48"
             },
             {
-              "label": "A shell company",
-              "correct": false
-            },
-            {
-              "label": "A politically exposed person",
-              "correct": false
-            },
-            {
-              "label": "A high-risk third-country entity",
-              "correct": false
+              "term": "Shell company",
+              "definition": "A legal entity with no real physical presence beyond a mailing address, and no genuine business activity",
+              "source": "Art. 37(2)"
             }
-          ],
-          "correct_feedback": "Correct — the respondent must be confirmed not a shell bank (per Article 2 of the Law), via regulator data, group/licensing evidence, or written assurance.",
-          "incorrect_feedback": "Not quite — 'shell company' (Art. 37) is different from 'shell bank'. Here the check is confirming the respondent is not a shell bank — no meaningful presence, no ties to a regulated group.",
-          "followup_question": {
-            "task_prompt": "Which concept applies to correspondent banking respondents: 'shell bank' or 'shell company'?",
-            "options": [
-              {
-                "label": "Shell bank",
-                "correct": true
-              },
-              {
-                "label": "Shell company",
-                "correct": false
-              }
-            ],
-            "article_citation": "Art. 48"
-          }
+          ]
         },
         {
           "id": "eq_03",
           "difficulty": "medium",
-          "mechanic": "tiergate",
+          "mechanic": "build_gate",
           "scenario": "Trustees of the Alpha Family Trust want to open a business account, acting on the trust's behalf.",
           "task_prompt": "Which level of customer due diligence should apply to opening this account?",
           "article_citation": "Art. 44",
@@ -1540,7 +1248,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
         {
           "id": "eq_04",
           "difficulty": "medium",
-          "mechanic": "passflag",
+          "mechanic": "calm_alert",
           "scenario": "A merchant's settlement account shows a sudden pattern of transactions structured to stay just under the reporting threshold, in one week.",
           "task_prompt": "Flag this pattern for enhanced due diligence, or does it pass?",
           "article_citation": "Art. 43",
@@ -1574,7 +1282,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
         {
           "id": "eq_21",
           "difficulty": "medium",
-          "mechanic": "multiselect",
+          "mechanic": "stamp",
           "scenario": "",
           "task_prompt": "Which relationship types always require Enhanced Due Diligence under Article 42? Select all that apply.",
           "options": [
@@ -1621,7 +1329,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
         {
           "id": "eq_16",
           "difficulty": "medium",
-          "mechanic": "mcq",
+          "mechanic": "spot_outlier",
           "scenario": "",
           "task_prompt": "Which of these is NOT a listed criterion for being 'connected' to a high-risk country?",
           "article_citation": "Art. 50",
@@ -1760,7 +1468,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
         {
           "id": "eq_17",
           "difficulty": "hard",
-          "mechanic": "passflag",
+          "mechanic": "calm_alert",
           "scenario": "A medium-risk-country investment fund wants a third-party Client Account for subscription money.",
           "task_prompt": "Would you flag this request, or does it pass?",
           "article_citation": "Art. 47",
@@ -1794,44 +1502,13 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
         {
           "id": "eq_11",
           "difficulty": "hard",
-          "mechanic": "mcq",
+          "mechanic": "flip_card",
           "scenario": "The Compliance Officer opposes onboarding a high-risk customer, but senior management proceeds anyway.",
-          "task_prompt": "What must senior management do in this situation?",
+          "task_prompt": "Senior management can overrule the Compliance Officer's objection to onboarding a high-risk customer without any written justification.",
           "article_citation": "Art. 42",
-          "options": [
-            {
-              "label": "Nothing further — decision is final, no documentation needed",
-              "correct": false
-            },
-            {
-              "label": "Justify and record the decision in writing, with a risk-mitigation plan",
-              "correct": true
-            },
-            {
-              "label": "Escalate automatically to the Central Bank of Cyprus",
-              "correct": false
-            },
-            {
-              "label": "Downgrade the customer's risk category to compensate",
-              "correct": false
-            }
-          ],
-          "correct_feedback": "Correct — departing from the Compliance Officer's opinion requires a documented justification and a plan for mitigating the flagged risks.",
-          "incorrect_feedback": "Not quite — senior management may depart from that opinion, but not silently. A documented justification and risk-mitigation plan are required — this isn't escalated to the Central Bank, nor fixed by a downgrade.",
-          "followup_question": {
-            "task_prompt": "True or false: senior management can overrule the Compliance Officer without written justification?",
-            "options": [
-              {
-                "label": "False — written justification and mitigation plan required",
-                "correct": true
-              },
-              {
-                "label": "True — no documentation required",
-                "correct": false
-              }
-            ],
-            "article_citation": "Art. 42"
-          }
+          "claim": "Senior management can overrule the Compliance Officer's objection to onboarding a high-risk customer without any written justification.",
+          "answer": false,
+          "why": "False — departing from the Compliance Officer's opinion requires a documented justification and a risk-mitigation plan; it isn't escalated to the CBC or fixed by downgrading the risk category."
         }
       ]
     },
@@ -1851,7 +1528,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
         {
           "id": "flag-01",
           "difficulty": "easy",
-          "mechanic": "mcq",
+          "mechanic": "spot_outlier",
           "scenario": "",
           "task_prompt": "Which of these is a genuine red flag for a merchant-acquiring relationship, per Annex III?",
           "article_citation": "Annex III (merchant acquiring)",
@@ -1891,9 +1568,75 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           }
         },
         {
+          "id": "flag-03",
+          "difficulty": "easy",
+          "mechanic": "calm_alert",
+          "scenario": "A merchant's registered business address turns out to be just a mailing address, with no real connection to how the business actually operates.",
+          "task_prompt": "Flag this, or let it pass?",
+          "article_citation": "Annex III (merchant acquiring)",
+          "options": [
+            {
+              "label": "Pass",
+              "correct": false
+            },
+            {
+              "label": "Flag",
+              "correct": true
+            }
+          ],
+          "correct_feedback": "Correct to flag — a declared address that's only a mailing address, disconnected from the actual business, is a listed red flag.",
+          "incorrect_feedback": "This should have been flagged — a mailing-address-only registration disconnected from the real business is a listed merchant-acquiring red flag."
+        },
+        {
+          "id": "flag-15",
+          "difficulty": "easy",
+          "mechanic": "order_chain",
+          "scenario": "",
+          "task_prompt": "Put the reporting chain in order — from a staff member noticing something suspicious, to Cyprus’s financial intelligence unit.",
+          "article_citation": "Art. 65; Art. 66",
+          "correct_feedback": "Correct order — staff report suspicion to the Compliance Officer first (Art. 65); the Compliance Officer then escalates to MOKAS (Art. 66).",
+          "incorrect_feedback": "Not quite — staff report to the Compliance Officer first (Art. 65), who then escalates to MOKAS (Art. 66), not the other way around.",
+          "chain_items": [
+            {
+              "label": "Staff member notices something suspicious",
+              "order": 1
+            },
+            {
+              "label": "Internal Suspicion Report goes to the Compliance Officer",
+              "order": 2
+            },
+            {
+              "label": "Compliance Officer escalates a Suspicion Report to MOKAS",
+              "order": 3
+            }
+          ]
+        },
+        {
+          "id": "the_flag-match1",
+          "difficulty": "easy",
+          "mechanic": "match_term",
+          "scenario": "",
+          "task_prompt": "Match each term to its definition.",
+          "pairs": [
+            {
+              "term": "MOKAS",
+              "definition": "Cyprus's Financial Intelligence Unit — where suspicious-activity reports are sent",
+              "source": "Part 12"
+            },
+            {
+              "term": "Compliance Officer",
+              "definition": "Defined in Article 2 as the natural person appointed under Article 69(a) of 'the Law.'",
+              "source": "Art. 2"
+            }
+          ],
+          "article_citation": "Part 12; Art. 2",
+          "correct_feedback": "Both matched — reports flow: staff to the entity's own Compliance Officer, then, where warranted, on to MOKAS.",
+          "incorrect_feedback": ""
+        },
+        {
           "id": "flag-04",
           "difficulty": "medium",
-          "mechanic": "mcq",
+          "mechanic": "spot_outlier",
           "scenario": "",
           "task_prompt": "What should raise concern about a merchant's transaction activity, per Annex III?",
           "article_citation": "Annex III (merchant acquiring)",
@@ -1933,71 +1676,9 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           }
         },
         {
-          "id": "flag-15",
-          "difficulty": "easy",
-          "mechanic": "mcq",
-          "scenario": "",
-          "task_prompt": "Under Article 65, who do staff report ML/TF suspicions to internally?",
-          "article_citation": "Art. 65",
-          "options": [
-            {
-              "label": "Directly to MOKAS",
-              "correct": false
-            },
-            {
-              "label": "To the Compliance Officer",
-              "correct": true
-            },
-            {
-              "label": "To the Customs Department",
-              "correct": false
-            },
-            {
-              "label": "To the Central Bank of Cyprus",
-              "correct": false
-            }
-          ],
-          "correct_feedback": "Correct — staff report suspicion to the Compliance Officer, using the Internal Suspicion Report form.",
-          "incorrect_feedback": "Not quite — not MOKAS, Customs or the Central Bank. Reports go to the entity's own Compliance Officer first.",
-          "followup_question": {
-            "task_prompt": "What must the Internal Suspicion Report form be, per Article 65?",
-            "options": [
-              {
-                "label": "Easily accessible on the staff intranet",
-                "correct": true
-              },
-              {
-                "label": "Available only on paper at head office",
-                "correct": false
-              }
-            ],
-            "article_citation": "Art. 65"
-          }
-        },
-        {
-          "id": "flag-03",
-          "difficulty": "easy",
-          "mechanic": "passflag",
-          "scenario": "A merchant's registered business address turns out to be just a mailing address, with no real connection to how the business actually operates.",
-          "task_prompt": "Flag this, or let it pass?",
-          "article_citation": "Annex III (merchant acquiring)",
-          "options": [
-            {
-              "label": "Pass",
-              "correct": false
-            },
-            {
-              "label": "Flag",
-              "correct": true
-            }
-          ],
-          "correct_feedback": "Correct to flag — a declared address that's only a mailing address, disconnected from the actual business, is a listed red flag.",
-          "incorrect_feedback": "This should have been flagged — a mailing-address-only registration disconnected from the real business is a listed merchant-acquiring red flag."
-        },
-        {
           "id": "flag-10",
           "difficulty": "medium",
-          "mechanic": "passflag",
+          "mechanic": "calm_alert",
           "scenario": "Shortly after onboarding, a merchant changes its registered address, and its actual activity doesn't match what it declared at sign-up.",
           "task_prompt": "Flag this, or let it pass?",
           "article_citation": "Annex III (merchant acquiring)",
@@ -2015,51 +1696,29 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "incorrect_feedback": "This should have been flagged — a post-onboarding address change plus mismatched activity is a listed merchant-acquiring red flag."
         },
         {
-          "id": "flag-18",
+          "id": "flag-05",
           "difficulty": "medium",
-          "mechanic": "mcq",
-          "scenario": "",
-          "task_prompt": "Under Article 66, who receives an escalated Suspicion Report?",
-          "article_citation": "Art. 66",
+          "mechanic": "calm_alert",
+          "scenario": "A merchant account that's been dormant for months suddenly shows a burst of activity, with no clear business explanation.",
+          "task_prompt": "Flag this, or let it pass?",
+          "article_citation": "Annex III (merchant acquiring)",
           "options": [
             {
-              "label": "The Central Bank of Cyprus",
+              "label": "Pass",
               "correct": false
             },
             {
-              "label": "MOKAS",
+              "label": "Flag",
               "correct": true
-            },
-            {
-              "label": "The Customs Department",
-              "correct": false
-            },
-            {
-              "label": "The Financial Ombudsman",
-              "correct": false
             }
           ],
-          "correct_feedback": "Correct — Suspicion Reports go to MOKAS, with all relevant client and transaction details.",
-          "incorrect_feedback": "Not quite — not the Central Bank, Customs or the Ombudsman. Suspicion Reports go to MOKAS.",
-          "followup_question": {
-            "task_prompt": "Must reports follow MOKAS's instructions, or the entity's own schedule?",
-            "options": [
-              {
-                "label": "According to MOKAS's instructions, within a reasonable timeframe",
-                "correct": true
-              },
-              {
-                "label": "On whatever schedule the entity itself prefers",
-                "correct": false
-              }
-            ],
-            "article_citation": "Art. 66"
-          }
+          "correct_feedback": "Correct to flag — a sudden burst of activity on a previously dormant merchant account, without explanation, is a listed red flag.",
+          "incorrect_feedback": "This should have been flagged — unexplained activity on a dormant merchant account is a listed merchant-acquiring red flag."
         },
         {
           "id": "flag-09",
           "difficulty": "hard",
-          "mechanic": "multiselect",
+          "mechanic": "stamp",
           "select_count": 3,
           "scenario": "",
           "task_prompt": "Which of these are genuine merchant-acquiring red flags, per Annex III? Select all that apply.",
@@ -2156,7 +1815,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
         {
           "id": "flag-19",
           "difficulty": "hard",
-          "mechanic": "passflag",
+          "mechanic": "calm_alert",
           "scenario": "A manager wants to tell the client their account is closing over a 'compliance concern.'",
           "task_prompt": "Flag this planned conversation, or let it pass?",
           "article_citation": "Art. 66",
@@ -2186,26 +1845,6 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
             ],
             "article_citation": "Art. 66"
           }
-        },
-        {
-          "id": "flag-05",
-          "difficulty": "medium",
-          "mechanic": "passflag",
-          "scenario": "A merchant account that's been dormant for months suddenly shows a burst of activity, with no clear business explanation.",
-          "task_prompt": "Flag this, or let it pass?",
-          "article_citation": "Annex III (merchant acquiring)",
-          "options": [
-            {
-              "label": "Pass",
-              "correct": false
-            },
-            {
-              "label": "Flag",
-              "correct": true
-            }
-          ],
-          "correct_feedback": "Correct to flag — a sudden burst of activity on a previously dormant merchant account, without explanation, is a listed red flag.",
-          "incorrect_feedback": "This should have been flagged — unexplained activity on a dormant merchant account is a listed merchant-acquiring red flag."
         }
       ]
     }
@@ -2257,29 +1896,9 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
       "source": "Art. 46; Art. 48; Art. 50; Art. 51"
     },
     {
-      "term": "PEP (Politically Exposed Person)",
-      "definition": "An individual who holds, or has held, a prominent public function (or their family members/close associates), creating higher exposure to corruption-related money-laundering risk.",
-      "source": "Art. 46 (cross-referencing Art. 64(1)(c) of the Law and Art. 20a(3) of Directive (EU) 2015/849)"
-    },
-    {
-      "term": "MiCA (Regulation (EU) 2023/1114)",
-      "definition": "The EU regulatory framework -- the Markets in Crypto-Assets Regulation -- for licensing and supervising crypto-asset service providers.",
-      "source": "Art. 42(1)(d); Art. 51"
-    },
-    {
-      "term": "EBA (European Banking Authority)",
-      "definition": "The EU authority whose Guidelines on Risk Factors, remote onboarding, and travel rules are repeatedly cross-referenced by this Directive as mandatory or persuasive supplementary guidance.",
-      "source": "Art. 42; Art. 49; Art. 51"
-    },
-    {
       "term": "National Risk Assessment (NRA)",
       "definition": "The Republic of Cyprus's own assessment of national ML/TF risk; its findings must be factored into every entity's own risk assessments, but cannot be relied on alone.",
       "source": "Art. 18, Art. 19"
-    },
-    {
-      "term": "SDD (Simplified Due Diligence)",
-      "definition": "A reduced-intensity form of due diligence that may be applied only where risk is confirmed low and no ML/TF suspicion exists; never a full exemption from monitoring.",
-      "source": "Art. 41; Art. 45"
     },
     {
       "term": "Supranational Risk Assessment",
@@ -2290,26 +1909,6 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
       "term": "Business-wide risk assessment",
       "definition": "An assessment of the ML/TF risk arising from the nature and complexity of an entity's activities as a whole, as distinct from any single relationship.",
       "source": "Art. 18"
-    },
-    {
-      "term": "EDD (Enhanced Due Diligence)",
-      "definition": "Additional, more intensive customer-checking measures applied on top of standard due diligence wherever ML/TF risk is assessed as higher; supplementary to, never a replacement for, standard measures.",
-      "source": "Art. 42"
-    },
-    {
-      "term": "CDD (Customer Due Diligence)",
-      "definition": "The overall process of identifying a customer, verifying their identity, and understanding the purpose and intended nature of the business relationship.",
-      "source": "Art. 20; Art. 26"
-    },
-    {
-      "term": "CBC (Central Bank of Cyprus)",
-      "definition": "The competent supervisory authority that issued this Directive and supervises obliged entities' AML/CFT compliance.",
-      "source": "Art. 3-4; Art. 49"
-    },
-    {
-      "term": "EEA (European Economic Area)",
-      "definition": "The EU member states plus Iceland, Liechtenstein and Norway; treated as a lower-risk baseline jurisdiction group throughout the Directive.",
-      "source": "Art. 45; Art. 47"
     },
     {
       "term": "Third party (Art. 29 sense)",
@@ -2355,16 +1954,6 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
       "term": "Directive (EU) 2015/849",
       "definition": "The EU's Fourth Anti-Money Laundering Directive, referenced in Article 2 as the source of the EU Supranational Risk Assessment and other cross-referenced EU-level concepts.",
       "source": "Art. 2"
-    },
-    {
-      "term": "UBO / beneficial owner",
-      "definition": "The natural person(s) who ultimately own or control a customer entity, as defined in Article 2 of the (parent) AML/CFT Law.",
-      "source": "Arts. 26, 37, 44"
-    },
-    {
-      "term": "Beneficial owner (UBO)",
-      "definition": "The natural person(s) who ultimately own or control a customer, or on whose behalf a transaction is conducted.",
-      "source": "Art. 2 of the Law (cross-referenced at Art. 44, Art. 45, Art. 48)"
     },
     {
       "term": "Payment institution",
@@ -2487,49 +2076,49 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
       "source": "Art. 19"
     },
     {
-      "term": "MiCA",
-      "definition": "Regulation (EU) 2023/1114, the Markets in Crypto-Assets Regulation — the regime under which some crypto-asset service providers are regulated and supervised.",
-      "source": "Art. 39"
+      "term": "PEP (Politically Exposed Person)",
+      "definition": "An individual who holds, or has held, a prominent public function (or their family members/close associates), creating higher exposure to corruption-related money-laundering risk.",
+      "source": "Art. 46 (cross-referencing Art. 64(1)(c) of the Law and Art. 20a(3) of Directive (EU) 2015/849)"
     },
     {
-      "term": "CDD",
-      "definition": "Customer Due Diligence — the baseline identity, ownership, and purpose checks done on every customer",
-      "source": "Part 7, Art. 24-26"
-    },
-    {
-      "term": "SDD",
-      "definition": "Simplified Due Diligence — lighter checks allowed for verified low-risk customers",
-      "source": "Art. 41"
-    },
-    {
-      "term": "EDD",
-      "definition": "Enhanced Due Diligence — extra checks required for higher-risk customers",
+      "term": "EDD (Enhanced Due Diligence)",
+      "definition": "Additional, more intensive customer-checking measures applied on top of standard due diligence wherever ML/TF risk is assessed as higher; supplementary to, never a replacement for, standard measures.",
       "source": "Art. 42"
     },
     {
-      "term": "UBO",
-      "definition": "Ultimate Beneficial Owner — a person who owns or controls 25% or more of a company's capital or voting rights, or otherwise exercises significant influence over it",
-      "source": "Art. 2"
+      "term": "UBO (Ultimate Beneficial Owner)",
+      "definition": "The natural person(s) who ultimately own or control a customer entity (or on whose behalf a transaction is conducted) — in practice, anyone owning or controlling 25% or more of a company's capital or voting rights, or otherwise exercising significant influence.",
+      "source": "Art. 2 of the Law (cross-referenced at Arts. 26, 37, 44, 45, 48)"
     },
     {
-      "term": "PEP",
-      "definition": "Politically Exposed Person — someone who holds, or has held, a prominent public function",
-      "source": "Art. 46"
+      "term": "CDD (Customer Due Diligence)",
+      "definition": "The overall process of identifying a customer, verifying their identity, and understanding the purpose and intended nature of the business relationship.",
+      "source": "Art. 20; Art. 26; Part 7, Art. 24-26"
     },
     {
-      "term": "CBC",
-      "definition": "Central Bank of Cyprus — the competent authority that supervises the categories of obliged entities listed in Article 3 and that issued this Directive.",
-      "source": "Art. 3; Art. 4"
+      "term": "SDD (Simplified Due Diligence)",
+      "definition": "A reduced-intensity form of due diligence that may be applied only where risk is confirmed low and no ML/TF suspicion exists; never a full exemption from monitoring.",
+      "source": "Art. 41; Art. 45"
     },
     {
-      "term": "EBA",
-      "definition": "European Banking Authority — issues EU-wide Guidelines referenced throughout the Directive, e.g. on remote customer onboarding.",
-      "source": "Arts. 27-28"
+      "term": "CBC (Central Bank of Cyprus)",
+      "definition": "The competent supervisory authority that issued this Directive and supervises the categories of obliged entities listed in Article 3.",
+      "source": "Art. 3-4; Art. 49"
     },
     {
-      "term": "EEA",
-      "definition": "European Economic Area — the EU member states plus Iceland, Liechtenstein and Norway; used to define lower-risk counterpart jurisdictions.",
-      "source": "Art. 38"
+      "term": "EBA (European Banking Authority)",
+      "definition": "The EU authority whose Guidelines on Risk Factors, remote onboarding, and travel rules are repeatedly cross-referenced by this Directive as mandatory or persuasive supplementary guidance.",
+      "source": "Art. 27-28; Art. 42; Art. 49; Art. 51"
+    },
+    {
+      "term": "EEA (European Economic Area)",
+      "definition": "The EU member states plus Iceland, Liechtenstein and Norway; treated as a lower-risk baseline jurisdiction group throughout the Directive.",
+      "source": "Art. 38; Art. 45; Art. 47"
+    },
+    {
+      "term": "MiCA (Regulation (EU) 2023/1114)",
+      "definition": "The EU regulatory framework -- the Markets in Crypto-Assets Regulation -- for licensing and supervising crypto-asset service providers.",
+      "source": "Art. 39; Art. 42(1)(d); Art. 51"
     }
   ]
 };

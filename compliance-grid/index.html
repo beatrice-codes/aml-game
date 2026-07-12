@@ -14,12 +14,12 @@
     --text: #eceef2;
     --text-dim: #9a9aa8;
     --text-faint: #66667a;
-    --teal: #2dd4bf;
-    --teal-dim: #164e46;
-    --amber: #f5a524;
-    --amber-dim: #4d380f;
-    --red: #f5455c;
-    --red-dim: #4d1620;
+    --sage: #6b8f86;
+    --sage-dim: #1e3430;
+    --terracotta: #a56b5c;
+    --terracotta-dim: #3d2420;
+    --green: #7fc98f;
+    --green-dim: #1c3324;
     --violet: #8b7cf6;
     --violet-dim: #322a5c;
     --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
@@ -138,6 +138,17 @@
     background-clip: text;
     color: transparent;
   }
+  .gate-line { animation: gate-breathe 3.4s ease-in-out infinite; }
+  .gate-line-a { animation-name: gate-breathe-a; }
+  .gate-line-b { animation-name: gate-breathe-b; }
+  @keyframes gate-breathe-a {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(-2.2px); }
+  }
+  @keyframes gate-breathe-b {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(2.2px); }
+  }
 
   .chapter-list {
     display: flex;
@@ -199,7 +210,7 @@
     margin-top: 2px;
   }
   .chapter-card .meta-row b { color: var(--text); }
-  .chapter-card .meta-row .card-streak { color: var(--amber); font-weight: 700; }
+  .chapter-card .meta-row .card-streak { color: var(--violet); font-weight: 700; }
   .segment-track {
     display: flex;
     gap: 4px;
@@ -274,7 +285,7 @@
     min-width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: var(--teal);
+    background: var(--sage);
     margin-top: 6px;
   }
   .article-range {
@@ -331,9 +342,9 @@
     letter-spacing: 0.03em;
     text-transform: uppercase;
   }
-  .diff-easy { background: var(--teal-dim); color: var(--teal); }
-  .diff-medium { background: var(--amber-dim); color: var(--amber); }
-  .diff-hard { background: var(--red-dim); color: var(--red); }
+  .diff-easy { background: var(--sage-dim); color: var(--sage); }
+  .diff-medium { background: var(--violet-dim); color: var(--violet); }
+  .diff-hard { background: var(--terracotta-dim); color: var(--terracotta); }
 
   .task-prompt {
     font-size: 16.5px;
@@ -369,19 +380,17 @@
     transition: border-color .15s, background .15s;
     min-height: 48px;
   }
-  .option-btn.passflag-pass { }
-  .option-btn.passflag-flag { }
   .option-btn.selected {
     border-color: var(--violet);
     background: var(--violet-dim);
   }
   .option-btn.reveal-correct {
-    border-color: var(--teal);
-    background: var(--teal-dim);
+    border-color: var(--green);
+    background: var(--green-dim);
   }
   .option-btn.reveal-wrong {
-    border-color: var(--red);
-    background: var(--red-dim);
+    border-color: var(--terracotta);
+    background: var(--terracotta-dim);
   }
   .option-btn:disabled { opacity: 1; }
 
@@ -439,6 +448,8 @@
     pointer-events: auto;
     width: 100%;
     max-width: 456px;
+    max-height: 82vh;
+    overflow-y: auto;
     background: var(--card);
     border: 1px solid var(--card-border);
     border-bottom: none;
@@ -466,8 +477,8 @@
     align-items: center;
     gap: 8px;
   }
-  .feedback-label.ok { color: var(--teal); }
-  .feedback-label.no { color: var(--red); }
+  .feedback-label.ok { color: var(--green); }
+  .feedback-label.no { color: var(--terracotta); }
   .feedback-minimize {
     width: 30px;
     height: 30px;
@@ -527,8 +538,8 @@
     box-shadow: 0 8px 28px rgba(0,0,0,0.45);
     animation: sheet-up .18s ease-out;
   }
-  .feedback-tab .fb-icon.ok { color: var(--teal); }
-  .feedback-tab .fb-icon.no { color: var(--red); }
+  .feedback-tab .fb-icon.ok { color: var(--green); }
+  .feedback-tab .fb-icon.no { color: var(--terracotta); }
 
   .overlay {
     position: fixed;
@@ -579,7 +590,7 @@
     font-family: var(--mono);
     font-size: 12px;
     font-weight: 700;
-    color: var(--amber);
+    color: var(--violet);
     margin-bottom: 12px;
     animation: streak-pop .28s ease-out;
   }
@@ -628,24 +639,23 @@
     letter-spacing: 0.04em;
     margin-bottom: 8px;
   }
-  .quickcall-timer {
-    height: 4px;
-    border-radius: 3px;
-    background: #232330;
-    overflow: hidden;
+  .quickcall-dots {
+    display: flex;
+    gap: 6px;
     margin-bottom: 14px;
   }
-  .quickcall-timer-fill {
-    height: 100%;
-    background: var(--violet);
-    border-radius: 3px;
-    width: 100%;
-    transform-origin: left;
-    animation: timer-shrink 4.2s linear forwards;
+  .quickcall-dots .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #232330;
   }
-  @keyframes timer-shrink {
-    from { transform: scaleX(1); }
-    to { transform: scaleX(0); }
+  .quickcall-dots .dot.filled { background: var(--violet); }
+  .quickcall-caption {
+    text-align: center;
+    font-size: 11.5px;
+    color: var(--text-faint);
+    margin-top: 10px;
   }
   .quickcall-scenario {
     background: #1c1c25;
@@ -698,10 +708,10 @@
     margin-top: 3px;
   }
   .summary-stat.highlight {
-    background: var(--amber-dim);
+    background: var(--violet-dim);
   }
   .summary-stat.highlight .n {
-    color: var(--amber);
+    color: var(--violet);
   }
   .complete-payoff {
     font-family: var(--mono);
@@ -765,9 +775,32 @@
     max-width: 260px;
     margin-top: 28px;
   }
+  .home-wrap .btn-secondary {
+    max-width: 260px;
+  }
+  .continue-card {
+    width: 100%;
+    max-width: 320px;
+    background: var(--card);
+    border: 1px solid var(--violet);
+    border-radius: var(--radius-md);
+    padding: 14px 18px;
+    margin-top: 22px;
+    text-align: left;
+  }
+  .continue-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--violet);
+    margin-bottom: 4px;
+  }
+  .continue-name { font-size: 15px; font-weight: 600; }
+  .continue-sub { font-size: 12.5px; color: var(--text-dim); margin-top: 2px; }
 
-  /* ---------- tiergate: assemble due-diligence steps, gate responds ---------- */
-  .tiergate-wrap { margin-bottom: 6px; }
+  /* ---------- build the gate: assemble due-diligence checklist, gate opens/shuts ---------- */
+  .gate-wrap { margin-bottom: 6px; }
   .gate-visual {
     position: relative;
     height: 92px;
@@ -779,36 +812,38 @@
     align-items: center;
     justify-content: center;
     margin-bottom: 16px;
+    perspective: 600px;
   }
   .gate-leaf {
     position: absolute;
     top: 0; bottom: 0;
     width: 50%;
-    background: linear-gradient(160deg, var(--teal-dim), #1c1c25);
+    background: linear-gradient(160deg, var(--violet-dim), #1c1c25);
     border: 1px solid var(--card-border);
-    transition: transform .35s cubic-bezier(.2,.8,.2,1), background .35s;
+    transform-origin: top center;
+    transition: transform .4s cubic-bezier(.2,.8,.2,1);
   }
-  .gate-leaf.gate-left { left: 0; }
-  .gate-leaf.gate-right { right: 0; }
-  .gate-visual.tier-standard .gate-leaf { background: linear-gradient(160deg, var(--amber-dim), #1c1c25); }
-  .gate-visual.tier-enhanced .gate-leaf { background: linear-gradient(160deg, var(--red-dim), #1c1c25); }
-  .gate-tier-label {
-    position: relative;
-    z-index: 2;
-    font-family: var(--mono);
-    font-weight: 700;
-    font-size: 12.5px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    padding: 6px 14px;
-    border-radius: 20px;
-    background: var(--card);
-    border: 1px solid var(--card-border);
-    transition: color .2s;
+  .gate-leaf.gate-left { left: 0; transform-origin: top left; }
+  .gate-leaf.gate-right { right: 0; transform-origin: top right; }
+  .gate-visual.gate-open .gate-leaf.gate-left { transform: rotateY(-30deg) translateX(-6%); }
+  .gate-visual.gate-open .gate-leaf.gate-right { transform: rotateY(30deg) translateX(6%); }
+  .gate-visual.gate-wrong { animation: wrong-shake .3s ease-out; }
+  .gate-ripple {
+    position: absolute;
+    z-index: 3;
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    border: 2px solid var(--green);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--green);
+    font-size: 18px;
+    animation: gate-ripple .5s ease-out;
   }
-  .gate-visual.tier-simplified .gate-tier-label { color: var(--teal); }
-  .gate-visual.tier-standard .gate-tier-label { color: var(--amber); }
-  .gate-visual.tier-enhanced .gate-tier-label { color: var(--red); }
+  @keyframes gate-ripple {
+    0% { transform: scale(0.3); opacity: 0; box-shadow: 0 0 0 0 var(--green-dim); }
+    60% { opacity: 1; }
+    100% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 14px transparent; }
+  }
 
   .tier-steps { display: flex; flex-direction: column; gap: 8px; margin-bottom: 6px; }
   .step-chip {
@@ -838,73 +873,216 @@
   .step-chip.locked { opacity: 0.6; }
   .step-chip .step-note { color: var(--text-faint); font-size: 11px; margin-left: 2px; }
 
-  /* ---------- passflag: drag-to-decide stamp ---------- */
-  .passflag-wrap { margin-bottom: 6px; }
-  .passflag-track { display: flex; align-items: stretch; gap: 8px; }
-  .passflag-side {
+  /* ---------- calm or alert: shape icons, no color-block zones ---------- */
+  .calmalert-wrap { margin-bottom: 6px; }
+  .calmalert-track { display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .calmalert-side {
     flex: 1;
     min-height: 116px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 10px;
     font-family: var(--mono);
     font-weight: 700;
     font-size: 12px;
     letter-spacing: 0.03em;
     text-transform: uppercase;
     text-align: center;
+    background: #1c1c25;
   }
-  .passflag-side .ic { font-size: 22px; }
-  .passflag-side.side-pass { color: var(--teal); }
-  .passflag-side.side-flag { color: var(--red); }
-  .passflag-side.selected.side-pass { background: var(--teal-dim); border-color: var(--teal); }
-  .passflag-side.selected.side-flag { background: var(--red-dim); border-color: var(--red); }
-  .passflag-side.selected:not(.reveal-correct):not(.reveal-wrong) { animation: passflag-pop .22s ease-out; }
-  @keyframes passflag-pop {
+  .calmalert-side svg { width: 34px; height: 34px; }
+  .calmalert-side.side-calm { color: var(--sage); }
+  .calmalert-side.side-alert { color: var(--terracotta); }
+  .calmalert-side.selected { border-color: var(--violet); background: var(--violet-dim); color: var(--text); }
+  .calmalert-side.selected:not(.reveal-correct):not(.reveal-wrong) { animation: calmalert-pop .22s ease-out; }
+  @keyframes calmalert-pop {
     0% { transform: scale(0.9); }
     55% { transform: scale(1.06); }
     100% { transform: scale(1); }
   }
-  .passflag-stage {
-    width: 92px;
+  .calmalert-dots {
     flex-shrink: 0;
-    min-height: 116px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .calmalert-dots span {
+    width: 3px; height: 3px;
+    border-radius: 50%;
+    background: var(--text-faint);
+  }
+
+  /* ---------- stamp: tap a tile, rubber-stamp pop-in ---------- */
+  .stamp-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+  .stamp-tile {
+    position: relative;
+    flex: 1 1 calc(50% - 5px);
+    min-width: 120px;
+    text-align: left;
+    padding: 15px 16px;
     border-radius: var(--radius-md);
     background: #1c1c25;
     border: 1.5px solid var(--card-border);
+    font-size: 14px;
+    line-height: 1.35;
+    overflow: hidden;
+  }
+  .stamp-tile.numeric { flex: 1 1 calc(25% - 8px); min-width: 70px; text-align: center; font-weight: 700; font-size: 16px; }
+  .stamp-mark {
+    position: absolute;
+    top: 6px; right: 8px;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    border: 2px solid var(--violet);
+    color: var(--violet);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    background: var(--card);
+    animation: stamp-pop .35s cubic-bezier(.2,.8,.3,1.4);
+  }
+  .stamp-tile.reveal-correct .stamp-mark { border-color: var(--green); color: var(--green); }
+  .stamp-tile.reveal-wrong .stamp-mark { border-color: var(--terracotta); color: var(--terracotta); }
+  .stamp-tile.reveal-correct { border-color: var(--green); background: var(--green-dim); }
+  .stamp-tile.reveal-wrong { border-color: var(--terracotta); background: var(--terracotta-dim); }
+  @keyframes stamp-pop {
+    0% { transform: scale(0.3) rotate(-18deg); opacity: 0; }
+    100% { transform: scale(1) rotate(-8deg); opacity: 1; }
+  }
+
+  /* ---------- flip card: true/false, both options always visible ---------- */
+  .flipcard-wrap { margin-bottom: 6px; perspective: 900px; }
+  .flipcard-face {
+    min-height: 120px;
+    border-radius: var(--radius-md);
+    background: #1c1c25;
+    border: 1.5px solid var(--card-border);
+    padding: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  .passflag-stamp {
-    width: 60px; height: 60px;
-    border-radius: 50%;
-    border: 2.5px solid var(--text-faint);
-    color: var(--text-dim);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 20px;
-    cursor: grab;
-    user-select: none;
-    touch-action: none;
-    background: var(--card);
-    transition: transform .18s, border-color .18s, color .18s, background .18s;
-  }
-  .passflag-stamp:active { cursor: grabbing; }
-  .passflag-stamp.disabled { cursor: default; }
-  .passflag-stamp.lean-a[data-tone-a="pass"], .passflag-stamp.lean-b[data-tone-b="pass"] {
-    border-color: var(--teal); color: var(--teal); background: var(--teal-dim);
-  }
-  .passflag-stamp.lean-a[data-tone-a="flag"], .passflag-stamp.lean-b[data-tone-b="flag"] {
-    border-color: var(--red); color: var(--red); background: var(--red-dim);
-  }
-  .passflag-hint {
     text-align: center;
-    font-size: 11.5px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 16px;
+    transform-style: preserve-3d;
+    transition: transform .5s cubic-bezier(.3,.6,.3,1);
+    backface-visibility: hidden;
+    position: relative;
+  }
+  .flipcard-face.flipped { transform: rotateY(180deg); }
+  .flipcard-back {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    border-radius: var(--radius-md);
+    background: var(--violet-dim);
+    border: 1.5px solid var(--violet);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--text);
+    backface-visibility: hidden;
+    transform: rotateY(180deg);
+  }
+  .flipcard-options { display: flex; gap: 10px; }
+  .flipcard-options .option-btn { flex: 1; }
+
+  /* ---------- match the term: two columns, thread draws on a match ---------- */
+  .match-wrap { position: relative; margin-bottom: 6px; }
+  .match-cols { display: flex; gap: 14px; position: relative; z-index: 1; }
+  .match-col { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+  .match-tile {
+    text-align: left;
+    padding: 12px 14px;
+    border-radius: var(--radius-sm);
+    background: #1c1c25;
+    border: 1.5px solid var(--card-border);
+    font-size: 13px;
+    line-height: 1.35;
+    transition: border-color .15s, background .15s, opacity .15s;
+  }
+  .match-tile.selected { border-color: var(--violet); background: var(--violet-dim); }
+  .match-tile.solved { border-color: var(--violet); background: var(--violet-dim); opacity: 0.75; }
+  .match-tile.wrong-flash { border-color: var(--terracotta); animation: wrong-shake .3s ease-out; }
+  .match-threads {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: visible;
+  }
+  .match-threads path {
+    fill: none;
+    stroke: #ece6d8;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+  }
+  .match-threads path.solved { stroke: #d9c9a3; }
+  .match-hint { text-align: center; font-size: 11.5px; color: var(--text-faint); margin-top: 10px; }
+
+  /* ---------- order the chain: drag to reorder, glassy stack ---------- */
+  .chain-wrap { margin-bottom: 6px; }
+  .chain-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .chain-slot-label {
+    width: 34px;
+    flex-shrink: 0;
+    font-family: var(--mono);
+    font-size: 11px;
     color: var(--text-faint);
-    margin-top: 10px;
-    min-height: 14px;
+    text-align: right;
+  }
+  .chain-item {
+    flex: 1;
+    padding: 14px 16px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.055);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.16);
+    font-size: 14px;
+    line-height: 1.35;
+    touch-action: none;
+    user-select: none;
+    transition: background .18s, border-color .18s, transform .18s;
+  }
+  .chain-item.dragging {
+    background: rgba(139,124,246,0.16);
+    border-color: rgba(139,124,246,0.55);
+    transform: scale(1.04);
+    z-index: 5;
+    position: relative;
+  }
+  .chain-wrap.wrong .chain-item { animation: wrong-shake .3s ease-out; }
+
+  /* ---------- spot the outlier: tap the odd one out ---------- */
+  .outlier-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+  .outlier-chip {
+    text-align: left;
+    padding: 14px 16px;
+    border-radius: 18px;
+    background: #1c1c25;
+    border: 1.5px solid var(--card-border);
+    font-size: 14px;
+    line-height: 1.4;
   }
 </style>
 </head>
@@ -981,14 +1159,14 @@
     the_flag: '<svg ' + ICON_ATTRS + '><path d="M6 3v18"/><path d="M6 4.2h11l-3 3.8 3 3.8H6"/></svg>'
   };
 
-  // Brand mark: an abstract grid-of-four (echoing "Compliance Grid") inside a gate-like
-  // frame, reused at both the home badge and chapter-map logo sizes. No emoji, no clip-art.
+  // Brand mark: a thin-line violet "drop + gate" — a teardrop silhouette with two short
+  // horizontal segments partway down suggesting a gate. Stroke only, no fill, no emoji.
+  // The gate segments slide apart/together in a slow idle loop (see .gate-line CSS below);
+  // reused at both the home badge and chapter-map logo sizes (same SVG, different scale).
   var BRAND_MARK = '<svg viewBox="0 0 32 32" width="58%" height="58%" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-    '<rect x="1" y="1" width="30" height="30" rx="9" stroke="var(--text-dim)" stroke-width="1.4" opacity="0.4"/>' +
-    '<rect x="6" y="6" width="8.4" height="8.4" rx="2.4" fill="var(--violet)"/>' +
-    '<rect x="17.6" y="6" width="8.4" height="8.4" rx="2.4" fill="var(--teal)"/>' +
-    '<rect x="6" y="17.6" width="8.4" height="8.4" rx="2.4" fill="var(--amber)"/>' +
-    '<rect x="17.6" y="17.6" width="8.4" height="8.4" rx="2.4" fill="var(--red)"/>' +
+    '<path d="M16 3.4c5.2 6.2 9.6 11.4 9.6 16.6a9.6 9.6 0 0 1-19.2 0c0-5.2 4.4-10.4 9.6-16.6z" stroke="var(--violet)" stroke-width="1.6" stroke-linejoin="round"/>' +
+    '<line class="gate-line gate-line-a" x1="10.3" y1="20.5" x2="14" y2="20.5" stroke="var(--violet)" stroke-width="1.6" stroke-linecap="round"/>' +
+    '<line class="gate-line gate-line-b" x1="18" y1="20.5" x2="21.7" y2="20.5" stroke="var(--violet)" stroke-width="1.6" stroke-linecap="round"/>' +
     '</svg>';
 
   function getChapter(key) {
@@ -1086,6 +1264,17 @@
     if (state.screen === 'complete') return renderComplete();
   }
 
+  function findContinueTarget() {
+    for (var i = 0; i < CHAPTER_ORDER.length; i++) {
+      var key = CHAPTER_ORDER[i];
+      var ch = getChapter(key);
+      if (!ch) continue;
+      var cp = chapterProgress(key);
+      if (!cp.everCompleted && cp.resume.questionIndex > 0) return { ch: ch, cp: cp };
+    }
+    return null;
+  }
+
   function renderHome() {
     var totalChapters = APP_CONTENT.chapters.length;
     var completed = 0;
@@ -1095,6 +1284,7 @@
       if (cp.everCompleted) completed += 1;
       if (cp.everCompleted || cp.resume.questionIndex > 0) anyProgress = true;
     });
+    var continueTarget = findContinueTarget();
     var html = '<div class="home-wrap">';
     html += '<div class="home-badge">' + BRAND_MARK + '</div>';
     html += '<h1 class="home-title">Compliance Grid</h1>';
@@ -1103,7 +1293,17 @@
     if (anyProgress) {
       html += '<div class="home-progress">' + completed + ' / ' + totalChapters + ' chapters complete</div>';
     }
-    html += '<button class="btn-primary" data-action="enter-app">' + (anyProgress ? 'Continue ▶' : 'Start ▶') + '</button>';
+    if (continueTarget) {
+      html += '<div class="continue-card" data-action="open-chapter" data-chapter="' + continueTarget.ch.chapter_key + '">' +
+        '<div class="continue-eyebrow">Continue where you left off</div>' +
+        '<div class="continue-name">' + escapeHtml(continueTarget.ch.briefing.title) + '</div>' +
+        '<div class="continue-sub">Question ' + (continueTarget.cp.resume.questionIndex + 1) + ' of ' + continueTarget.ch.questions.length + '</div>' +
+        '</div>';
+      html += '<button class="btn-primary" data-action="open-chapter" data-chapter="' + continueTarget.ch.chapter_key + '">Continue ▶</button>';
+      html += '<button class="btn-secondary" data-action="enter-app">Browse all chapters</button>';
+    } else {
+      html += '<button class="btn-primary" data-action="enter-app">Start ▶</button>';
+    }
     html += '</div>';
     app.innerHTML = html;
   }
@@ -1146,7 +1346,7 @@
       }
       html += '</div>';
       html += '<div class="meta-row"><span>PROGRESS <b>' + completionPct + '%</b></span>' +
-        (cp.bestStreak >= 2 ? '<span class="card-streak">🔥 ' + cp.bestStreak + '</span>' : '') + '</div>';
+        (cp.bestStreak >= 2 ? '<span class="card-streak">STREAK ' + cp.bestStreak + '</span>' : '') + '</div>';
       html += '</div>';
     });
     html += '</div><div class="footer-space"></div>';
@@ -1193,16 +1393,21 @@
     var html = topbar({ back: true, pause: true, title: ch.briefing.title });
 
     if (s.streak >= 2) {
-      html += '<div class="streak-strip">🔥 ' + s.streak + ' in a row</div>';
+      html += '<div class="streak-strip">' + s.streak + ' in a row</div>';
     }
 
     var isQuickcall = q.mechanic === 'quickcall' && !s.currentIsFollowup;
+    var selfResolving = !s.currentIsFollowup && (
+      q.mechanic === 'flip_card' ||
+      q.mechanic === 'match_term' ||
+      (q.mechanic === 'stamp' && !q.select_count)
+    );
 
     html += '<div class="q-meta">';
     if (!s.currentIsFollowup) {
       html += '<span>QUESTION ' + (s.questionIndex + 1) + ' / ' + ch.questions.length + '</span>';
       html += isQuickcall
-        ? '<span class="diff-tag diff-hard">⚡ quick call</span>'
+        ? '<span class="diff-tag diff-hard">QUICK CALL</span>'
         : '<span class="diff-tag diff-' + q.difficulty + '">' + q.difficulty + '</span>';
     } else {
       html += '<span>FOLLOW-UP — SAME CONCEPT</span><span></span>';
@@ -1223,13 +1428,19 @@
       var itemAnswered = s.quickcallItemSelection !== null && s.quickcallItemSelection !== undefined;
       var isLastItem = s.quickcallIndex >= q.items.length - 1;
       html += '<button class="btn-primary" data-action="quickcall-next" ' + (itemAnswered ? '' : 'disabled') + '>' +
-        (itemAnswered ? (isLastItem ? 'See results ▶' : 'Next ⚡') : 'Tap an answer above') + '</button>';
+        (itemAnswered ? (isLastItem ? 'See results ▶' : 'Next →') : 'Tap an answer above') + '</button>';
+    } else if (selfResolving) {
+      // no Confirm button — the tap itself resolves the question
     } else {
       html += '<button class="btn-primary" data-action="confirm-answer" ' + (canConfirm(q, s) ? '' : 'disabled') + '>✓ Confirm</button>';
     }
     html += '<div class="footer-space"></div>';
 
     app.innerHTML = html;
+
+    if (q.mechanic === 'match_term' && !s.currentIsFollowup) {
+      window.requestAnimationFrame(positionMatchThreads);
+    }
 
     if (s.answered) {
       if (s.feedbackMinimized) renderFeedbackTab(q, s);
@@ -1242,11 +1453,14 @@
     var html = '<div class="quickcall-wrap">';
     html += '<div class="task-prompt">' + annotateGlossary(q.task_prompt) + '</div>';
     html += '<div class="quickcall-progress">CALL ' + (s.quickcallIndex + 1) + ' / ' + q.items.length + '</div>';
-    var answered = s.quickcallItemSelection !== null && s.quickcallItemSelection !== undefined;
-    if (!answered) {
-      html += '<div class="quickcall-timer"><div class="quickcall-timer-fill"></div></div>';
+    html += '<div class="quickcall-dots">';
+    for (var di = 0; di < q.items.length; di++) {
+      html += '<span class="dot' + (di <= s.quickcallIndex ? ' filled' : '') + '"></span>';
     }
+    html += '</div>';
+    html += '<div class="quickcall-caption">Take your time — no timer.</div>';
     html += '<div class="quickcall-scenario">' + annotateGlossary(item.label) + '</div>';
+    var answered = s.quickcallItemSelection !== null && s.quickcallItemSelection !== undefined;
     html += '<div class="options quickcall-options">';
     item.options.forEach(function (opt, i) {
       var cls = 'option-btn';
@@ -1262,52 +1476,73 @@
     return html;
   }
 
-  var DUO_LABEL_ICON = { pass: '✓ ', flag: '🚩 ', yes: '✓ ', no: '✕ ', true: '✓ ', false: '✕ ' };
-  var DUO_LABEL_TONE = { pass: 'pass', yes: 'pass', true: 'pass', flag: 'flag', no: 'flag', false: 'flag' };
+  var SHAPE_ARC = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3.5 15c3.5-6.5 13.5-6.5 17 0"/></svg>';
+  var SHAPE_SHARD = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3 19 9 16 21 8 19 5 9z"/></svg>';
 
-  var TIER_STEPS = [
+  function toneFor(label) {
+    var l = (label || '').toLowerCase().trim();
+    if (l === 'flag' || l === 'no' || l === 'false' || l === 'escalate' || l === 'high risk') return 'alert';
+    return 'calm';
+  }
+
+  function renderCalmAlert(q, s) {
+    var opt0 = q.options[0], opt1 = q.options[1];
+    var tone0 = toneFor(opt0.label), tone1 = toneFor(opt1.label);
+    function sideHtml(opt, i, tone) {
+      var picked = s.selection === i;
+      var cls = 'option-btn calmalert-side side-' + tone;
+      if (!s.answered) { if (picked) cls += ' selected'; }
+      else { if (opt.correct) cls += ' reveal-correct'; else if (picked) cls += ' reveal-wrong'; }
+      var icon = tone === 'calm' ? SHAPE_ARC : SHAPE_SHARD;
+      return '<button class="' + cls + '" ' + (s.answered ? 'disabled' : '') +
+        ' data-action="select-option" data-index="' + i + '">' + icon + '<span>' + escapeHtml(opt.label) + '</span></button>';
+    }
+    var html = '<div class="calmalert-wrap"><div class="calmalert-track">';
+    html += sideHtml(opt0, 0, tone0);
+    html += '<span class="calmalert-dots"><span></span><span></span><span></span></span>';
+    html += sideHtml(opt1, 1, tone1);
+    html += '</div></div>';
+    return html;
+  }
+
+  /* ---------- build the gate: fixed CDD checklist, binary open/shut ---------- */
+  var GATE_STEPS = [
     { label: 'Verify identity', locked: true },
     { label: 'Verify address', locked: false },
     { label: 'Confirm source of funds', locked: false },
     { label: 'Enhanced ongoing monitoring', locked: false }
   ];
+  var GATE_PATTERN = {
+    simplified: [true, false, false, false],
+    standard: [true, true, true, false],
+    enhanced: [true, true, true, true]
+  };
 
-  function tierForActiveCount(n) {
-    if (n <= 1) return 'simplified';
-    if (n <= 3) return 'standard';
-    return 'enhanced';
+  function ensureGateSteps(s) {
+    if (!Array.isArray(s.gateSteps)) s.gateSteps = [true, false, false, false];
+    return s.gateSteps;
   }
 
-  function ensureTierSteps(s) {
-    if (!Array.isArray(s.tierSteps)) s.tierSteps = [true, false, false, false];
-    return s.tierSteps;
+  function expectedGateTier(q) {
+    var correctOpt = q.options.filter(function (o) { return o.correct; })[0];
+    return ((correctOpt && (correctOpt.tier || correctOpt.label)) || '').toLowerCase();
   }
 
-  function syncTierSelection(q, s) {
-    var steps = ensureTierSteps(s);
-    var activeCount = steps.filter(Boolean).length;
-    var tierKey = tierForActiveCount(activeCount);
-    s.selection = q.options.findIndex(function (o) { return (o.tier || o.label || '').toLowerCase() === tierKey; });
-  }
-
-  function renderTierGate(q, s) {
-    var steps = ensureTierSteps(s);
-    if (!s.answered) syncTierSelection(q, s);
-    var activeCount = steps.filter(Boolean).length;
-    var tierKey = tierForActiveCount(activeCount);
-    var pct = Math.round((activeCount - 1) / (steps.length - 1) * 46);
-    var html = '<div class="tiergate-wrap">';
-    html += '<div class="gate-visual tier-' + tierKey + '">';
-    html += '<div class="gate-leaf gate-left" style="transform: translateX(-' + pct + '%)"></div>';
-    html += '<div class="gate-leaf gate-right" style="transform: translateX(' + pct + '%)"></div>';
-    html += '<div class="gate-tier-label">' + tierKey + '</div>';
+  function renderBuildGate(q, s) {
+    var steps = ensureGateSteps(s);
+    var opened = s.answered && s.lastCorrect;
+    var wrongShake = s.answered && !s.lastCorrect;
+    var html = '<div class="gate-wrap">';
+    html += '<div class="gate-visual' + (opened ? ' gate-open' : '') + (wrongShake ? ' gate-wrong' : '') + '">';
+    html += '<div class="gate-leaf gate-left"></div><div class="gate-leaf gate-right"></div>';
+    if (opened) html += '<div class="gate-ripple">✓</div>';
     html += '</div>';
     html += '<div class="tier-steps">';
-    TIER_STEPS.forEach(function (step, i) {
+    GATE_STEPS.forEach(function (step, i) {
       var active = !!steps[i];
       var cls = 'step-chip' + (active ? ' active' : '') + (step.locked ? ' locked' : '');
       html += '<button class="' + cls + '" ' + ((s.answered || step.locked) ? 'disabled' : '') +
-        ' data-action="toggle-tier-step" data-step="' + i + '">' +
+        ' data-action="toggle-gate-step" data-step="' + i + '">' +
         '<span class="chk">' + (active ? '✓' : '') + '</span>' + escapeHtml(step.label) +
         (step.locked ? ' <span class="step-note">(always required)</span>' : '') +
         '</button>';
@@ -1316,61 +1551,188 @@
     return html;
   }
 
-  function renderPassflag(q, s) {
-    var opt0 = q.options[0], opt1 = q.options[1];
-    var tone0 = DUO_LABEL_TONE[(opt0.label || '').toLowerCase().trim()] || 'pass';
-    var tone1 = DUO_LABEL_TONE[(opt1.label || '').toLowerCase().trim()] || 'flag';
-    function sideHtml(opt, i, tone) {
-      var picked = s.selection === i;
-      var cls = 'option-btn passflag-side side-' + tone;
-      if (!s.answered) { if (picked) cls += ' selected'; }
-      else { if (opt.correct) cls += ' reveal-correct'; else if (picked) cls += ' reveal-wrong'; }
-      var icon = DUO_LABEL_ICON[(opt.label || '').toLowerCase().trim()] || (tone === 'pass' ? '✓ ' : '🚩 ');
-      return '<button class="' + cls + '" ' + (s.answered ? 'disabled' : '') +
-        ' data-action="select-option" data-index="' + i + '"><span class="ic">' + icon + '</span>' + escapeHtml(opt.label) + '</button>';
-    }
-    var html = '<div class="passflag-wrap"><div class="passflag-track">';
-    html += sideHtml(opt0, 0, tone0);
-    html += '<div class="passflag-stage"><div class="passflag-stamp' + (s.answered ? ' disabled' : '') +
-      '" data-tone-a="' + tone0 + '" data-tone-b="' + tone1 + '">⇄</div></div>';
-    html += sideHtml(opt1, 1, tone1);
-    html += '</div>';
-    html += '<div class="passflag-hint">' + (s.answered ? '' : 'Drag the stamp, or tap a side') + '</div>';
-    html += '</div>';
-    return html;
-  }
-
-  function renderOptions(q, s) {
-    if (!s.currentIsFollowup) {
-      if (q.mechanic === 'tiergate') return renderTierGate(q, s);
-      if (q.mechanic === 'passflag') return renderPassflag(q, s);
-    }
-    var isMulti = q.mechanic === 'multiselect' && !s.currentIsFollowup;
-    var isDuo = q.options.length === 2;
+  /* ---------- stamp: tap a tile, rubber-stamp pop-in (also used for numeric-threshold taps) ---------- */
+  function renderStamp(q, s) {
+    var isMulti = !!q.select_count;
     var html = '';
-
     if (isMulti) {
       var picked = Array.isArray(s.selection) ? s.selection.length : 0;
       var done = picked >= q.select_count;
       html += '<div class="select-counter' + (done ? ' select-counter-done' : '') + '">' +
         picked + ' / ' + q.select_count + ' selected</div>';
     }
+    html += '<div class="stamp-grid">';
+    q.options.forEach(function (opt, i) {
+      var picked = isMulti
+        ? (Array.isArray(s.selection) && s.selection.indexOf(i) !== -1)
+        : (s.selection === i);
+      var cls = 'option-btn stamp-tile' + (isMulti ? '' : ' numeric');
+      if (s.answered) {
+        if (opt.correct) cls += ' reveal-correct';
+        else if (picked) cls += ' reveal-wrong';
+      } else if (picked) {
+        cls += ' selected';
+      }
+      var showMark = s.answered ? (opt.correct || picked) : picked;
+      var markGlyph = s.answered ? (opt.correct ? '✓' : '✕') : '';
+      html += '<button class="' + cls + '" ' + (s.answered ? 'disabled' : '') +
+        ' data-action="select-option" data-index="' + i + '">' + escapeHtml(opt.label) +
+        (showMark ? '<span class="stamp-mark">' + markGlyph + '</span>' : '') +
+        '</button>';
+    });
+    html += '</div>';
+    return html;
+  }
+
+  /* ---------- flip card: claim + always-visible True/False, flips to reveal why ---------- */
+  function renderFlipCard(q, s) {
+    var flipped = s.answered;
+    var html = '<div class="flipcard-wrap">';
+    html += '<div class="flipcard-face' + (flipped ? ' flipped' : '') + '">' + annotateGlossary(q.claim) +
+      '<div class="flipcard-back">' + annotateGlossary(q.why || '') + '</div></div>';
+    html += '<div class="options flipcard-options">';
+    [true, false].forEach(function (val) {
+      var label = val ? 'True' : 'False';
+      var picked = s.selection === val;
+      var isCorrectBtn = q.answer === val;
+      var cls = 'option-btn';
+      if (!s.answered) { if (picked) cls += ' selected'; }
+      else { if (isCorrectBtn) cls += ' reveal-correct'; else if (picked) cls += ' reveal-wrong'; }
+      html += '<button class="' + cls + '" ' + (s.answered ? 'disabled' : '') +
+        ' data-action="select-flip" data-value="' + val + '">' + label + '</button>';
+    });
+    html += '</div></div>';
+    return html;
+  }
+
+  /* ---------- match the term: two independently-shuffled columns, thread on match ---------- */
+  function ensureMatchState(q, s) {
+    if (!Array.isArray(s.matchTermOrder)) {
+      var idxs = q.pairs.map(function (_, i) { return i; });
+      s.matchTermOrder = shuffleArray(idxs.slice());
+      s.matchDefOrder = shuffleArray(idxs.slice());
+      s.matchSolved = q.pairs.map(function () { return false; });
+      s.matchSelectedTerm = null;
+      s.matchWrong = null;
+    }
+  }
+
+  function renderMatchTerm(q, s) {
+    ensureMatchState(q, s);
+    var html = '<div class="match-wrap" id="match-wrap">';
+    html += '<svg class="match-threads" id="match-threads"></svg>';
+    html += '<div class="match-cols">';
+    html += '<div class="match-col">';
+    s.matchTermOrder.forEach(function (pairIdx) {
+      var solved = s.matchSolved[pairIdx];
+      var selected = s.matchSelectedTerm === pairIdx;
+      var wrongFlash = s.matchWrong && s.matchWrong.termPairIdx === pairIdx;
+      var cls = 'match-tile' + (solved ? ' solved' : '') + (selected ? ' selected' : '') + (wrongFlash ? ' wrong-flash' : '');
+      html += '<button class="' + cls + '" ' + (solved ? 'disabled' : '') +
+        ' data-action="select-match-term" data-pair="' + pairIdx + '" data-role="term">' +
+        escapeHtml(q.pairs[pairIdx].term) + '</button>';
+    });
+    html += '</div><div class="match-col">';
+    s.matchDefOrder.forEach(function (pairIdx) {
+      var solved = s.matchSolved[pairIdx];
+      var wrongFlash = s.matchWrong && s.matchWrong.defPairIdx === pairIdx;
+      var cls = 'match-tile' + (solved ? ' solved' : '') + (wrongFlash ? ' wrong-flash' : '');
+      html += '<button class="' + cls + '" ' + (solved ? 'disabled' : '') +
+        ' data-action="select-match-def" data-pair="' + pairIdx + '" data-role="def">' +
+        escapeHtml(q.pairs[pairIdx].definition) + '</button>';
+    });
+    html += '</div></div>';
+    html += '<div class="match-hint">' + (s.matchSolved.every(Boolean) ? '' : 'Tap a term, then its definition') + '</div>';
+    html += '</div>';
+    return html;
+  }
+
+  function positionMatchThreads() {
+    var svg = document.getElementById('match-threads');
+    var wrap = document.getElementById('match-wrap');
+    if (!svg || !wrap) return;
+    var wrapRect = wrap.getBoundingClientRect();
+    var paths = '';
+    wrap.querySelectorAll('.match-tile[data-role="term"].solved').forEach(function (termEl) {
+      var pairIdx = termEl.getAttribute('data-pair');
+      var defEl = wrap.querySelector('.match-tile[data-role="def"][data-pair="' + pairIdx + '"]');
+      if (!defEl) return;
+      var tr = termEl.getBoundingClientRect(), dr = defEl.getBoundingClientRect();
+      var x1 = tr.right - wrapRect.left, y1 = tr.top + tr.height / 2 - wrapRect.top;
+      var x2 = dr.left - wrapRect.left, y2 = dr.top + dr.height / 2 - wrapRect.top;
+      var mx = (x1 + x2) / 2;
+      paths += '<path class="solved" d="M' + x1 + ' ' + y1 + ' C ' + mx + ' ' + y1 + ', ' + mx + ' ' + y2 + ', ' + x2 + ' ' + y2 + '"/>';
+    });
+    svg.innerHTML = paths;
+    svg.setAttribute('width', wrapRect.width);
+    svg.setAttribute('height', wrapRect.height);
+  }
+
+  /* ---------- order the chain: drag to reorder (Pointer Events), Confirm locks it in ---------- */
+  function ensureChainOrder(q, s) {
+    if (!Array.isArray(s.chainOrder)) {
+      var idxs = q.chain_items.map(function (_, i) { return i; });
+      s.chainOrder = shuffleArray(idxs);
+    }
+    return s.chainOrder;
+  }
+
+  function ordinal(n) {
+    return ({ 1: '1st', 2: '2nd', 3: '3rd' })[n] || (n + 'th');
+  }
+
+  function renderOrderChain(q, s) {
+    var order = ensureChainOrder(q, s);
+    var html = '<div class="chain-wrap' + (s.answered && !s.lastCorrect ? ' wrong' : '') + '" id="chain-wrap">';
+    order.forEach(function (itemIdx, slot) {
+      html += '<div class="chain-row"><span class="chain-slot-label">' + ordinal(slot + 1) + '</span>' +
+        '<div class="chain-item" data-orig-idx="' + itemIdx + '" data-slot="' + slot + '">' +
+        escapeHtml(q.chain_items[itemIdx].label) + '</div></div>';
+    });
+    html += '</div>';
+    return html;
+  }
+
+  /* ---------- spot the outlier: tap the odd one out, chip grid ---------- */
+  function renderSpotOutlier(q, s) {
+    var html = '<div class="outlier-grid">';
+    q.options.forEach(function (opt, i) {
+      var picked = s.selection === i;
+      var cls = 'option-btn outlier-chip';
+      if (!s.answered) { if (picked) cls += ' selected'; }
+      else { if (opt.correct) cls += ' reveal-correct'; else if (picked) cls += ' reveal-wrong'; }
+      html += '<button class="' + cls + '" ' + (s.answered ? 'disabled' : '') +
+        ' data-action="select-option" data-index="' + i + '">' + escapeHtml(opt.label) + '</button>';
+    });
+    html += '</div>';
+    return html;
+  }
+
+  function renderOptions(q, s) {
+    if (!s.currentIsFollowup) {
+      if (q.mechanic === 'build_gate') return renderBuildGate(q, s);
+      if (q.mechanic === 'calm_alert') return renderCalmAlert(q, s);
+      if (q.mechanic === 'stamp') return renderStamp(q, s);
+      if (q.mechanic === 'flip_card') return renderFlipCard(q, s);
+      if (q.mechanic === 'match_term') return renderMatchTerm(q, s);
+      if (q.mechanic === 'order_chain') return renderOrderChain(q, s);
+      if (q.mechanic === 'spot_outlier') return renderSpotOutlier(q, s);
+    }
+    var isDuo = q.options.length === 2;
+    var html = '';
 
     html += '<div class="options' + (isDuo ? ' duo' : '') + '">';
     q.options.forEach(function (opt, i) {
       var cls = 'option-btn';
-      var picked = isMulti
-        ? (Array.isArray(s.selection) && s.selection.indexOf(i) !== -1)
-        : (s.selection === i);
+      var picked = s.selection === i;
       if (!s.answered) {
         if (picked) cls += ' selected';
       } else {
         if (opt.correct) cls += ' reveal-correct';
         else if (picked) cls += ' reveal-wrong';
       }
-      var icon = isDuo ? (DUO_LABEL_ICON[(opt.label || '').toLowerCase().trim()] || '') : '';
       html += '<button class="' + cls + '" ' + (s.answered ? 'disabled' : '') +
-        ' data-action="select-option" data-index="' + i + '">' + icon + escapeHtml(opt.label) + '</button>';
+        ' data-action="select-option" data-index="' + i + '">' + escapeHtml(opt.label) + '</button>';
     });
     html += '</div>';
     return html;
@@ -1378,14 +1740,29 @@
 
   function canConfirm(q, s) {
     if (s.answered) return false;
-    if (q.mechanic === 'multiselect' && !s.currentIsFollowup) {
+    if (q.mechanic === 'build_gate' && !s.currentIsFollowup) return true;
+    if (q.mechanic === 'order_chain' && !s.currentIsFollowup) return true;
+    if (q.mechanic === 'stamp' && q.select_count && !s.currentIsFollowup) {
       return Array.isArray(s.selection) && s.selection.length === q.select_count;
     }
     return s.selection !== null && s.selection !== undefined;
   }
 
   function gradeCurrent(q, s) {
-    if (q.mechanic === 'multiselect' && !s.currentIsFollowup) {
+    if (q.mechanic === 'build_gate' && !s.currentIsFollowup) {
+      var steps = ensureGateSteps(s);
+      var tier = expectedGateTier(q);
+      var pattern = GATE_PATTERN[tier] || GATE_PATTERN.standard;
+      return steps.every(function (v, i) { return v === pattern[i]; });
+    }
+    if (q.mechanic === 'order_chain' && !s.currentIsFollowup) {
+      var order = ensureChainOrder(q, s);
+      return order.every(function (itemIdx, slot) { return q.chain_items[itemIdx].order === slot + 1; });
+    }
+    if (q.mechanic === 'flip_card' && !s.currentIsFollowup) {
+      return s.selection === q.answer;
+    }
+    if (q.mechanic === 'stamp' && q.select_count && !s.currentIsFollowup) {
       var correctIdx = [];
       q.options.forEach(function (opt, i) { if (opt.correct) correctIdx.push(i); });
       var selected = s.selection.slice().sort();
@@ -1394,6 +1771,17 @@
       return selected.every(function (v, i) { return v === correctIdx[i]; });
     }
     return !!(q.options[s.selection] && q.options[s.selection].correct);
+  }
+
+  function commitAnswer(q, s, correct) {
+    s.lastCorrect = correct;
+    s.answered = true;
+    s.feedbackMinimized = false;
+    if (!s.currentIsFollowup) {
+      s.answeredCount += 1;
+      if (correct) { s.correctCount += 1; s.streak += 1; } else { s.streak = 0; }
+    }
+    vibrate(correct ? 18 : [20, 40, 20]);
   }
 
   function renderFeedbackSheet(q, s) {
@@ -1409,6 +1797,8 @@
         var correctOpt = q.options.filter(function (o) { return o.correct; })[0];
         body = 'Not quite — the correct answer is: ' + escapeHtml(correctOpt ? correctOpt.label : '');
       }
+    } else if (q.mechanic === 'flip_card') {
+      body = annotateGlossary(q.why || '');
     } else {
       body = annotateGlossary(correct ? q.correct_feedback : q.incorrect_feedback);
     }
@@ -1468,14 +1858,14 @@
     html += '<div class="briefing-eyebrow">' + escapeHtml(ch.briefing.title) + '</div>';
     html += '<div class="briefing-title">Chapter complete</div>';
     if (accuracy >= 80) {
-      html += '<div class="complete-payoff">🔥 Strong round' + (isBest ? ' — new personal best' : '') + '</div>';
+      html += '<div class="complete-payoff">Strong round' + (isBest ? ' — new personal best' : '') + '</div>';
     } else if (isBest && state.session.answeredCount) {
-      html += '<div class="complete-payoff">✨ New personal best</div>';
+      html += '<div class="complete-payoff">New personal best</div>';
     }
     html += '<div class="summary-stat-row">';
     html += '<div class="summary-stat"><div class="n" data-countup="' + accuracy + '">0%</div><div class="l">Accuracy</div></div>';
     html += '<div class="summary-stat"><div class="n">' + Math.round(cp.bestAccuracy) + '%</div><div class="l">Best</div></div>';
-    html += '<div class="summary-stat highlight"><div class="n">🔥 ' + cp.bestStreak + '</div><div class="l">Best streak</div></div>';
+    html += '<div class="summary-stat highlight"><div class="n">' + cp.bestStreak + '</div><div class="l">Best streak</div></div>';
     html += '</div>';
     if (nextKey) {
       html += '<div class="briefing-desc">Every chapter is open anytime — up next: “' + escapeHtml(getChapter(nextKey).briefing.title) + '”.</div>';
@@ -1565,7 +1955,13 @@
       quickcallItemSelection: null,
       quickcallResults: [],
       feedbackMinimized: false,
-      tierSteps: null
+      gateSteps: null,
+      chainOrder: null,
+      matchTermOrder: null,
+      matchDefOrder: null,
+      matchSolved: null,
+      matchSelectedTerm: null,
+      matchWrong: null
     };
     if (state.session.questionIndex >= ch.questions.length) {
       state.session.questionIndex = 0;
@@ -1633,7 +2029,13 @@
     s.answered = false;
     s.selection = null;
     s.feedbackMinimized = false;
-    s.tierSteps = null;
+    s.gateSteps = null;
+    s.chainOrder = null;
+    s.matchTermOrder = null;
+    s.matchDefOrder = null;
+    s.matchSolved = null;
+    s.matchSelectedTerm = null;
+    s.matchWrong = null;
     resetQuickcallState(s);
     persistResume();
     if (s.questionIndex >= ch.questions.length) { finishChapter(); return; }
@@ -1680,24 +2082,66 @@
       if (state.session.answered) return;
       var qNow = currentQuestion();
       var idx = parseInt(el.getAttribute('data-index'), 10);
-      if (qNow.mechanic === 'multiselect' && !state.session.currentIsFollowup) {
+      if (qNow.mechanic === 'stamp' && qNow.select_count && !state.session.currentIsFollowup) {
         if (!Array.isArray(state.session.selection)) state.session.selection = [];
         var pos = state.session.selection.indexOf(idx);
         if (pos !== -1) state.session.selection.splice(pos, 1);
         else if (state.session.selection.length < qNow.select_count) state.session.selection.push(idx);
         vibrate(8);
+        render();
       } else {
         state.session.selection = idx;
+        if (qNow.mechanic === 'stamp' && !qNow.select_count && !state.session.currentIsFollowup) {
+          commitAnswer(qNow, state.session, gradeCurrent(qNow, state.session));
+        }
+        render();
       }
-      render();
-    } else if (action === 'toggle-tier-step') {
+    } else if (action === 'select-flip') {
       if (state.session.answered) return;
-      var qTier = currentQuestion();
+      var qFlip = currentQuestion();
+      var val = el.getAttribute('data-value') === 'true';
+      state.session.selection = val;
+      commitAnswer(qFlip, state.session, val === qFlip.answer);
+      render();
+    } else if (action === 'select-match-term') {
+      var sMatch = state.session;
+      if (sMatch.matchWrong) return;
+      var termPairIdx = parseInt(el.getAttribute('data-pair'), 10);
+      if (sMatch.matchSolved[termPairIdx]) return;
+      sMatch.matchSelectedTerm = termPairIdx;
+      render();
+    } else if (action === 'select-match-def') {
+      var sDef = state.session;
+      if (sDef.matchWrong) return;
+      if (sDef.matchSelectedTerm === null || sDef.matchSelectedTerm === undefined) return;
+      var defPairIdx = parseInt(el.getAttribute('data-pair'), 10);
+      if (sDef.matchSolved[defPairIdx]) return;
+      if (sDef.matchSelectedTerm === defPairIdx) {
+        sDef.matchSolved[defPairIdx] = true;
+        sDef.matchSelectedTerm = null;
+        vibrate(12);
+        render();
+        window.requestAnimationFrame(positionMatchThreads);
+        if (sDef.matchSolved.every(Boolean)) {
+          commitAnswer(currentQuestion(), sDef, true);
+          render();
+        }
+      } else {
+        sDef.matchWrong = { termPairIdx: sDef.matchSelectedTerm, defPairIdx: defPairIdx };
+        vibrate([15, 30]);
+        render();
+        setTimeout(function () {
+          state.session.matchWrong = null;
+          state.session.matchSelectedTerm = null;
+          render();
+        }, 900);
+      }
+    } else if (action === 'toggle-gate-step') {
+      if (state.session.answered) return;
       var stepIdx = parseInt(el.getAttribute('data-step'), 10);
-      if (TIER_STEPS[stepIdx] && TIER_STEPS[stepIdx].locked) return;
-      var steps = ensureTierSteps(state.session);
+      if (GATE_STEPS[stepIdx] && GATE_STEPS[stepIdx].locked) return;
+      var steps = ensureGateSteps(state.session);
       steps[stepIdx] = !steps[stepIdx];
-      syncTierSelection(qTier, state.session);
       vibrate(8);
       render();
     } else if (action === 'select-quickcall-option') {
@@ -1733,15 +2177,7 @@
       var q = currentQuestion();
       var s = state.session;
       if (!canConfirm(q, s)) return;
-      var correct = gradeCurrent(q, s);
-      s.lastCorrect = correct;
-      s.answered = true;
-      s.feedbackMinimized = false;
-      if (!s.currentIsFollowup) {
-        s.answeredCount += 1;
-        if (correct) { s.correctCount += 1; s.streak += 1; } else { s.streak = 0; }
-      }
-      vibrate(correct ? 18 : [20, 40, 20]);
+      commitAnswer(q, s, gradeCurrent(q, s));
       render();
     } else if (action === 'minimize-feedback') {
       state.session.feedbackMinimized = true;
@@ -1779,36 +2215,66 @@
     handleAction(el.getAttribute('data-action'), el);
   });
 
-  /* ---------- passflag: drag-to-decide gesture (delegated, survives re-render) ---------- */
-  var dragState = null;
+  /* ---------- order the chain: drag-to-reorder gesture (Pointer Events, delegated) ---------- */
+  var chainDrag = null;
   document.addEventListener('pointerdown', function (e) {
-    var stampEl = e.target.closest('.passflag-stamp');
-    if (!stampEl || stampEl.classList.contains('disabled')) return;
-    var stage = stampEl.closest('.passflag-stage');
-    dragState = { stampEl: stampEl, startX: e.clientX, dx: 0, max: stage ? stage.clientWidth / 2 + 30 : 100 };
-    stampEl.style.transition = 'none';
+    var itemEl = e.target.closest('.chain-item');
+    if (!itemEl || !state.session || state.session.answered) return;
+    var wrap = itemEl.closest('.chain-wrap');
+    if (!wrap) return;
+    var rows = Array.prototype.slice.call(wrap.querySelectorAll('.chain-row'));
+    var rect = itemEl.getBoundingClientRect();
+    var rowRect = itemEl.closest('.chain-row').getBoundingClientRect();
+    chainDrag = {
+      itemEl: itemEl,
+      rows: rows,
+      startSlot: parseInt(itemEl.getAttribute('data-slot'), 10),
+      currentSlot: parseInt(itemEl.getAttribute('data-slot'), 10),
+      startY: e.clientY,
+      itemHeight: rowRect.height + 8
+    };
+    itemEl.classList.add('dragging');
+    itemEl.style.transition = 'none';
+    try { itemEl.setPointerCapture(e.pointerId); } catch (err) {}
   });
   document.addEventListener('pointermove', function (e) {
-    if (!dragState) return;
-    var dx = e.clientX - dragState.startX;
-    dx = Math.max(-dragState.max, Math.min(dragState.max, dx));
-    dragState.dx = dx;
-    dragState.stampEl.style.transform = 'translateX(' + dx + 'px) rotate(' + (dx / 12) + 'deg)';
-    dragState.stampEl.classList.remove('lean-a', 'lean-b');
-    if (Math.abs(dx) > 14) dragState.stampEl.classList.add(dx < 0 ? 'lean-a' : 'lean-b');
+    if (!chainDrag) return;
+    var dy = e.clientY - chainDrag.startY;
+    chainDrag.itemEl.style.transform = 'translateY(' + dy + 'px)';
+    var shift = Math.round(dy / chainDrag.itemHeight);
+    var targetSlot = Math.max(0, Math.min(chainDrag.rows.length - 1, chainDrag.startSlot + shift));
+    chainDrag.currentSlot = targetSlot;
+    chainDrag.rows.forEach(function (row, idx) {
+      if (idx === chainDrag.startSlot) return;
+      var item = row.querySelector('.chain-item');
+      if (!item) return;
+      var between = (targetSlot >= chainDrag.startSlot)
+        ? (idx > chainDrag.startSlot && idx <= targetSlot)
+        : (idx < chainDrag.startSlot && idx >= targetSlot);
+      item.style.transition = 'transform .12s';
+      item.style.transform = between
+        ? 'translateY(' + (targetSlot >= chainDrag.startSlot ? '-' : '') + chainDrag.itemHeight + 'px)'
+        : '';
+    });
   });
   document.addEventListener('pointerup', function () {
-    if (!dragState) return;
-    var ds = dragState;
-    dragState = null;
-    ds.stampEl.style.transition = '';
-    ds.stampEl.style.transform = '';
-    ds.stampEl.classList.remove('lean-a', 'lean-b');
-    if (Math.abs(ds.dx) > 46) {
-      var idx = ds.dx < 0 ? 0 : 1;
-      var zone = document.querySelector('.passflag-side[data-index="' + idx + '"]');
-      if (zone) handleAction('select-option', zone);
+    if (!chainDrag) return;
+    var cd = chainDrag;
+    chainDrag = null;
+    cd.itemEl.classList.remove('dragging');
+    cd.itemEl.style.transition = '';
+    cd.itemEl.style.transform = '';
+    cd.rows.forEach(function (row) {
+      var item = row.querySelector('.chain-item');
+      if (item) { item.style.transform = ''; item.style.transition = ''; }
+    });
+    if (cd.currentSlot !== cd.startSlot && state.session && Array.isArray(state.session.chainOrder)) {
+      var order = state.session.chainOrder;
+      var moved = order.splice(cd.startSlot, 1)[0];
+      order.splice(cd.currentSlot, 0, moved);
+      vibrate(10);
     }
+    render();
   });
 
   /* ---------- glossary auto-surface on new terms ---------- */
