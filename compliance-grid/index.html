@@ -3,13 +3,28 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
-<meta name="color-scheme" content="dark">
+<meta name="color-scheme" content="dark" id="color-scheme-meta">
 <title>Compliance Grid</title>
+<script>
+  // Applied before first paint so switching to light theme never flashes dark first.
+  (function () {
+    try {
+      var t = localStorage.getItem('complianceGridTheme_v1');
+      if (t === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+        document.getElementById('color-scheme-meta').setAttribute('content', 'light');
+      }
+    } catch (e) {}
+  })();
+</script>
 <script src="content.js"></script>
 <style>
   :root {
     --bg: #0a0a0d;
+    --bg-glow: #1b1b26;
     --card: #15151c;
+    --tile: #1c1c25;
+    --well: #232330;
     --card-border: #26262f;
     --text: #eceef2;
     --text-dim: #9a9aa8;
@@ -22,11 +37,34 @@
     --green-dim: #1c3324;
     --violet: #8b7cf6;
     --violet-dim: #322a5c;
+    --thread: #d9c9a3;
+    --on-accent: #0a0a0d;
+    --glass: rgba(255,255,255,0.055);
+    --glass-border: rgba(255,255,255,0.16);
     --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
     --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --radius-lg: 22px;
     --radius-md: 16px;
     --radius-sm: 10px;
+  }
+
+  :root[data-theme="light"] {
+    --bg: #f4f4f7;
+    --bg-glow: #ffffff;
+    --card: #ffffff;
+    --tile: #ffffff;
+    --well: #e7e7ee;
+    --card-border: #e1e1e9;
+    --text: #17171c;
+    --text-dim: #5c5c6b;
+    --text-faint: #868692;
+    --sage-dim: #dcece7;
+    --terracotta-dim: #f9e1db;
+    --green-dim: #dcf2e0;
+    --violet-dim: #e9e5fc;
+    --thread: #9c8657;
+    --glass: rgba(0,0,0,0.04);
+    --glass-border: rgba(0,0,0,0.13);
   }
 
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -42,8 +80,9 @@
 
   body {
     background:
-      radial-gradient(circle at 50% -10%, #1b1b26 0%, var(--bg) 55%);
+      radial-gradient(circle at 50% -10%, var(--bg-glow) 0%, var(--bg) 55%);
     background-attachment: fixed;
+    transition: background-color .25s ease;
   }
 
   #app {
@@ -120,7 +159,7 @@
     width: 42px;
     height: 42px;
     border-radius: 13px;
-    background: linear-gradient(160deg, var(--violet-dim), #1c1c25);
+    background: linear-gradient(160deg, var(--violet-dim), var(--tile));
     border: 1px solid var(--card-border);
     display: flex;
     align-items: center;
@@ -220,7 +259,7 @@
     flex: 1;
     height: 5px;
     border-radius: 3px;
-    background: #232330;
+    background: var(--well);
   }
   .segment.filled { background: var(--violet); }
   .chip {
@@ -301,7 +340,7 @@
     padding: 16px;
     border-radius: var(--radius-md);
     background: var(--violet);
-    color: #0a0a0d;
+    color: var(--on-accent);
     font-weight: 700;
     font-size: 15px;
     display: flex;
@@ -353,7 +392,7 @@
     margin-bottom: 12px;
   }
   .scenario {
-    background: #1c1c25;
+    background: var(--tile);
     border: 1px solid var(--card-border);
     border-radius: var(--radius-sm);
     padding: 14px 16px;
@@ -373,7 +412,7 @@
     text-align: left;
     padding: 15px 16px;
     border-radius: var(--radius-md);
-    background: #1c1c25;
+    background: var(--tile);
     border: 1.5px solid var(--card-border);
     font-size: 14.5px;
     line-height: 1.4;
@@ -416,7 +455,7 @@
     font-size: 12px;
     letter-spacing: 0.03em;
     color: var(--text-dim);
-    background: #1c1c25;
+    background: var(--tile);
     border: 1px solid var(--card-border);
     padding: 5px 12px;
     border-radius: 20px;
@@ -487,7 +526,7 @@
     align-items: center;
     justify-content: center;
     font-size: 15px;
-    background: #1c1c25;
+    background: var(--tile);
     border: 1px solid var(--card-border);
     color: var(--text-dim);
     flex-shrink: 0;
@@ -648,7 +687,7 @@
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background: #232330;
+    background: var(--well);
   }
   .quickcall-dots .dot.filled { background: var(--violet); }
   .quickcall-caption {
@@ -658,7 +697,8 @@
     margin-top: 10px;
   }
   .quickcall-scenario {
-    background: #1c1c25;
+    position: relative;
+    background: var(--tile);
     border: 1.5px solid var(--card-border);
     border-radius: var(--radius-md);
     padding: 20px 18px;
@@ -667,6 +707,29 @@
     line-height: 1.4;
     margin-bottom: 18px;
     text-align: center;
+  }
+  .quickcall-tick {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    animation: quickcall-tick-in .3s cubic-bezier(.2,.8,.3,1.3);
+  }
+  .quickcall-tick.tick-correct { border-color: var(--green); color: var(--green); }
+  .quickcall-tick.tick-wrong { border-color: var(--terracotta); color: var(--terracotta); }
+  @keyframes quickcall-tick-in {
+    0% { transform: scale(.3); opacity: 0; }
+    70% { transform: scale(1.15); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
   }
   .quickcall-options {
     display: flex;
@@ -690,7 +753,7 @@
   }
   .summary-stat {
     flex: 1;
-    background: #1c1c25;
+    background: var(--tile);
     border-radius: var(--radius-sm);
     padding: 14px 8px;
     text-align: center;
@@ -724,6 +787,7 @@
   .footer-space { height: 24px; flex-shrink: 0; }
 
   .home-wrap {
+    position: relative;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -733,11 +797,50 @@
     padding: 24px 8px;
     gap: 4px;
   }
+
+  /* ---------- theme toggle: small iOS-switch-style slider, dark/light ---------- */
+  .theme-toggle {
+    position: absolute;
+    top: env(safe-area-inset-top, 0px);
+    right: 8px;
+    margin-top: 10px;
+    width: 44px;
+    height: 24px;
+    border-radius: 999px;
+    background: var(--well);
+    border: 1px solid var(--card-border);
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    transition: background .2s ease, border-color .2s ease;
+  }
+  .theme-toggle-thumb {
+    position: relative;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--violet);
+    flex-shrink: 0;
+    transform: translateX(0);
+    transition: transform .3s cubic-bezier(.3,.7,.3,1.15);
+  }
+  [data-theme="light"] .theme-toggle-thumb { transform: translateX(20px); }
+  .theme-toggle-thumb svg {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 12px; height: 12px;
+    margin: -6px 0 0 -6px;
+    color: var(--on-accent);
+    transition: opacity .2s ease;
+  }
+  .theme-toggle-thumb .theme-icon-sun { opacity: 0; }
+  [data-theme="light"] .theme-toggle-thumb .theme-icon-moon { opacity: 0; }
+  [data-theme="light"] .theme-toggle-thumb .theme-icon-sun { opacity: 1; }
   .home-badge {
     width: 76px;
     height: 76px;
     border-radius: 24px;
-    background: linear-gradient(160deg, var(--violet-dim), #1c1c25);
+    background: linear-gradient(160deg, var(--violet-dim), var(--tile));
     border: 1px solid var(--card-border);
     display: flex;
     align-items: center;
@@ -805,34 +908,41 @@
     position: relative;
     height: 92px;
     border-radius: var(--radius-md);
-    background: #1c1c25;
+    background: var(--tile);
     border: 1.5px solid var(--card-border);
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 16px;
   }
-  .gate-bar {
-    position: absolute;
-    top: 22px;
-    left: 30%;
-    width: 40%;
-    height: 1.4px;
-    background: #3a3850;
-  }
   .gate-leaf {
     position: absolute;
-    top: 22px;
-    width: 2px;
-    height: 46px;
+    top: 50%;
+    width: 20%;
+    height: 2px;
     background: var(--violet);
-    transform-origin: top center;
-    transition: transform .4s cubic-bezier(.2,.8,.2,1);
+    transition: transform .45s cubic-bezier(.2,.8,.2,1);
   }
-  .gate-leaf.gate-left { left: 34%; }
-  .gate-leaf.gate-right { right: 34%; }
-  .gate-visual.gate-open .gate-leaf.gate-left { transform: rotate(-30deg); }
-  .gate-visual.gate-open .gate-leaf.gate-right { transform: rotate(30deg); }
+  .gate-leaf.gate-left {
+    left: 28%;
+    transform-origin: left center;
+    animation: gate-breathe-left 3.4s ease-in-out infinite;
+  }
+  .gate-leaf.gate-right {
+    right: 28%;
+    transform-origin: right center;
+    animation: gate-breathe-right 3.4s ease-in-out infinite;
+  }
+  @keyframes gate-breathe-left {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(-1.5px); }
+  }
+  @keyframes gate-breathe-right {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(1.5px); }
+  }
+  .gate-visual.gate-open .gate-leaf.gate-left { animation: none; transform: rotate(38deg); }
+  .gate-visual.gate-open .gate-leaf.gate-right { animation: none; transform: rotate(-38deg); }
   .gate-visual.gate-wrong { animation: wrong-shake .3s ease-out; }
   .gate-ripple {
     position: absolute;
@@ -860,7 +970,7 @@
     width: 100%;
     padding: 12px 14px;
     border-radius: var(--radius-sm);
-    background: #1c1c25;
+    background: var(--tile);
     border: 1.5px solid var(--card-border);
     font-size: 13.5px;
     color: var(--text-dim);
@@ -875,9 +985,7 @@
     font-size: 12px;
   }
   .step-chip.active { color: var(--text); border-color: var(--violet); background: var(--violet-dim); }
-  .step-chip.active .chk { background: var(--violet); border-color: var(--violet); color: #0a0a0d; }
-  .step-chip.locked { opacity: 0.6; }
-  .step-chip .step-note { color: var(--text-faint); font-size: 11px; margin-left: 2px; }
+  .step-chip.active .chk { background: var(--violet); border-color: var(--violet); color: var(--on-accent); }
 
   /* ---------- calm or alert: shape icons, no color-block zones ---------- */
   .calmalert-wrap { margin-bottom: 6px; }
@@ -896,7 +1004,7 @@
     letter-spacing: 0.03em;
     text-transform: uppercase;
     text-align: center;
-    background: #1c1c25;
+    background: var(--tile);
   }
   .calmalert-side svg { width: 34px; height: 34px; }
   .calmalert-side.side-calm { color: var(--sage); }
@@ -934,26 +1042,33 @@
     text-align: left;
     padding: 15px 16px;
     border-radius: var(--radius-md);
-    background: #1c1c25;
+    background: var(--tile);
     border: 1.5px solid var(--card-border);
     font-size: 14px;
     line-height: 1.35;
-    overflow: hidden;
   }
   .stamp-tile.numeric { flex: 1 1 calc(25% - 8px); min-width: 70px; text-align: center; font-weight: 700; font-size: 16px; }
+  /* Default: a small corner badge, so the verdict never covers multi-line option
+     text. Only the numeric variant (always short, e.g. "25%") gets the bigger
+     centered stamp — there's no text underneath it to obscure. */
   .stamp-mark {
     position: absolute;
-    top: 50%; left: 50%;
-    margin: -17px 0 0 -17px;
-    width: 34px; height: 34px;
+    top: -9px; right: -9px;
+    width: 24px; height: 24px;
     border-radius: 50%;
     border: 2px solid var(--violet);
     color: var(--violet);
     display: flex; align-items: center; justify-content: center;
-    font-size: 13px;
+    font-size: 11px;
     font-weight: 700;
     background: var(--card);
     animation: stamp-pop .35s cubic-bezier(.2,.8,.3,1.4);
+  }
+  .stamp-tile.numeric .stamp-mark {
+    top: 50%; left: 50%; right: auto;
+    margin: -17px 0 0 -17px;
+    width: 34px; height: 34px;
+    font-size: 13px;
   }
   .stamp-tile.reveal-correct .stamp-mark { border-color: var(--green); color: var(--green); }
   .stamp-tile.reveal-wrong .stamp-mark { border-color: var(--terracotta); color: var(--terracotta); }
@@ -969,7 +1084,7 @@
   .flipcard-face {
     min-height: 120px;
     border-radius: var(--radius-md);
-    background: #1c1c25;
+    background: var(--tile);
     border: 1.5px solid var(--card-border);
     padding: 20px;
     display: flex;
@@ -1011,10 +1126,14 @@
   .match-cols { display: flex; gap: 14px; position: relative; z-index: 1; }
   .match-col { flex: 1; display: flex; flex-direction: column; gap: 8px; }
   .match-tile {
+    position: relative;
+    min-height: 68px;
+    display: flex;
+    align-items: center;
     text-align: left;
-    padding: 12px 14px;
+    padding: 12px 16px;
     border-radius: var(--radius-sm);
-    background: #1c1c25;
+    background: var(--tile);
     border: 1.5px solid var(--card-border);
     font-size: 13px;
     line-height: 1.35;
@@ -1023,6 +1142,17 @@
   .match-tile.selected { border-color: var(--violet); background: var(--violet-dim); }
   .match-tile.solved { border-color: var(--violet); background: var(--violet-dim); opacity: 0.75; }
   .match-tile.wrong-flash { border-color: var(--terracotta); animation: wrong-shake .3s ease-out; }
+  .match-peg {
+    position: absolute;
+    top: 50%;
+    width: 5px;
+    height: 5px;
+    margin-top: -2.5px;
+    border-radius: 50%;
+    background: var(--violet);
+  }
+  .match-peg.peg-right { right: -2.5px; }
+  .match-peg.peg-left { left: -2.5px; }
   .match-threads {
     position: absolute;
     inset: 0;
@@ -1034,7 +1164,7 @@
   }
   .match-threads path {
     fill: none;
-    stroke: #d9c9a3;
+    stroke: var(--thread);
     stroke-width: 1.6;
     stroke-linecap: round;
   }
@@ -1055,10 +1185,10 @@
     flex: 1;
     padding: 14px 16px;
     border-radius: 16px;
-    background: rgba(255,255,255,0.055);
+    background: var(--glass);
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
-    border: 1px solid rgba(255,255,255,0.16);
+    border: 1px solid var(--glass-border);
     font-size: 14px;
     line-height: 1.35;
     touch-action: none;
@@ -1086,7 +1216,7 @@
     text-align: left;
     padding: 18px 14px 14px;
     border-radius: 4px 18px 18px 18px;
-    background: #1c1c25;
+    background: var(--tile);
     border: 1.5px solid var(--card-border);
     font-size: 13.5px;
     line-height: 1.35;
@@ -1125,6 +1255,28 @@
     opacity: 0.4;
     transform: rotate(0deg);
   }
+
+  /* ---------- screen/question transitions: brief fade+slide, no hard cuts ---------- */
+  .screen-enter { animation: screen-fade-in .2s ease-out; }
+  @keyframes screen-fade-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ---------- press feedback: every interactive element compresses slightly on tap ---------- */
+  button:active,
+  .option-btn:active,
+  .step-chip:active,
+  .stamp-tile:active,
+  .match-tile:active,
+  .chapter-card:active,
+  .continue-card:active,
+  .icon-btn:active {
+    transform: scale(0.97);
+  }
+  .outlier-chip:active { transform: scale(0.97) rotate(0deg); }
+  .calmalert-side.selected:active,
+  .option-btn.selected:active { transform: scale(0.98); }
 </style>
 </head>
 <body>
@@ -1140,6 +1292,24 @@
 
   /* ---------- storage ---------- */
   var STORAGE_KEY = 'complianceGridProgress_v1';
+  var THEME_STORAGE_KEY = 'complianceGridTheme_v1';
+
+  function applyTheme(theme) {
+    if (theme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+    else document.documentElement.removeAttribute('data-theme');
+    var meta = document.getElementById('color-scheme-meta');
+    if (meta) meta.setAttribute('content', theme === 'light' ? 'light' : 'dark');
+  }
+
+  function currentTheme() {
+    return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+  }
+
+  function toggleTheme() {
+    var next = currentTheme() === 'light' ? 'dark' : 'light';
+    applyTheme(next);
+    try { localStorage.setItem(THEME_STORAGE_KEY, next); } catch (e) {}
+  }
 
   function defaultChapterProgress() {
     return {
@@ -1183,8 +1353,7 @@
     screen: 'home',
     chapterKey: null,
     paused: false,
-    session: null,     // { questionIndex, correctCount, answeredCount, streak, answered:false, selection, pendingFollowup, currentIsFollowup }
-    introducedTerms: {}
+    session: null     // { questionIndex, correctCount, answeredCount, streak, answered:false, selection, pendingFollowup, currentIsFollowup }
   };
 
   var ICON_ATTRS = 'viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" ' +
@@ -1209,6 +1378,13 @@
     '<line class="gate-line gate-line-a" x1="10.3" y1="20.5" x2="14" y2="20.5" stroke="var(--violet)" stroke-width="1.6" stroke-linecap="round"/>' +
     '<line class="gate-line gate-line-b" x1="18" y1="20.5" x2="21.7" y2="20.5" stroke="var(--violet)" stroke-width="1.6" stroke-linecap="round"/>' +
     '</svg>';
+
+  var THEME_TOGGLE_HTML =
+    '<button class="theme-toggle" data-action="toggle-theme" aria-label="Switch between dark and light theme">' +
+    '<span class="theme-toggle-thumb">' +
+    '<svg class="theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg>' +
+    '<svg class="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.2 12H2M22 12h-2.2M5.6 5.6l1.6 1.6M16.8 16.8l1.6 1.6M18.4 5.6l-1.6 1.6M7.2 16.8l-1.6 1.6"/></svg>' +
+    '</span></button>';
 
   function getChapter(key) {
     for (var i = 0; i < APP_CONTENT.chapters.length; i++) {
@@ -1243,15 +1419,6 @@
       });
     });
     return escaped;
-  }
-
-  function markIntroduced(chapterKey, text) {
-    if (!text) return;
-    if (!state.introducedTerms[chapterKey]) state.introducedTerms[chapterKey] = {};
-    APP_CONTENT.glossary.forEach(function (g) {
-      var re = new RegExp('\\b' + g.term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'i');
-      if (re.test(text)) state.introducedTerms[chapterKey][g.term] = true;
-    });
   }
 
   /* ---------- haptics ---------- */
@@ -1296,6 +1463,16 @@
 
   /* ---------- rendering ---------- */
   var app = document.getElementById('app');
+  var lastScreenKey = null;
+
+  // Wraps freshly-mounted screen HTML in a brief fade/slide-in, but only when
+  // `key` actually changed — re-renders of the same screen (picking an option,
+  // toggling a step) shouldn't replay the transition.
+  function mountScreen(html, key) {
+    var animate = key !== lastScreenKey;
+    lastScreenKey = key;
+    app.innerHTML = animate ? ('<div class="screen-enter">' + html + '</div>') : html;
+  }
 
   function render() {
     if (state.screen === 'home') return renderHome();
@@ -1327,6 +1504,7 @@
     });
     var continueTarget = findContinueTarget();
     var html = '<div class="home-wrap">';
+    html += THEME_TOGGLE_HTML;
     html += '<div class="home-badge">' + BRAND_MARK + '</div>';
     html += '<h1 class="home-title">Compliance Grid</h1>';
     html += '<p class="home-tagline">Learn to stop money laundering by playing the system that stops it.</p>';
@@ -1346,7 +1524,7 @@
       html += '<button class="btn-primary" data-action="enter-app">Start ▶</button>';
     }
     html += '</div>';
-    app.innerHTML = html;
+    mountScreen(html, 'home');
   }
 
   function topbar(opts) {
@@ -1391,7 +1569,7 @@
       html += '</div>';
     });
     html += '</div><div class="footer-space"></div>';
-    app.innerHTML = html;
+    mountScreen(html, 'map');
   }
 
   function renderBriefing() {
@@ -1414,7 +1592,7 @@
       html += '<button class="btn-secondary" data-action="restart-chapter" data-chapter="' + ch.chapter_key + '">⟳ Start over</button>';
     }
     html += '<div class="footer-space"></div>';
-    app.innerHTML = html;
+    mountScreen(html, 'briefing:' + ch.chapter_key);
   }
 
   function currentQuestion() {
@@ -1428,8 +1606,6 @@
     var ch = getChapter(state.chapterKey);
     var s = state.session;
     var q = currentQuestion();
-
-    markIntroduced(state.chapterKey, (q.scenario || '') + ' ' + q.task_prompt);
 
     var html = topbar({ back: true, pause: true, title: ch.briefing.title });
 
@@ -1466,10 +1642,7 @@
     html += '</div>';
 
     if (isQuickcall) {
-      var itemAnswered = s.quickcallItemSelection !== null && s.quickcallItemSelection !== undefined;
-      var isLastItem = s.quickcallIndex >= q.items.length - 1;
-      html += '<button class="btn-primary" data-action="quickcall-next" ' + (itemAnswered ? '' : 'disabled') + '>' +
-        (itemAnswered ? (isLastItem ? 'See results ▶' : 'Next →') : 'Tap an answer above') + '</button>';
+      // no manual advance button — selecting an option auto-advances to the next item
     } else if (selfResolving) {
       // no Confirm button — the tap itself resolves the question
     } else {
@@ -1477,7 +1650,9 @@
     }
     html += '<div class="footer-space"></div>';
 
-    app.innerHTML = html;
+    var screenKey = 'question:' + state.chapterKey + ':' + s.questionIndex + ':' +
+      (s.currentIsFollowup ? 'f' : 'p') + (isQuickcall ? ':qc' + s.quickcallIndex : '');
+    mountScreen(html, screenKey);
 
     if (q.mechanic === 'match_term' && !s.currentIsFollowup) {
       window.requestAnimationFrame(positionMatchThreads);
@@ -1500,8 +1675,14 @@
     }
     html += '</div>';
     html += '<div class="quickcall-caption">Take your time — no timer.</div>';
-    html += '<div class="quickcall-scenario">' + annotateGlossary(item.label) + '</div>';
     var answered = s.quickcallItemSelection !== null && s.quickcallItemSelection !== undefined;
+    var itemCorrect = answered && !!(item.options[s.quickcallItemSelection] && item.options[s.quickcallItemSelection].correct);
+    html += '<div class="quickcall-scenario">' + annotateGlossary(item.label);
+    if (answered) {
+      html += '<div class="quickcall-tick ' + (itemCorrect ? 'tick-correct' : 'tick-wrong') + '">' +
+        (itemCorrect ? '✓' : '✕') + '</div>';
+    }
+    html += '</div>';
     html += '<div class="options quickcall-options">';
     item.options.forEach(function (opt, i) {
       var cls = 'option-btn';
@@ -1549,10 +1730,10 @@
   /* ---------- build the gate: per-question due-diligence checklist, binary open/shut ---------- */
   // Fallback defaults, only used if a build_gate question somehow omits its own data.
   var DEFAULT_GATE_STEPS = [
-    { label: 'Verify identity', locked: true },
-    { label: 'Verify address', locked: false },
-    { label: 'Confirm source of funds', locked: false },
-    { label: 'Enhanced ongoing monitoring', locked: false }
+    { label: 'Verify identity' },
+    { label: 'Verify address' },
+    { label: 'Confirm source of funds' },
+    { label: 'Enhanced ongoing monitoring' }
   ];
   var DEFAULT_GATE_PATTERN = {
     simplified: [true, false, false, false],
@@ -1566,7 +1747,7 @@
 
   function ensureGateSteps(s, q) {
     if (!Array.isArray(s.gateSteps)) {
-      s.gateSteps = gateStepsFor(q).map(function (step) { return !!step.locked; });
+      s.gateSteps = gateStepsFor(q).map(function () { return false; });
     }
     return s.gateSteps;
   }
@@ -1589,17 +1770,16 @@
     var wrongShake = s.answered && !s.lastCorrect;
     var html = '<div class="gate-wrap">';
     html += '<div class="gate-visual' + (opened ? ' gate-open' : '') + (wrongShake ? ' gate-wrong' : '') + '">';
-    html += '<div class="gate-bar"></div><div class="gate-leaf gate-left"></div><div class="gate-leaf gate-right"></div>';
+    html += '<div class="gate-leaf gate-left"></div><div class="gate-leaf gate-right"></div>';
     if (opened) html += '<div class="gate-ripple">✓</div>';
     html += '</div>';
     html += '<div class="tier-steps">';
     stepDefs.forEach(function (step, i) {
       var active = !!steps[i];
-      var cls = 'step-chip' + (active ? ' active' : '') + (step.locked ? ' locked' : '');
-      html += '<button class="' + cls + '" ' + ((s.answered || step.locked) ? 'disabled' : '') +
+      var cls = 'step-chip' + (active ? ' active' : '');
+      html += '<button class="' + cls + '" ' + (s.answered ? 'disabled' : '') +
         ' data-action="toggle-gate-step" data-step="' + i + '">' +
         '<span class="chk">' + (active ? '✓' : '') + '</span>' + escapeHtml(step.label) +
-        (step.locked ? ' <span class="step-note">(always required)</span>' : '') +
         '</button>';
     });
     html += '</div></div>';
@@ -1628,7 +1808,10 @@
       } else if (picked) {
         cls += ' selected';
       }
-      var showMark = s.answered ? (opt.correct || picked) : picked;
+      // Only show the mark once graded — pre-confirm, the violet selected
+      // border/background already signals "picked," so there's no glyph yet
+      // to put in an empty badge.
+      var showMark = s.answered && (opt.correct || picked);
       var markGlyph = s.answered ? (opt.correct ? '✓' : '✕') : '';
       html += '<button class="' + cls + '" ' + (s.answered ? 'disabled' : '') +
         ' data-action="select-option" data-index="' + i + '">' + escapeHtml(opt.label) +
@@ -1643,7 +1826,7 @@
   function renderFlipCard(q, s) {
     var flipped = s.answered;
     var html = '<div class="flipcard-wrap">';
-    html += '<div class="flipcard-face' + (flipped ? ' flipped' : '') + '">' + annotateGlossary(q.claim) +
+    html += '<div class="flipcard-face' + (flipped ? ' flipped' : '') + '"><div class="flipcard-claim">' + annotateGlossary(q.claim) + '</div>' +
       '<div class="flipcard-back">' + annotateGlossary(q.why || '') + '</div></div>';
     html += '<div class="options flipcard-options">';
     [true, false].forEach(function (val) {
@@ -1686,7 +1869,7 @@
       var cls = 'match-tile' + (solved ? ' solved' : '') + (selected ? ' selected' : '') + (wrongFlash ? ' wrong-flash' : '');
       html += '<button class="' + cls + '" ' + (solved ? 'disabled' : '') +
         ' data-action="select-match-term" data-pair="' + pairIdx + '" data-role="term">' +
-        escapeHtml(q.pairs[pairIdx].term) + '</button>';
+        escapeHtml(q.pairs[pairIdx].term) + '<span class="match-peg peg-right"></span></button>';
     });
     html += '</div><div class="match-col">';
     s.matchDefOrder.forEach(function (pairIdx) {
@@ -1695,7 +1878,7 @@
       var cls = 'match-tile' + (solved ? ' solved' : '') + (wrongFlash ? ' wrong-flash' : '');
       html += '<button class="' + cls + '" ' + (solved ? 'disabled' : '') +
         ' data-action="select-match-def" data-pair="' + pairIdx + '" data-role="def">' +
-        escapeHtml(q.pairs[pairIdx].definition) + '</button>';
+        '<span class="match-peg peg-left"></span>' + escapeHtml(q.pairs[pairIdx].definition) + '</button>';
     });
     html += '</div></div>';
     html += '<div class="match-hint">' + (s.matchSolved.every(Boolean) ? '' : 'Tap a term, then its definition') + '</div>';
@@ -1865,12 +2048,26 @@
   function commitAnswer(q, s, correct) {
     s.lastCorrect = correct;
     s.answered = true;
-    s.feedbackMinimized = false;
+    // A correct answer only needs a brief non-blocking confirmation (the feedback
+    // tab) and moves on by itself; a wrong answer has something worth reading, so
+    // it stays as the full sheet and waits for a manual Continue tap.
+    s.feedbackMinimized = !!correct;
     if (!s.currentIsFollowup) {
       s.answeredCount += 1;
       if (correct) { s.correctCount += 1; s.streak += 1; } else { s.streak = 0; }
     }
     vibrate(correct ? 18 : [20, 40, 20]);
+    if (correct) scheduleAutoContinue(s);
+  }
+
+  function scheduleAutoContinue(s) {
+    setTimeout(function () {
+      if (state.session !== s || !s.answered || !s.feedbackMinimized || !s.lastCorrect) return;
+      removeFeedbackSheet();
+      removeFeedbackTab();
+      if (s.currentIsFollowup) advanceAfterFollowup();
+      else advanceAfterPrimary(true);
+    }, 900);
   }
 
   function renderFeedbackSheet(q, s) {
@@ -1970,7 +2167,7 @@
     }
     html += '<button class="btn-secondary" data-action="restart-chapter" data-chapter="' + state.chapterKey + '">⟳ Replay chapter</button>';
     html += '<div class="footer-space"></div>';
-    app.innerHTML = html;
+    mountScreen(html, 'complete:' + state.chapterKey);
     animateCountUp();
   }
 
@@ -2146,7 +2343,13 @@
   }
 
   function handleAction(action, el) {
-    if (action === 'enter-app') {
+    if (action === 'toggle-theme') {
+      // No render() here on purpose — the toggle button is a persistent DOM
+      // node, so the CSS transition on its thumb (and every color, via
+      // variables cascading off [data-theme]) animates smoothly. A full
+      // re-render would recreate the button and the slide would just jump.
+      toggleTheme();
+    } else if (action === 'enter-app') {
       state.screen = 'map';
       render();
     } else if (action === 'open-chapter') {
@@ -2234,8 +2437,6 @@
       if (state.session.answered) return;
       var qGate = currentQuestion();
       var stepIdx = parseInt(el.getAttribute('data-step'), 10);
-      var stepDefs = gateStepsFor(qGate);
-      if (stepDefs[stepIdx] && stepDefs[stepIdx].locked) return;
       var steps = ensureGateSteps(state.session, qGate);
       steps[stepIdx] = !steps[stepIdx];
       vibrate(8);
@@ -2251,24 +2452,18 @@
       sq.quickcallResults[itemIdx] = itemCorrect;
       vibrate(itemCorrect ? 12 : [15, 30]);
       render();
-    } else if (action === 'quickcall-next') {
-      var s3 = state.session;
-      var q3 = currentQuestion();
-      if (s3.quickcallItemSelection === null || s3.quickcallItemSelection === undefined) return;
-      if (s3.quickcallIndex < q3.items.length - 1) {
-        s3.quickcallIndex += 1;
-        s3.quickcallItemSelection = null;
+      setTimeout(function () {
+        if (state.session !== sq) return;
+        if (sq.quickcallIndex < qq.items.length - 1) {
+          sq.quickcallIndex += 1;
+          sq.quickcallItemSelection = null;
+          render();
+          return;
+        }
+        var aggregate = sq.quickcallResults.length === qq.items.length && sq.quickcallResults.every(function (r) { return r === true; });
+        commitAnswer(qq, sq, aggregate);
         render();
-        return;
-      }
-      var aggregate = s3.quickcallResults.length === q3.items.length && s3.quickcallResults.every(function (r) { return r === true; });
-      s3.lastCorrect = aggregate;
-      s3.answered = true;
-      s3.feedbackMinimized = false;
-      s3.answeredCount += 1;
-      if (aggregate) { s3.correctCount += 1; s3.streak += 1; } else { s3.streak = 0; }
-      vibrate(aggregate ? 18 : [20, 40, 20]);
-      render();
+      }, 550);
     } else if (action === 'confirm-answer') {
       var q = currentQuestion();
       var s = state.session;
@@ -2395,9 +2590,6 @@
       finalize();
     }
   });
-
-  /* ---------- glossary auto-surface on new terms ---------- */
-  var origRenderQuestion = renderQuestion;
 
   render();
 })();

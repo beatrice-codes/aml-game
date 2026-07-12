@@ -513,10 +513,10 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
             }
           ],
           "gate_steps": [
-            { "label": "Verify identity", "locked": true },
-            { "label": "Verify address", "locked": false },
-            { "label": "Confirm source of funds", "locked": false },
-            { "label": "Enhanced ongoing monitoring", "locked": false }
+            { "label": "Verify identity" },
+            { "label": "Verify address" },
+            { "label": "Confirm source of funds" },
+            { "label": "Enhanced ongoing monitoring" }
           ],
           "gate_pattern": {
             "simplified": [true, false, false, false],
@@ -836,10 +836,10 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
             }
           ],
           "gate_steps": [
-            { "label": "Verify identity", "locked": true },
-            { "label": "Verify address", "locked": false },
-            { "label": "Confirm source of funds", "locked": false },
-            { "label": "Enhanced ongoing monitoring", "locked": false }
+            { "label": "Verify identity" },
+            { "label": "Verify address" },
+            { "label": "Confirm source of funds" },
+            { "label": "Enhanced ongoing monitoring" }
           ],
           "gate_pattern": {
             "simplified": [true, false, false, false],
@@ -871,10 +871,10 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "scenario": "A merchant account has multiple directors/signatories; only one has had identity verified.",
           "task_prompt": "Toggle every person here who must be identity-verified before this account can open.",
           "gate_steps": [
-            { "label": "The signatory who signed the application", "locked": true },
-            { "label": "Every other director or signatory on the account", "locked": false },
-            { "label": "Anyone else authorised to operate the account", "locked": false },
-            { "label": "Only signatories who have actually used the account so far", "locked": false }
+            { "label": "The signatory who signed the application" },
+            { "label": "Every other director or signatory on the account" },
+            { "label": "Anyone else authorised to operate the account" },
+            { "label": "Only signatories who have actually used the account so far" }
           ],
           "gate_pattern": [true, true, true, false],
           "article_citation": "Art. 33",
@@ -919,10 +919,10 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
             }
           ],
           "gate_steps": [
-            { "label": "Verify identity", "locked": true },
-            { "label": "Verify address", "locked": false },
-            { "label": "Confirm source of funds", "locked": false },
-            { "label": "Enhanced ongoing monitoring", "locked": false }
+            { "label": "Verify identity" },
+            { "label": "Verify address" },
+            { "label": "Confirm source of funds" },
+            { "label": "Enhanced ongoing monitoring" }
           ],
           "gate_pattern": {
             "simplified": [true, false, false, false],
@@ -954,10 +954,10 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "scenario": "An 18-month-dormant merchant account resumes processing volume, and the merchant also requests a new payment product.",
           "task_prompt": "Toggle every event here that triggers a mandatory ID/profile update check.",
           "gate_steps": [
-            { "label": "Dormant account resuming activity", "locked": false },
-            { "label": "Merchant requesting a new payment product", "locked": false },
-            { "label": "Merchant's registered address unchanged", "locked": false },
-            { "label": "Routine login by the merchant", "locked": false }
+            { "label": "Dormant account resuming activity" },
+            { "label": "Merchant requesting a new payment product" },
+            { "label": "Merchant's registered address unchanged" },
+            { "label": "Routine login by the merchant" }
           ],
           "gate_pattern": [true, true, false, false],
           "article_citation": "Art. 25",
@@ -996,10 +996,10 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "scenario": "A representative/agent acts for a merchant, but no authorisation document is on file.",
           "task_prompt": "Toggle every check that applies before a representative/agent can act for this merchant.",
           "gate_steps": [
-            { "label": "Obtain a signed authorisation agreement", "locked": false },
-            { "label": "Keep a copy of the authorisation on file", "locked": false },
-            { "label": "Verify the representative's own identity", "locked": true },
-            { "label": "Skip the paperwork for a single one-off transaction", "locked": false }
+            { "label": "Obtain a signed authorisation agreement" },
+            { "label": "Keep a copy of the authorisation on file" },
+            { "label": "Verify the representative's own identity" },
+            { "label": "Skip the paperwork for a single one-off transaction" }
           ],
           "gate_pattern": [true, true, true, false],
           "article_citation": "Art. 34",
@@ -1325,10 +1325,10 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
             }
           ],
           "gate_steps": [
-            { "label": "Verify identity", "locked": true },
-            { "label": "Verify address", "locked": false },
-            { "label": "Confirm source of funds", "locked": false },
-            { "label": "Enhanced ongoing monitoring", "locked": false }
+            { "label": "Verify identity" },
+            { "label": "Verify address" },
+            { "label": "Confirm source of funds" },
+            { "label": "Enhanced ongoing monitoring" }
           ],
           "gate_pattern": {
             "simplified": [true, false, false, false],
