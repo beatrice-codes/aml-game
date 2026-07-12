@@ -232,7 +232,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "difficulty": "medium",
           "mechanic": "flip_card",
           "scenario": "",
-          "task_prompt": "The Directive requires weighing nature, size, complexity, AND ML/TF risk level together — not just one factor.",
+          "task_prompt": "True or false?",
           "article_citation": "Art. 5",
           "claim": "The Directive requires weighing nature, size, complexity, AND ML/TF risk level together — not just one factor.",
           "answer": true,
@@ -345,44 +345,86 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
         },
         {
           "id": "foundations-q6",
-          "difficulty": "hard",
-          "mechanic": "spot_outlier",
-          "scenario": "The Directive's lettering in one clause runs (a)-(f), then jumps to (h) — there's no (g).",
-          "task_prompt": "What's the right response to a missing subparagraph (g)?",
+          "difficulty": "easy",
+          "mechanic": "mcq",
+          "scenario": "",
+          "task_prompt": "What does AML/CFT mean?",
           "options": [
             {
-              "label": "Flag it for legal sign-off and check the current consolidated text",
+              "label": "Anti-Malpractice Ledger / Compliance Framework Tracker",
+              "correct": false
+            },
+            {
+              "label": "Automated Monitoring List / Client Fraud Tool",
+              "correct": false
+            },
+            {
+              "label": "Anti-Money Laundering / Countering the Financing of Terrorism",
               "correct": true
             },
             {
-              "label": "Ignore it — numbering gaps never matter",
-              "correct": false
-            },
-            {
-              "label": "Assume (g) covers casinos",
-              "correct": false
-            },
-            {
-              "label": "Treat it as proof the Directive isn't in force",
+              "label": "Asset Management Licence / Cyprus Financial Tribunal",
               "correct": false
             }
           ],
-          "article_citation": "Art. 3",
-          "correct_feedback": "Correct — flag unexplained gaps for legal sign-off and verify against the current text.",
-          "incorrect_feedback": "Not quite — don't guess or assume it's meaningless; flag gaps like this for legal sign-off and check the source text.",
+          "article_citation": "Art. 1; Art. 4",
+          "correct_feedback": "Correct — AML/CFT is Anti-Money Laundering / Countering the Financing of Terrorism, the overall regime this Directive implements.",
+          "incorrect_feedback": "Not quite — AML/CFT stands for Anti-Money Laundering / Countering the Financing of Terrorism.",
           "followup_question": {
-            "task_prompt": "Should an unexplained lettering gap be verified against the source text, or assumed to mean nothing?",
+            "task_prompt": "Does AML/CFT cover both money laundering and terrorist financing, or just money laundering?",
             "options": [
               {
-                "label": "Verified against the source text",
+                "label": "Both",
                 "correct": true
               },
               {
-                "label": "Assumed to mean nothing",
+                "label": "Just money laundering",
                 "correct": false
               }
             ],
-            "article_citation": "Art. 3"
+            "article_citation": "Art. 1; Art. 4"
+          }
+        },
+        {
+          "id": "foundations-q17",
+          "difficulty": "easy",
+          "mechanic": "mcq",
+          "scenario": "",
+          "task_prompt": "What does AMLCO mean?",
+          "options": [
+            {
+              "label": "Automated Monitoring & Liaison Compliance Office",
+              "correct": false
+            },
+            {
+              "label": "Authorised Money Laundering Control Officer",
+              "correct": false
+            },
+            {
+              "label": "Anti-Money Laundering Compliance Officer",
+              "correct": true
+            },
+            {
+              "label": "Anti-Malware Licensing & Compliance Office",
+              "correct": false
+            }
+          ],
+          "article_citation": "Art. 2",
+          "correct_feedback": "Correct — AMLCO stands for Anti-Money Laundering Compliance Officer, the person a regulated entity appoints to run its AML compliance (this game usually just calls them the \"Compliance Officer\").",
+          "incorrect_feedback": "Not quite — AMLCO stands for Anti-Money Laundering Compliance Officer.",
+          "followup_question": {
+            "task_prompt": "Is the AMLCO the same role this game calls the 'Compliance Officer'?",
+            "options": [
+              {
+                "label": "Yes",
+                "correct": true
+              },
+              {
+                "label": "No — they're two different people",
+                "correct": false
+              }
+            ],
+            "article_citation": "Art. 2"
           }
         }
       ]
@@ -427,7 +469,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "difficulty": "easy",
           "mechanic": "flip_card",
           "scenario": "",
-          "task_prompt": "The Compliance Officer identifies and assesses ML/TF risk entirely alone, without support from senior management or other units.",
+          "task_prompt": "True or false?",
           "article_citation": "Art. 19",
           "claim": "The Compliance Officer identifies and assesses ML/TF risk entirely alone, without support from senior management or other units.",
           "answer": false,
@@ -438,7 +480,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "difficulty": "easy",
           "mechanic": "flip_card",
           "scenario": "",
-          "task_prompt": "A higher-risk entity must assess the effectiveness of its controls more often than a lower-risk one.",
+          "task_prompt": "True or false?",
           "article_citation": "Art. 21",
           "claim": "A higher-risk entity must assess the effectiveness of its controls more often than a lower-risk one.",
           "answer": true,
@@ -483,7 +525,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "difficulty": "medium",
           "mechanic": "flip_card",
           "scenario": "",
-          "task_prompt": "Outsourcing a risk-scoring IT system relieves the entity of the duty to understand how it works.",
+          "task_prompt": "True or false?",
           "article_citation": "Art. 19",
           "claim": "Outsourcing a risk-scoring IT system relieves the entity of the duty to understand how it works.",
           "answer": false,
@@ -616,8 +658,8 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "id": "rr-13",
           "difficulty": "hard",
           "mechanic": "calm_alert",
-          "scenario": "An entity's risk-scoring model is built so no segment can ever score 'high-risk.'",
-          "task_prompt": "Pass or flag: a model designed so nothing can ever score high-risk?",
+          "scenario": "A payment company sets up its risk system so every customer always comes out 'low risk' — no matter what.",
+          "task_prompt": "Pass or flag?",
           "options": [
             {
               "label": "Pass",
@@ -629,10 +671,10 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
             }
           ],
           "article_citation": "Art. 19",
-          "correct_feedback": "Correct to flag — Article 19 bans weighting risk factors so no relationship can ever be rated high-risk.",
-          "incorrect_feedback": "Not quite — this design is itself the violation. Article 19 bans models where no relationship can ever be rated high-risk.",
+          "correct_feedback": "Correct to flag — a risk model can't be built so that no customer is ever rated high-risk.",
+          "incorrect_feedback": "Not quite — this setup is itself the problem. A risk model can't be rigged so that no customer is ever rated high-risk.",
           "followup_question": {
-            "task_prompt": "Can a model be designed so no relationship can ever be rated high-risk?",
+            "task_prompt": "Can a risk model be designed so that no customer can ever be rated high-risk?",
             "options": [
               {
                 "label": "No",
@@ -899,7 +941,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "id": "gate-q9",
           "difficulty": "medium",
           "mechanic": "build_gate",
-          "scenario": "A merchant is a well-established LTD selling low-risk goods, with no subscription products, clean financials, healthy revenue, an active public presence, and a low chargeback rate — confirmed low risk, no ML/TF suspicion.",
+          "scenario": "A well-established merchant sells ordinary, low-risk goods — clean financials, steady revenue, a low chargeback rate. Risk has been confirmed low, with no ML/TF suspicion.",
           "task_prompt": "Which CDD tier applies here?",
           "options": [
             {
@@ -983,7 +1025,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "difficulty": "medium",
           "mechanic": "flip_card",
           "scenario": "A merchant applies for onboarding as a sole trader; the business has two partners who both have authority over the account.",
-          "task_prompt": "Every partner or authorised individual in a sole-trader/partnership merchant must be identity-verified, the same as any natural person.",
+          "task_prompt": "True or false?",
           "article_citation": "Art. 36",
           "claim": "Every partner or authorised individual in a sole-trader/partnership merchant must be identity-verified, the same as any natural person.",
           "answer": true,
@@ -1064,44 +1106,44 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
         },
         {
           "id": "gate-q17",
-          "difficulty": "hard",
+          "difficulty": "easy",
           "mechanic": "mcq",
           "scenario": "",
-          "task_prompt": "Are relationships under Articles 38 and 39 mandatory or discretionary?",
+          "task_prompt": "What does CDD mean?",
           "options": [
             {
-              "label": "Both require establishing these relationships ('must')",
+              "label": "Compliance Data Directive",
               "correct": false
             },
             {
-              "label": "Discretionary ('may') for both, but Art. 38 adds mandatory info-gathering duties once established",
+              "label": "Customer Due Diligence",
               "correct": true
             },
             {
-              "label": "Article 39 requires mandatory enhanced due diligence in all cases",
+              "label": "Client Disclosure Document",
               "correct": false
             },
             {
-              "label": "Article 38 prohibits relationships with any third-country investment fund",
+              "label": "Corporate Documentation Duty",
               "correct": false
             }
           ],
-          "article_citation": "Art. 38; Art. 39",
-          "correct_feedback": "Correct — establishing these relationships is discretionary ('may') in both; Art. 38 adds mandatory info-gathering duties once established, Art. 39 doesn't.",
-          "incorrect_feedback": "Not quite — establishing the relationship is discretionary ('may') in both; only Art. 38 makes info-gathering mandatory once established.",
+          "article_citation": "Art. 20; Art. 26",
+          "correct_feedback": "Correct — CDD is Customer Due Diligence: identifying a customer, verifying their identity, and understanding the relationship's purpose.",
+          "incorrect_feedback": "Not quite — CDD stands for Customer Due Diligence.",
           "followup_question": {
-            "task_prompt": "Is establishing a relationship under Article 39 mandatory or discretionary?",
+            "task_prompt": "Does CDD mean identifying and verifying a customer, or just recording their name?",
             "options": [
               {
-                "label": "Discretionary — the entity 'may' establish such a relationship",
+                "label": "Identifying and verifying the customer, and understanding the relationship",
                 "correct": true
               },
               {
-                "label": "Mandatory — the entity must accept all such providers",
+                "label": "Just recording their name",
                 "correct": false
               }
             ],
-            "article_citation": "Art. 39"
+            "article_citation": "Art. 20; Art. 26"
           }
         },
         {
@@ -1272,7 +1314,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "difficulty": "easy",
           "mechanic": "flip_card",
           "scenario": "",
-          "task_prompt": "An entity must rescan its whole client base for new PEPs at least once a month.",
+          "task_prompt": "True or false?",
           "article_citation": "Art. 46",
           "claim": "An entity must rescan its whole client base for new PEPs at least once a month.",
           "answer": true,
@@ -1304,7 +1346,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "id": "eq_03",
           "difficulty": "medium",
           "mechanic": "build_gate",
-          "scenario": "Trustees of the Alpha Family Trust want to open a business account, acting on the trust's behalf.",
+          "scenario": "A trust wants to open an account. Because it can be hard to see who really controls or benefits from a trust's money, trusts are always treated as higher risk.",
           "task_prompt": "Which level of customer due diligence should apply to opening this account?",
           "article_citation": "Art. 44",
           "options": [
@@ -1576,9 +1618,9 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "id": "eq_17",
           "difficulty": "hard",
           "mechanic": "calm_alert",
-          "scenario": "A medium-risk-country investment fund wants a third-party Client Account for subscription money.",
-          "task_prompt": "Would you flag this request, or does it pass?",
-          "article_citation": "Art. 47",
+          "scenario": "A crypto exchange wants to receive payouts through your platform, but it isn't licensed under the EU's crypto rules (MiCA).",
+          "task_prompt": "Pass or flag?",
+          "article_citation": "Art. 42",
           "options": [
             {
               "label": "Pass",
@@ -1589,21 +1631,21 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
               "correct": true
             }
           ],
-          "correct_feedback": "Correct — funds/providers from medium- or high-risk countries are expressly banned from holding third-party Client Accounts. This must be flagged and refused.",
-          "incorrect_feedback": "Not quite — stronger due diligence isn't the answer here; it's an outright prohibition. Medium/high-risk-country funds and providers can't hold third-party Client Accounts at all.",
+          "correct_feedback": "Correct to flag — crypto-asset providers not regulated under MiCA always need Enhanced Due Diligence, they can't be treated as routine.",
+          "incorrect_feedback": "Not quite — an unregulated crypto provider like this always needs Enhanced Due Diligence, it can't simply pass as routine.",
           "followup_question": {
-            "task_prompt": "Can a medium-risk-country investment fund hold a third-party Client Account?",
+            "task_prompt": "Does an unregulated crypto-asset provider always require Enhanced Due Diligence?",
             "options": [
               {
-                "label": "No — expressly prohibited",
+                "label": "Yes — always",
                 "correct": true
               },
               {
-                "label": "Yes, with enhanced due diligence",
+                "label": "Only if something else also looks suspicious",
                 "correct": false
               }
             ],
-            "article_citation": "Art. 47"
+            "article_citation": "Art. 42"
           }
         },
         {
@@ -1611,7 +1653,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "difficulty": "hard",
           "mechanic": "flip_card",
           "scenario": "The Compliance Officer opposes onboarding a high-risk customer, but senior management proceeds anyway.",
-          "task_prompt": "Senior management can overrule the Compliance Officer's objection to onboarding a high-risk customer without any written justification.",
+          "task_prompt": "True or false?",
           "article_citation": "Art. 42",
           "claim": "Senior management can overrule the Compliance Officer's objection to onboarding a high-risk customer without any written justification.",
           "answer": false,
@@ -2091,8 +2133,8 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
     },
     {
       "term": "Compliance Officer",
-      "definition": "Defined in Article 2 as the natural person appointed under Article 69(a) of 'the Law.'",
-      "source": "Art. 2"
+      "definition": "Also known as the AMLCO (Anti-Money Laundering Compliance Officer). Defined in Article 2 as the natural person appointed under Article 69(a) of 'the Law' to run the entity's AML compliance.",
+      "source": "Art. 2; Part 5, Art. 69 of the Law"
     },
     {
       "term": "Senior management",
@@ -2173,11 +2215,6 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
       "term": "K.Δ.Π.",
       "definition": "'Κανονιστική Διοικητική Πράξη' (Regulatory Administrative Act) — the official Cyprus Gazette citation format for subsidiary legislation, e.g. K.Δ.Π. 560/2014 or this Directive itself, K.Δ.Π. 120/2025.",
       "source": "Art. 24; Directive title"
-    },
-    {
-      "term": "AMLCO",
-      "definition": "Anti-Money Laundering Compliance Officer — the person a regulated entity appoints to run AML compliance",
-      "source": "Part 5, Art. 69 of the Law"
     },
     {
       "term": "MOKAS",

@@ -1268,17 +1268,17 @@
     transform: rotate(0deg);
   }
 
-  /* ---------- juice 3: iris circular-reveal between screens/questions, no hard cuts ---------- */
+  /* ---------- screen/question transitions: brief fade+slide, no hard cuts ---------- */
   .screen-enter {
-    animation: iris-in .5s ease-out;
+    animation: screen-fade-in .2s ease-out;
     flex: 1;
     display: flex;
     flex-direction: column;
     min-height: 0;
   }
-  @keyframes iris-in {
-    from { clip-path: circle(0% at 50% 50%); }
-    to { clip-path: circle(75% at 50% 50%); }
+  @keyframes screen-fade-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   /* ---------- centered body: fills the space below the topbar instead of
