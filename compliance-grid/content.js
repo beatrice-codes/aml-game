@@ -198,7 +198,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "difficulty": "medium",
           "mechanic": "calm_alert",
           "scenario": "ExchangeCo runs two Cyprus shopfronts converting cash and remitting funds abroad.",
-          "task_prompt": "Is ExchangeCo an 'obliged entity' under Article 3? Pass or Flag.",
+          "task_prompt": "Is ExchangeCo an 'obliged entity'? Pass or Flag.",
           "options": [
             {
               "label": "Pass",
@@ -232,18 +232,18 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "difficulty": "medium",
           "mechanic": "flip_card",
           "scenario": "",
-          "task_prompt": "Article 5 requires weighing nature, size, complexity, AND ML/TF risk level together — not just one factor.",
+          "task_prompt": "The Directive requires weighing nature, size, complexity, AND ML/TF risk level together — not just one factor.",
           "article_citation": "Art. 5",
-          "claim": "Article 5 requires weighing nature, size, complexity, AND ML/TF risk level together — not just one factor.",
+          "claim": "The Directive requires weighing nature, size, complexity, AND ML/TF risk level together — not just one factor.",
           "answer": true,
-          "why": "Correct — Article 5 requires weighing nature, size, complexity, and risk together; no single factor (like customer count or group membership) is enough on its own."
+          "why": "Correct — the risk-based approach requires weighing nature, size, complexity, and risk together; no single factor (like customer count or group membership) is enough on its own."
         },
         {
           "id": "foundations-quickcall",
           "difficulty": "hard",
           "mechanic": "quickcall",
           "scenario": "",
-          "task_prompt": "Quick calls — rate each entity's compliance rigor under Article 5(2). Tap fast.",
+          "task_prompt": "Quick calls — rate each entity's compliance rigor.",
           "items": [
             {
               "label": "SmallFX — single branch, Larnaca, 4 employees, retail walk-in customers only.",
@@ -306,7 +306,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "difficulty": "hard",
           "mechanic": "spot_outlier",
           "scenario": "A Compliance Officer must decide if an onboarding case is a 'customer at a distance.'",
-          "task_prompt": "Which scenario fits Article 2's 'customer at a distance' definition?",
+          "task_prompt": "Which scenario fits the 'customer at a distance' definition?",
           "options": [
             {
               "label": "Identity verified by video link, with no physical presence involved",
@@ -347,7 +347,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "id": "foundations-q6",
           "difficulty": "hard",
           "mechanic": "spot_outlier",
-          "scenario": "Article 3's lettering runs (a)-(f), then jumps to (h) — there's no (g).",
+          "scenario": "The Directive's lettering in one clause runs (a)-(f), then jumps to (h) — there's no (g).",
           "task_prompt": "What's the right response to a missing subparagraph (g)?",
           "options": [
             {
@@ -493,8 +493,8 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "id": "rr-10",
           "difficulty": "medium",
           "mechanic": "build_gate",
-          "scenario": "A currency-exchange customer, normally lower-risk, shows signs of structuring deposits to launder money.",
-          "task_prompt": "Which due-diligence tier now applies, under Article 20?",
+          "scenario": "A small online retailer's merchant account, normally lower-risk, starts showing signs of structuring settlement withdrawals to launder money.",
+          "task_prompt": "Which due-diligence tier now applies?",
           "options": [
             {
               "label": "Simplified",
@@ -546,7 +546,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "difficulty": "medium",
           "mechanic": "stamp",
           "scenario": "",
-          "task_prompt": "Which of these bar Simplified Due Diligence under Article 20? Select all that apply.",
+          "task_prompt": "Which of these bar Simplified Due Diligence? Select all that apply.",
           "options": [
             {
               "label": "Indications of attempted ML/TF",
@@ -651,10 +651,10 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "difficulty": "hard",
           "mechanic": "quickcall",
           "scenario": "",
-          "task_prompt": "Quick calls — high risk or low risk, per Article 20? Tap fast.",
+          "task_prompt": "Quick calls — high risk or low risk?",
           "items": [
             {
-              "label": "A relationship falling into a statutory high-risk category under Article 64(1).",
+              "label": "The merchant's majority owner is a serving government minister — a textbook PEP.",
               "options": [
                 {
                   "label": "Low risk",
@@ -667,7 +667,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
               ]
             },
             {
-              "label": "A relationship the entity itself self-classifies as high-risk under Article 64(3).",
+              "label": "Nothing on the standard high-risk list applies, but a sudden, unexplained spike in the merchant's refund volume worries the compliance team enough to flag it anyway.",
               "options": [
                 {
                   "label": "Low risk",
@@ -680,7 +680,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
               ]
             },
             {
-              "label": "A relationship clear of ML/TF indications, doubts, and EDD triggers.",
+              "label": "A small local bakery's card-payment account: steady volume, no red flags, no PEP link.",
               "options": [
                 {
                   "label": "Low risk",
@@ -775,7 +775,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "difficulty": "easy",
           "mechanic": "mcq",
           "scenario": "",
-          "task_prompt": "Which of these is a defining feature of a 'shell company' under Article 37?",
+          "task_prompt": "Which of these is a defining feature of a 'shell company'?",
           "options": [
             {
               "label": "No genuine economic activity, and no physical presence beyond a mailing address",
@@ -1025,7 +1025,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "difficulty": "hard",
           "mechanic": "mcq",
           "scenario": "",
-          "task_prompt": "Besides shell-company status, what else triggers mandatory refusal, under Article 37?",
+          "task_prompt": "Besides shell-company status, what else triggers mandatory refusal?",
           "options": [
             {
               "label": "Shell status alone — nothing else needed",
@@ -1133,7 +1133,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "difficulty": "hard",
           "mechanic": "quickcall",
           "scenario": "",
-          "task_prompt": "Quick calls — sort each customer's risk tier under Articles 27, 37 & 41. Tap fast.",
+          "task_prompt": "Quick calls — sort each customer's risk tier.",
           "items": [
             {
               "label": "Small, stable sole-trader merchant with modest, steady turnover and no risk flags.",
@@ -1391,7 +1391,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "difficulty": "medium",
           "mechanic": "stamp",
           "scenario": "",
-          "task_prompt": "Which relationship types always require Enhanced Due Diligence under Article 42? Select all that apply.",
+          "task_prompt": "Which relationship types always require Enhanced Due Diligence? Select all that apply.",
           "options": [
             {
               "label": "Trust or foundation accounts",
@@ -1480,7 +1480,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "difficulty": "hard",
           "mechanic": "quickcall",
           "scenario": "",
-          "task_prompt": "Quick calls — rate each relationship's risk tier under Articles 42, 45 & 50. Tap fast.",
+          "task_prompt": "Quick calls — rate each relationship's risk tier.",
           "items": [
             {
               "label": "Investment fund licensed and operating in a high-risk third country.",
@@ -1637,7 +1637,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "difficulty": "easy",
           "mechanic": "spot_outlier",
           "scenario": "",
-          "task_prompt": "Which of these is a genuine red flag for a merchant-acquiring relationship, per Annex III?",
+          "task_prompt": "Which of these is a genuine red flag for a merchant-acquiring relationship?",
           "article_citation": "Annex III (merchant acquiring)",
           "options": [
             {
@@ -1745,7 +1745,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "difficulty": "medium",
           "mechanic": "spot_outlier",
           "scenario": "",
-          "task_prompt": "What should raise concern about a merchant's transaction activity, per Annex III?",
+          "task_prompt": "What should raise concern about a merchant's transaction activity?",
           "article_citation": "Annex III (merchant acquiring)",
           "options": [
             {
@@ -1807,7 +1807,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "difficulty": "medium",
           "mechanic": "spot_outlier",
           "scenario": "",
-          "task_prompt": "Which of these is a genuine red flag for a merchant-acquiring relationship, per Annex III?",
+          "task_prompt": "Which of these is a genuine red flag for a merchant-acquiring relationship?",
           "article_citation": "Annex III (merchant acquiring)",
           "options": [
             {
@@ -1850,7 +1850,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "mechanic": "stamp",
           "select_count": 3,
           "scenario": "",
-          "task_prompt": "Which of these are genuine merchant-acquiring red flags, per Annex III? Select all that apply.",
+          "task_prompt": "Which of these are genuine merchant-acquiring red flags? Select all that apply.",
           "options": [
             {
               "label": "Declared address is just a mailing address, unconnected to the business",
@@ -1882,7 +1882,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "difficulty": "hard",
           "mechanic": "quickcall",
           "scenario": "",
-          "task_prompt": "Quick calls — routine, or escalate? Tap fast.",
+          "task_prompt": "Quick calls — routine, or escalate?",
           "items": [
             {
               "label": "Refund rate matches similar merchants — nothing unusual.",

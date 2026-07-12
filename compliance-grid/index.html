@@ -250,18 +250,6 @@
   }
   .chapter-card .meta-row b { color: var(--text); }
   .chapter-card .meta-row .card-streak { color: var(--violet); font-weight: 700; }
-  .segment-track {
-    display: flex;
-    gap: 4px;
-    margin-top: 2px;
-  }
-  .segment {
-    flex: 1;
-    height: 5px;
-    border-radius: 3px;
-    background: var(--well);
-  }
-  .segment.filled { background: var(--violet); }
   .chip {
     display: inline-flex;
     align-items: center;
@@ -278,7 +266,19 @@
     background: var(--card);
     border: 1px solid var(--card-border);
     border-radius: var(--radius-lg);
-    padding: 22px;
+    padding: 26px 22px;
+  }
+  /* Inside the three single-card screens (briefing/question/complete), the
+     card grows to fill the space a short question would otherwise leave
+     empty, and centers its own content rather than sitting cramped at the
+     card's top edge. Long content (e.g. match-the-term) just overflows this
+     minimum size exactly as before. */
+  .centered-body .card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 0;
   }
 
   .briefing-eyebrow {
@@ -562,6 +562,12 @@
     padding: 0 12px calc(16px + env(safe-area-inset-bottom, 0));
     pointer-events: none;
   }
+  .feedback-tab-row {
+    pointer-events: auto;
+    display: flex;
+    gap: 8px;
+    animation: sheet-up .18s ease-out;
+  }
   .feedback-tab button {
     pointer-events: auto;
     display: flex;
@@ -576,6 +582,12 @@
     color: var(--text);
     box-shadow: 0 8px 28px rgba(0,0,0,0.45);
     animation: sheet-up .18s ease-out;
+  }
+  .feedback-tab-row button { animation: none; }
+  .feedback-tab-next {
+    background: var(--violet);
+    border-color: var(--violet);
+    color: var(--on-accent);
   }
   .feedback-tab .fb-icon.ok { color: var(--green); }
   .feedback-tab .fb-icon.no { color: var(--terracotta); }
@@ -1256,11 +1268,28 @@
     transform: rotate(0deg);
   }
 
-  /* ---------- screen/question transitions: brief fade+slide, no hard cuts ---------- */
-  .screen-enter { animation: screen-fade-in .2s ease-out; }
-  @keyframes screen-fade-in {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
+  /* ---------- juice 3: iris circular-reveal between screens/questions, no hard cuts ---------- */
+  .screen-enter {
+    animation: iris-in .5s ease-out;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  @keyframes iris-in {
+    from { clip-path: circle(0% at 50% 50%); }
+    to { clip-path: circle(75% at 50% 50%); }
+  }
+
+  /* ---------- centered body: fills the space below the topbar instead of
+     leaving a dead gap, so a short question/briefing/summary doesn't look
+     stranded at the top of a tall screen ---------- */
+  .centered-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 0;
   }
 
   /* ---------- press feedback: every interactive element compresses slightly on tap ---------- */
@@ -1277,6 +1306,69 @@
   .outlier-chip:active { transform: scale(0.97) rotate(0deg); }
   .calmalert-side.selected:active,
   .option-btn.selected:active { transform: scale(0.98); }
+
+  /* ---------- juice 1: particle burst on gate/stamp success ---------- */
+  .burst-dot {
+    position: fixed;
+    top: 0; left: 0;
+    width: 5px; height: 5px;
+    margin: -2.5px 0 0 -2.5px;
+    border-radius: 50%;
+    background: var(--green);
+    pointer-events: none;
+    z-index: 999;
+    animation: burst-dot .6s ease-out forwards;
+  }
+  @keyframes burst-dot {
+    0% { transform: translate(0, 0) scale(.4); opacity: 1; }
+    100% { transform: translate(var(--tx), var(--ty)) scale(1); opacity: 0; }
+  }
+
+  /* ---------- juice 2: stroke-drawn checkmark (gate ripple / stamp correct mark) ---------- */
+  .draw-check { display: block; overflow: visible; }
+  .draw-check path { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* ---------- juice 4: ripple from the actual tap point (primary buttons) ---------- */
+  .btn-primary, .btn-secondary { position: relative; overflow: hidden; }
+  .tap-ripple {
+    position: absolute;
+    top: 0; left: 0;
+    width: 12px; height: 12px;
+    margin: -6px 0 0 -6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.55);
+    pointer-events: none;
+    animation: tap-ripple-out .5s ease-out forwards;
+  }
+  @keyframes tap-ripple-out {
+    from { transform: scale(0); opacity: .55; }
+    to { transform: scale(4); opacity: 0; }
+  }
+
+  /* ---------- juice 5: liquid-fill chapter progress bar ---------- */
+  .progress-track {
+    height: 5px;
+    border-radius: 3px;
+    background: var(--well);
+    overflow: hidden;
+    margin-top: 2px;
+  }
+  .liquid-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: var(--violet);
+    width: 0%;
+    transition: width 1s cubic-bezier(.2,.8,.2,1);
+  }
+
+  /* ---------- juice 6: bounce-overshoot press on the Confirm button ---------- */
+  @keyframes btn-overshoot {
+    0% { transform: scale(1); }
+    40% { transform: scale(.9); }
+    70% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+  }
+  .btn-overshoot { animation: btn-overshoot .4s ease-out; }
 </style>
 </head>
 <body>
@@ -1426,6 +1518,67 @@
     try { if ('vibrate' in navigator) navigator.vibrate(pattern); } catch (e) {}
   }
 
+  /* ---------- juice: shared checkmark-draw + particle-burst helpers ---------- */
+  function checkSvg(size) {
+    return '<svg class="draw-check" viewBox="0 0 48 48" width="' + size + '" height="' + size + '">' +
+      '<path d="M15 27 L22 34 L37 18" stroke-width="' + Math.max(3, Math.round(size / 6)) + '"/></svg>';
+  }
+
+  function drawCheckIn(svgEl) {
+    if (!svgEl) return;
+    var path = svgEl.querySelector('path');
+    if (!path) return;
+    var len = path.getTotalLength();
+    path.style.strokeDasharray = len;
+    path.style.strokeDashoffset = len;
+    void path.getBoundingClientRect();
+    path.style.transition = 'stroke-dashoffset .5s ease-out';
+    path.style.strokeDashoffset = 0;
+  }
+
+  function spawnParticleBurst(x, y) {
+    for (var i = 0; i < 8; i++) {
+      (function (i) {
+        var angle = (i / 8) * Math.PI * 2;
+        var radius = 40;
+        var dot = document.createElement('div');
+        dot.className = 'burst-dot';
+        dot.style.left = x + 'px';
+        dot.style.top = y + 'px';
+        dot.style.setProperty('--tx', (Math.cos(angle) * radius).toFixed(1) + 'px');
+        dot.style.setProperty('--ty', (Math.sin(angle) * radius).toFixed(1) + 'px');
+        document.body.appendChild(dot);
+        setTimeout(function () { dot.remove(); }, 600);
+      })(i);
+    }
+  }
+
+  function burstFromElement(el) {
+    if (!el) return;
+    var r = el.getBoundingClientRect();
+    spawnParticleBurst(r.left + r.width / 2, r.top + r.height / 2);
+  }
+
+  // Build-the-gate and Stamp are the two mechanics with an explicit "success
+  // mark" moment (the gate's ripple+tick, the stamp's correct badge) — draw
+  // the checkmark in and burst a few particles from it. No-ops for every
+  // other mechanic and for a not-yet-answered or wrong answer.
+  function triggerSuccessEffects(q, s) {
+    if (!s.answered) return;
+    if (q.mechanic === 'build_gate' && s.lastCorrect) {
+      var ripple = document.querySelector('.gate-ripple');
+      if (ripple) {
+        drawCheckIn(ripple.querySelector('.draw-check'));
+        burstFromElement(ripple);
+      }
+    } else if (q.mechanic === 'stamp') {
+      document.querySelectorAll('.stamp-tile.reveal-correct .stamp-mark').forEach(function (mark) {
+        drawCheckIn(mark.querySelector('.draw-check'));
+        burstFromElement(mark);
+      });
+    }
+  }
+
   /* ---------- shuffle: randomize option order per question, per showing ---------- */
   function shuffleArray(arr) {
     for (var i = arr.length - 1; i > 0; i--) {
@@ -1558,18 +1711,21 @@
       html += '</div></div>';
       html += '<span class="chip">' + (cp.everCompleted ? '✓' : '▶') + '</span>';
       html += '</div>';
-      var filled = cp.everCompleted ? total : cp.resume.questionIndex;
-      html += '<div class="segment-track">';
-      for (var si = 0; si < total; si++) {
-        html += '<div class="segment' + (si < filled ? ' filled' : '') + '"></div>';
-      }
-      html += '</div>';
+      html += '<div class="progress-track"><div class="liquid-fill" data-pct="' + completionPct + '"></div></div>';
       html += '<div class="meta-row"><span>PROGRESS <b>' + completionPct + '%</b></span>' +
         (cp.bestStreak >= 2 ? '<span class="card-streak">STREAK ' + cp.bestStreak + '</span>' : '') + '</div>';
       html += '</div>';
     });
     html += '</div><div class="footer-space"></div>';
     mountScreen(html, 'map');
+    // Rendered at width:0 above so this first style change is a real transition,
+    // not a no-op snap-to-value — same reason positionMatchThreads runs on a
+    // rAF rather than synchronously.
+    window.requestAnimationFrame(function () {
+      document.querySelectorAll('.liquid-fill').forEach(function (el) {
+        el.style.width = el.getAttribute('data-pct') + '%';
+      });
+    });
   }
 
   function renderBriefing() {
@@ -1577,6 +1733,7 @@
     var cp = chapterProgress(state.chapterKey);
     var midway = !cp.everCompleted && cp.resume.questionIndex > 0;
     var html = topbar({ back: true, title: 'Chapter briefing' });
+    html += '<div class="centered-body">';
     html += '<div class="card">';
     html += '<div class="briefing-eyebrow">' + (CHAPTER_ICON[ch.chapter_key] || '') + ' Briefing</div>';
     html += '<div class="briefing-title">' + escapeHtml(ch.briefing.title) + '</div>';
@@ -1591,7 +1748,7 @@
     if (midway || cp.everCompleted) {
       html += '<button class="btn-secondary" data-action="restart-chapter" data-chapter="' + ch.chapter_key + '">⟳ Start over</button>';
     }
-    html += '<div class="footer-space"></div>';
+    html += '</div><div class="footer-space"></div>';
     mountScreen(html, 'briefing:' + ch.chapter_key);
   }
 
@@ -1608,6 +1765,7 @@
     var q = currentQuestion();
 
     var html = topbar({ back: true, pause: true, title: ch.briefing.title });
+    html += '<div class="centered-body">';
 
     if (s.streak >= 2) {
       html += '<div class="streak-strip">' + s.streak + ' in a row</div>';
@@ -1645,10 +1803,12 @@
       // no manual advance button — selecting an option auto-advances to the next item
     } else if (selfResolving) {
       // no Confirm button — the tap itself resolves the question
-    } else {
+    } else if (!s.answered) {
+      // dropped entirely once answered, rather than left disabled — otherwise
+      // it sits right where the feedback tab is fixed and shows through it
       html += '<button class="btn-primary" data-action="confirm-answer" ' + (canConfirm(q, s) ? '' : 'disabled') + '>✓ Confirm</button>';
     }
-    html += '<div class="footer-space"></div>';
+    html += '</div><div class="footer-space"></div>';
 
     var screenKey = 'question:' + state.chapterKey + ':' + s.questionIndex + ':' +
       (s.currentIsFollowup ? 'f' : 'p') + (isQuickcall ? ':qc' + s.quickcallIndex : '');
@@ -1771,7 +1931,7 @@
     var html = '<div class="gate-wrap">';
     html += '<div class="gate-visual' + (opened ? ' gate-open' : '') + (wrongShake ? ' gate-wrong' : '') + '">';
     html += '<div class="gate-leaf gate-left"></div><div class="gate-leaf gate-right"></div>';
-    if (opened) html += '<div class="gate-ripple">✓</div>';
+    if (opened) html += '<div class="gate-ripple">' + checkSvg(22) + '</div>';
     html += '</div>';
     html += '<div class="tier-steps">';
     stepDefs.forEach(function (step, i) {
@@ -1812,7 +1972,7 @@
       // border/background already signals "picked," so there's no glyph yet
       // to put in an empty badge.
       var showMark = s.answered && (opt.correct || picked);
-      var markGlyph = s.answered ? (opt.correct ? '✓' : '✕') : '';
+      var markGlyph = s.answered ? (opt.correct ? checkSvg(isMulti ? 13 : 18) : '✕') : '';
       html += '<button class="' + cls + '" ' + (s.answered ? 'disabled' : '') +
         ' data-action="select-option" data-index="' + i + '">' + escapeHtml(opt.label) +
         (showMark ? '<span class="stamp-mark">' + markGlyph + '</span>' : '') +
@@ -1827,7 +1987,7 @@
     var flipped = s.answered;
     var html = '<div class="flipcard-wrap">';
     html += '<div class="flipcard-face' + (flipped ? ' flipped' : '') + '"><div class="flipcard-claim">' + annotateGlossary(q.claim) + '</div>' +
-      '<div class="flipcard-back">' + annotateGlossary(q.why || '') + '</div></div>';
+      '<div class="flipcard-back"><div class="flipcard-why">' + annotateGlossary(q.why || '') + '</div></div></div>';
     html += '<div class="options flipcard-options">';
     [true, false].forEach(function (val) {
       var label = val ? 'True' : 'False';
@@ -2049,25 +2209,15 @@
     s.lastCorrect = correct;
     s.answered = true;
     // A correct answer only needs a brief non-blocking confirmation (the feedback
-    // tab) and moves on by itself; a wrong answer has something worth reading, so
-    // it stays as the full sheet and waits for a manual Continue tap.
+    // tab) rather than the full sheet; a wrong answer has something worth
+    // reading, so it stays as the full sheet. Neither auto-advances on a timer —
+    // the tab gives an explicit "View" or "Next" choice instead.
     s.feedbackMinimized = !!correct;
     if (!s.currentIsFollowup) {
       s.answeredCount += 1;
       if (correct) { s.correctCount += 1; s.streak += 1; } else { s.streak = 0; }
     }
     vibrate(correct ? 18 : [20, 40, 20]);
-    if (correct) scheduleAutoContinue(s);
-  }
-
-  function scheduleAutoContinue(s) {
-    setTimeout(function () {
-      if (state.session !== s || !s.answered || !s.feedbackMinimized || !s.lastCorrect) return;
-      removeFeedbackSheet();
-      removeFeedbackTab();
-      if (s.currentIsFollowup) advanceAfterFollowup();
-      else advanceAfterPrimary(true);
-    }, 900);
   }
 
   function renderFeedbackSheet(q, s) {
@@ -2113,11 +2263,23 @@
     var correct = s.lastCorrect;
     var tab = document.createElement('div');
     tab.className = 'feedback-tab';
-    tab.innerHTML =
-      '<button data-action="expand-feedback">' +
-      '<span class="fb-icon ' + (correct ? 'ok' : 'no') + '">' + (correct ? '✓' : '✗') + '</span>' +
-      '<span>' + (correct ? 'Correct' : 'Not quite') + ' — tap to view</span>' +
-      '</button>';
+    if (correct) {
+      // No auto-advance timer — the player explicitly picks "View" (read the
+      // explanation) or "Next" (move on now), instead of racing a countdown.
+      tab.innerHTML =
+        '<div class="feedback-tab-row">' +
+        '<button class="feedback-tab-view" data-action="expand-feedback">' +
+        '<span class="fb-icon ok">✓</span><span>Correct</span>' +
+        '</button>' +
+        '<button class="feedback-tab-next" data-action="continue">Next →</button>' +
+        '</div>';
+    } else {
+      tab.innerHTML =
+        '<button class="feedback-tab-view" data-action="expand-feedback">' +
+        '<span class="fb-icon no">✗</span>' +
+        '<span>Not quite — tap to view</span>' +
+        '</button>';
+    }
     document.body.appendChild(tab);
   }
 
@@ -2140,6 +2302,7 @@
     var isBest = state.session.accuracyThisRun >= cp.bestAccuracy;
 
     var html = topbar({ back: true, title: 'Chapter complete' });
+    html += '<div class="centered-body">';
     html += '<div class="card">';
     html += '<div class="briefing-eyebrow">' + escapeHtml(ch.briefing.title) + '</div>';
     html += '<div class="briefing-title">Chapter complete</div>';
@@ -2166,7 +2329,7 @@
       html += '<button class="btn-primary" data-action="back-to-map">Back to map</button>';
     }
     html += '<button class="btn-secondary" data-action="restart-chapter" data-chapter="' + state.chapterKey + '">⟳ Replay chapter</button>';
-    html += '<div class="footer-space"></div>';
+    html += '</div><div class="footer-space"></div>';
     mountScreen(html, 'complete:' + state.chapterKey);
     animateCountUp();
   }
@@ -2389,6 +2552,7 @@
           commitAnswer(qNow, state.session, gradeCurrent(qNow, state.session));
         }
         render();
+        triggerSuccessEffects(qNow, state.session);
       }
     } else if (action === 'select-flip') {
       if (state.session.answered) return;
@@ -2470,6 +2634,7 @@
       if (!canConfirm(q, s)) return;
       commitAnswer(q, s, gradeCurrent(q, s));
       render();
+      triggerSuccessEffects(q, s);
     } else if (action === 'minimize-feedback') {
       state.session.feedbackMinimized = true;
       render();
@@ -2504,6 +2669,28 @@
     var el = e.target.closest('[data-action]');
     if (!el) return;
     handleAction(el.getAttribute('data-action'), el);
+  });
+
+  /* ---------- juice 4 & 6: tap-point ripple on primary/secondary buttons, plus an
+     extra bounce-overshoot on Confirm specifically — fired on pointerdown so the
+     animation is visible even though the button itself may be replaced by the
+     re-render that follows almost immediately after ---------- */
+  document.addEventListener('pointerdown', function (e) {
+    var btn = e.target.closest('.btn-primary, .btn-secondary');
+    if (!btn || btn.disabled) return;
+    var rect = btn.getBoundingClientRect();
+    var ripple = document.createElement('span');
+    ripple.className = 'tap-ripple';
+    ripple.style.left = (e.clientX - rect.left) + 'px';
+    ripple.style.top = (e.clientY - rect.top) + 'px';
+    btn.appendChild(ripple);
+    setTimeout(function () { ripple.remove(); }, 500);
+
+    if (btn.getAttribute('data-action') === 'confirm-answer') {
+      btn.classList.remove('btn-overshoot');
+      void btn.offsetWidth;
+      btn.classList.add('btn-overshoot');
+    }
   });
 
   /* ---------- order the chain: drag-to-reorder gesture (Pointer Events, delegated) ---------- */
