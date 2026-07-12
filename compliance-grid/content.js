@@ -4,11 +4,11 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
       "chapter_key": "foundations",
       "briefing": {
         "title": "The Basics",
-        "description": "Why AML rules exist, who they apply to, and the core terms every later chapter builds on.",
+        "description": "Why the rules exist, who they cover, and the terms you'll keep seeing.",
         "objectives": [
-          "Know which businesses this Directive applies to, and why.",
-          "Understand why the rules scale with a business's size and risk.",
-          "Learn the key terms used throughout the game."
+          "Who it applies to, and why",
+          "Scales with size & risk",
+          "Core vocabulary ahead"
         ],
         "article_range": "Articles 1-5"
       },
@@ -18,7 +18,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
           "difficulty": "easy",
           "mechanic": "mcq",
           "scenario": "",
-          "task_prompt": "What is this Directive's official short title?",
+          "task_prompt": "What is this Directive's official name?",
           "options": [
             {
               "label": "Prevention of Money Laundering from Illegal Activities and the Financing of Terrorism Directive of 2025",
@@ -433,11 +433,11 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
       "chapter_key": "reading_risk",
       "briefing": {
         "title": "Reading Risk",
-        "description": "Not every customer gets the same level of checking. Learn how risk gets assessed — and why it has to keep up as things change.",
+        "description": "Same customer, different scrutiny — how risk gets scored, and why it never stops.",
         "objectives": [
-          "See why one risk check isn't enough — you need two.",
-          "Learn what pushes a customer into lighter or heavier checks.",
-          "Understand why risk reviews never really stop."
+          "Why one check isn't enough",
+          "What shifts risk tier",
+          "Reviews never really stop"
         ],
         "article_range": "Articles 18-23"
       },
@@ -803,11 +803,11 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
       "chapter_key": "the_gate",
       "briefing": {
         "title": "The Gate",
-        "description": "Every new customer has to clear a gate of checks before you can do business with them. Learn which checks apply, and when.",
+        "description": "No relationship starts without clearing this gate of checks — which ones, and when.",
         "objectives": [
-          "Know what triggers an ID or due-diligence check.",
-          "Sort customers into the right due-diligence tier.",
-          "Spot when a relationship must be refused outright."
+          "What triggers a check",
+          "Right tier for each customer",
+          "When to refuse outright"
         ],
         "article_range": "Articles 24-41"
       },
@@ -1273,11 +1273,11 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
       "chapter_key": "enhanced_measures",
       "briefing": {
         "title": "High Alert",
-        "description": "Some relationships are always high-risk: politically exposed people, shell structures, cross-border banking, and crypto. Learn the extra checks they require.",
+        "description": "PEPs, shell structures, cross-border banking, crypto — always high-risk, always extra checks.",
         "objectives": [
-          "Recognize the relationship types that always need extra checks.",
-          "Apply the exact thresholds and review timelines that matter.",
-          "Know when extra checks are mandatory, not optional."
+          "Which relationships always need extra checks",
+          "Exact thresholds & review timelines",
+          "When it's mandatory, not optional"
         ],
         "article_range": "Articles 42-51"
       },
@@ -1665,11 +1665,11 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
       "chapter_key": "the_flag",
       "briefing": {
         "title": "The Flag",
-        "description": "Learn the cash thresholds that trigger extra checks — and how a suspicion becomes a report to Cyprus's financial crime unit.",
+        "description": "The cash thresholds that trigger checks — and how suspicion becomes a report to MOKAS.",
         "objectives": [
-          "Know the euro thresholds that trigger controls.",
-          "Spot the patterns that count as suspicious.",
-          "Trace a suspicion from staff member to MOKAS."
+          "Euro thresholds that trigger controls",
+          "Patterns that count as suspicious",
+          "From suspicion to MOKAS"
         ],
         "article_range": "Articles 53-56 and 63-66"
       },

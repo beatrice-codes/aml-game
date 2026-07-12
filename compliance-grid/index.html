@@ -37,6 +37,14 @@
     --green-dim: #1c3324;
     --violet: #8b7cf6;
     --violet-dim: #322a5c;
+    --acc-reading_risk: #e3a53f;
+    --acc-reading_risk-dim: #3a2c12;
+    --acc-the_gate: #35c7b7;
+    --acc-the_gate-dim: #123330;
+    --acc-enhanced_measures: #ef7256;
+    --acc-enhanced_measures-dim: #3a1f18;
+    --acc-the_flag: #e069b3;
+    --acc-the_flag-dim: #3a1830;
     --thread: #d9c9a3;
     --on-accent: #0a0a0d;
     --glass: rgba(255,255,255,0.055);
@@ -62,6 +70,14 @@
     --terracotta-dim: #f9e1db;
     --green-dim: #dcf2e0;
     --violet-dim: #e9e5fc;
+    --acc-reading_risk: #b9790a;
+    --acc-reading_risk-dim: #fbeed2;
+    --acc-the_gate: #0f8f82;
+    --acc-the_gate-dim: #dff5f2;
+    --acc-enhanced_measures: #c94b32;
+    --acc-enhanced_measures-dim: #fbe3dc;
+    --acc-the_flag: #b23d82;
+    --acc-the_flag-dim: #f8e0ef;
     --thread: #9c8657;
     --glass: rgba(0,0,0,0.04);
     --glass-border: rgba(0,0,0,0.13);
@@ -89,6 +105,7 @@
     max-width: 480px;
     margin: 0 auto;
     min-height: 100vh;
+    min-height: 100dvh;
     padding: env(safe-area-inset-top, 0) 16px env(safe-area-inset-bottom, 0);
     display: flex;
     flex-direction: column;
@@ -177,16 +194,17 @@
     background-clip: text;
     color: transparent;
   }
-  .gate-line { animation: gate-breathe 3.4s ease-in-out infinite; }
-  .gate-line-a { animation-name: gate-breathe-a; }
-  .gate-line-b { animation-name: gate-breathe-b; }
-  @keyframes gate-breathe-a {
-    0%, 100% { transform: translateX(0); }
-    50% { transform: translateX(-2.2px); }
+  .eye-pupil {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: eye-scan 4s ease-in-out infinite;
   }
-  @keyframes gate-breathe-b {
-    0%, 100% { transform: translateX(0); }
-    50% { transform: translateX(2.2px); }
+  @keyframes eye-scan {
+    0%, 100% { transform: translateX(-1.4px); }
+    50% { transform: translateX(1.4px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .eye-pupil { animation: none; }
   }
 
   .chapter-list {
@@ -221,7 +239,7 @@
     font-size: 24px;
     line-height: 1;
     flex-shrink: 0;
-    color: var(--text-dim);
+    color: var(--acc, var(--violet));
     display: inline-flex;
   }
   .chapter-card .num {
@@ -249,7 +267,7 @@
     margin-top: 2px;
   }
   .chapter-card .meta-row b { color: var(--text); }
-  .chapter-card .meta-row .card-streak { color: var(--violet); font-weight: 700; }
+  .chapter-card .meta-row .card-streak { color: var(--acc, var(--violet)); font-weight: 700; }
   .chip {
     display: inline-flex;
     align-items: center;
@@ -257,8 +275,8 @@
     width: 32px;
     height: 32px;
     border-radius: 10px;
-    background: var(--violet-dim);
-    color: var(--violet);
+    background: var(--acc-dim, var(--violet-dim));
+    color: var(--acc, var(--violet));
     font-size: 15px;
   }
 
@@ -281,51 +299,113 @@
     min-height: 0;
   }
 
+  /* ---------- briefing hero: per-chapter accent color on badge/title/chips ---------- */
+  .briefing-card {
+    position: relative;
+    overflow: hidden;
+    border-top: 2px solid transparent;
+    border-image: linear-gradient(90deg, var(--acc, var(--violet)), transparent 85%) 1;
+  }
+  .briefing-card::before {
+    content: "";
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--acc, var(--violet)) 0%, transparent 68%);
+    opacity: 0.16;
+    pointer-events: none;
+  }
+  .briefing-hero {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .briefing-hero-badge {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    background: var(--acc, var(--violet));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 6px 16px -6px var(--acc, var(--violet));
+  }
+  .briefing-hero-badge svg { width: 26px; height: 26px; color: var(--on-accent); }
+  /* renderComplete() ("Chapter complete") also uses .briefing-eyebrow/.briefing-title
+     for its own plain header — kept separate from .briefing-hero-eyebrow/
+     .briefing-hero-title below so the accent-colored hero styling doesn't leak
+     into that unrelated screen. */
   .briefing-eyebrow {
     font-family: var(--mono);
     font-size: 12px;
     letter-spacing: 0.06em;
     color: var(--violet);
     text-transform: uppercase;
-    display: flex;
-    align-items: center;
-    gap: 6px;
   }
-  .briefing-eyebrow svg { width: 14px; height: 14px; flex-shrink: 0; }
   .briefing-title {
     font-size: 24px;
     font-weight: 700;
     margin: 8px 0 12px;
     line-height: 1.2;
   }
+  .briefing-hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    color: var(--acc, var(--violet));
+    text-transform: uppercase;
+  }
+  .briefing-hero-title {
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 1.2;
+    background: linear-gradient(120deg, var(--text) 15%, var(--acc, var(--violet)) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
   .briefing-desc {
     color: var(--text-dim);
     font-size: 14.5px;
     line-height: 1.55;
+    margin-bottom: 16px;
+  }
+  .objective-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
     margin-bottom: 18px;
   }
-  .objectives {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 18px;
+  .objective-chip {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    align-items: center;
+    gap: 6px;
+    background: var(--acc-dim, var(--violet-dim));
+    border-radius: 999px;
+    padding: 7px 12px 7px 8px;
   }
-  .objectives li {
-    display: flex;
-    gap: 10px;
-    font-size: 13.5px;
-    line-height: 1.4;
-    color: var(--text);
-  }
-  .objectives li::before {
-    content: "";
-    min-width: 6px;
-    height: 6px;
+  .objective-chip-icon {
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
-    background: var(--sage);
-    margin-top: 6px;
+    background: var(--acc, var(--violet));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .objective-chip-icon svg { width: 10px; height: 10px; color: var(--on-accent); }
+  .objective-chip span {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--text);
   }
   .article-range {
     font-family: var(--mono);
@@ -620,6 +700,102 @@
   .glossary-def { font-size: 14px; line-height: 1.5; color: var(--text); margin-bottom: 10px; }
   .glossary-src { font-family: var(--mono); font-size: 11.5px; color: var(--text-faint); }
 
+  /* ---------- about popover: its own hero-banner treatment, not a reused overlay-card ---------- */
+  .about-popover .about-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    max-width: 380px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .about-hero {
+    position: relative;
+    padding: 34px 22px 22px;
+    overflow: hidden;
+    background: linear-gradient(180deg, var(--violet-dim) 0%, transparent 100%);
+  }
+  .about-hero::before {
+    content: "";
+    position: absolute;
+    top: -70px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--violet) 0%, transparent 70%);
+    opacity: 0.28;
+  }
+  .about-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    z-index: 2;
+  }
+  .about-badge {
+    width: 56px;
+    height: 56px;
+    border-radius: 18px;
+    background: var(--violet);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 14px;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 8px 20px -8px var(--violet);
+  }
+  .about-badge svg { width: 30px; height: 30px; }
+  .about-eyebrow {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--violet);
+    margin-bottom: 4px;
+    position: relative;
+    z-index: 1;
+  }
+  .about-title { font-size: 19px; font-weight: 700; margin: 0; position: relative; z-index: 1; }
+  .about-body { padding: 18px 24px 0; }
+  .about-body p { color: var(--text-dim); font-size: 13.5px; line-height: 1.6; margin: 0 0 12px; }
+  .about-src-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--text-faint);
+    background: var(--well);
+    border-radius: 999px;
+    padding: 6px 12px;
+    margin: 4px 0 20px;
+  }
+  .about-dismiss {
+    display: block;
+    width: 100%;
+    padding: 16px;
+    border-top: 1px solid var(--card-border);
+    background: none;
+    color: var(--violet);
+    font-weight: 700;
+    font-size: 13.5px;
+    text-align: center;
+  }
+
   .toast {
     position: fixed;
     left: 50%;
@@ -848,6 +1024,50 @@
   .theme-toggle-thumb .theme-icon-sun { opacity: 0; }
   [data-theme="light"] .theme-toggle-thumb .theme-icon-moon { opacity: 0; }
   [data-theme="light"] .theme-toggle-thumb .theme-icon-sun { opacity: 1; }
+
+  /* ---------- about button: small floating/pulsing "i" affordance, home screen only ---------- */
+  .about-btn {
+    position: absolute;
+    top: env(safe-area-inset-top, 0px);
+    left: 8px;
+    margin-top: 10px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--well);
+    border: 1px solid var(--card-border);
+    color: var(--violet);
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: about-btn-float 3s ease-in-out infinite;
+  }
+  .about-btn::after {
+    content: "";
+    position: absolute;
+    inset: -5px;
+    border-radius: 50%;
+    border: 1.5px solid var(--violet);
+    opacity: 0;
+    animation: about-btn-ping 3s ease-out infinite;
+  }
+  @keyframes about-btn-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+  }
+  @keyframes about-btn-ping {
+    0% { opacity: 0; transform: scale(0.75); }
+    12% { opacity: 0.55; }
+    45% { opacity: 0; transform: scale(1.45); }
+    100% { opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .about-btn, .about-btn::after { animation: none; }
+  }
+
   .home-badge {
     width: 76px;
     height: 76px;
@@ -1243,29 +1463,23 @@
     letter-spacing: 0.04em;
   }
   .outlier-chip .outlier-label-text { display: block; margin-top: 12px; }
-  .outlier-chip:nth-child(4n+1) { transform: rotate(-1.2deg); }
-  .outlier-chip:nth-child(4n+2) { transform: rotate(0.9deg); }
-  .outlier-chip:nth-child(4n+3) { transform: rotate(0.6deg); }
-  .outlier-chip:nth-child(4n+4) { transform: rotate(-0.8deg); }
   .outlier-chip.selected {
     border-color: var(--violet);
     background: var(--violet-dim);
-    transform: rotate(0deg) scale(1.02);
+    transform: scale(1.02);
   }
   .outlier-chip.reveal-correct {
     border-color: var(--green);
     background: var(--green-dim);
-    transform: rotate(0deg) scale(1.05);
+    transform: scale(1.05);
     z-index: 1;
   }
   .outlier-chip.reveal-wrong {
     border-color: var(--terracotta);
     background: var(--terracotta-dim);
-    transform: rotate(0deg);
   }
   .outlier-chip.outlier-fade {
     opacity: 0.4;
-    transform: rotate(0deg);
   }
 
   /* ---------- screen/question transitions: brief fade+slide, no hard cuts ---------- */
@@ -1303,7 +1517,6 @@
   .icon-btn:active {
     transform: scale(0.97);
   }
-  .outlier-chip:active { transform: scale(0.97) rotate(0deg); }
   .calmalert-side.selected:active,
   .option-btn.selected:active { transform: scale(0.98); }
 
@@ -1356,7 +1569,7 @@
   .liquid-fill {
     height: 100%;
     border-radius: 3px;
-    background: var(--violet);
+    background: var(--acc, var(--violet));
     width: 0%;
     transition: width 1s cubic-bezier(.2,.8,.2,1);
   }
@@ -1461,14 +1674,27 @@
     the_flag: '<svg ' + ICON_ATTRS + '><path d="M6 3v18"/><path d="M6 4.2h11l-3 3.8 3 3.8H6"/></svg>'
   };
 
-  // Brand mark: a thin-line violet "drop + gate" — a teardrop silhouette with two short
-  // horizontal segments partway down suggesting a gate. Stroke only, no fill, no emoji.
-  // The gate segments slide apart/together in a slow idle loop (see .gate-line CSS below);
-  // reused at both the home badge and chapter-map logo sizes (same SVG, different scale).
-  var BRAND_MARK = '<svg viewBox="0 0 32 32" width="58%" height="58%" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-    '<path d="M16 3.4c5.2 6.2 9.6 11.4 9.6 16.6a9.6 9.6 0 0 1-19.2 0c0-5.2 4.4-10.4 9.6-16.6z" stroke="var(--violet)" stroke-width="1.6" stroke-linejoin="round"/>' +
-    '<line class="gate-line gate-line-a" x1="10.3" y1="20.5" x2="14" y2="20.5" stroke="var(--violet)" stroke-width="1.6" stroke-linecap="round"/>' +
-    '<line class="gate-line gate-line-b" x1="18" y1="20.5" x2="21.7" y2="20.5" stroke="var(--violet)" stroke-width="1.6" stroke-linecap="round"/>' +
+  // Per-chapter accent color for the briefing hero badge/title/objective chips —
+  // foundations keeps the app's base violet, the other four each get their own hue
+  // so chapters read as visually distinct at a glance.
+  var CHAPTER_ACCENT = {
+    foundations: { c: 'var(--violet)', dim: 'var(--violet-dim)' },
+    reading_risk: { c: 'var(--acc-reading_risk)', dim: 'var(--acc-reading_risk-dim)' },
+    the_gate: { c: 'var(--acc-the_gate)', dim: 'var(--acc-the_gate-dim)' },
+    enhanced_measures: { c: 'var(--acc-enhanced_measures)', dim: 'var(--acc-enhanced_measures-dim)' },
+    the_flag: { c: 'var(--acc-the_flag)', dim: 'var(--acc-the_flag-dim)' }
+  };
+
+  var OBJECTIVE_CHIP_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" ' +
+    'stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg>';
+
+  // Brand mark: a thin-line violet eye — vigilance/watching, the thing every mechanic in
+  // this game asks the player to do. Stroke only outline, solid pupil. The pupil drifts
+  // side to side in a slow idle loop (see .eye-pupil CSS below); reused at both the home
+  // badge and chapter-map logo sizes (same SVG, different scale).
+  var BRAND_MARK = '<svg viewBox="0 0 24 24" width="58%" height="58%" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+    '<path d="M4 12Q12 4 20 12Q12 20 4 12Z" stroke="var(--violet)" stroke-width="1.1" stroke-linejoin="round"/>' +
+    '<circle class="eye-pupil" cx="12" cy="12" r="2.2" fill="var(--violet)"/>' +
     '</svg>';
 
   var THEME_TOGGLE_HTML =
@@ -1477,6 +1703,9 @@
     '<svg class="theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg>' +
     '<svg class="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.2 12H2M22 12h-2.2M5.6 5.6l1.6 1.6M16.8 16.8l1.6 1.6M18.4 5.6l-1.6 1.6M7.2 16.8l-1.6 1.6"/></svg>' +
     '</span></button>';
+
+  var ABOUT_BUTTON_HTML =
+    '<button class="about-btn" data-action="show-about" aria-label="About this game">i</button>';
 
   function getChapter(key) {
     for (var i = 0; i < APP_CONTENT.chapters.length; i++) {
@@ -1658,6 +1887,7 @@
     var continueTarget = findContinueTarget();
     var html = '<div class="home-wrap">';
     html += THEME_TOGGLE_HTML;
+    html += ABOUT_BUTTON_HTML;
     html += '<div class="home-badge">' + BRAND_MARK + '</div>';
     html += '<h1 class="home-title">Compliance Grid</h1>';
     html += '<p class="home-tagline">Learn to stop money laundering by playing the system that stops it.</p>';
@@ -1683,7 +1913,7 @@
   function topbar(opts) {
     opts = opts || {};
     var left = opts.back
-      ? '<button class="icon-btn" data-action="back-to-map">←</button>'
+      ? '<button class="icon-btn" data-action="' + (opts.backAction || 'back-to-map') + '">←</button>'
       : '<span class="spacer"></span>';
     var right = opts.pause
       ? '<button class="icon-btn" data-action="pause">⏸</button>'
@@ -1693,7 +1923,7 @@
   }
 
   function renderMap() {
-    var html = topbar({});
+    var html = topbar({ back: true, backAction: 'back-to-home' });
     html += '<div class="game-logo"><span class="mark">' + BRAND_MARK + '</span><span class="word">Compliance Grid</span></div>';
     html += '<div class="chapter-list">';
     APP_CONTENT.chapters.slice().sort(function (a, b) {
@@ -1704,7 +1934,8 @@
       var total = ch.questions.length;
       var completionPct = cp.everCompleted ? 100 : Math.round((cp.resume.questionIndex / total) * 100);
       var action = ' data-action="open-chapter" data-chapter="' + ch.chapter_key + '"';
-      html += '<div class="chapter-card"' + action + '>';
+      var acc = CHAPTER_ACCENT[ch.chapter_key] || CHAPTER_ACCENT.foundations;
+      html += '<div class="chapter-card" style="--acc:' + acc.c + ';--acc-dim:' + acc.dim + ';"' + action + '>';
       html += '<div class="row1"><div class="row1-left"><span class="chapter-icon">' + (CHAPTER_ICON[ch.chapter_key] || '') + '</span><div>';
       html += '<div class="num">CHAPTER ' + (idx + 1) + '</div>';
       html += '<div class="name">' + escapeHtml(ch.briefing.title.split(':')[0].split('—')[0].trim() || ch.briefing.title) + '</div>';
@@ -1732,15 +1963,22 @@
     var ch = getChapter(state.chapterKey);
     var cp = chapterProgress(state.chapterKey);
     var midway = !cp.everCompleted && cp.resume.questionIndex > 0;
+    var acc = CHAPTER_ACCENT[ch.chapter_key] || CHAPTER_ACCENT.foundations;
     var html = topbar({ back: true, title: 'Chapter briefing' });
     html += '<div class="centered-body">';
-    html += '<div class="card">';
-    html += '<div class="briefing-eyebrow">' + (CHAPTER_ICON[ch.chapter_key] || '') + ' Briefing</div>';
-    html += '<div class="briefing-title">' + escapeHtml(ch.briefing.title) + '</div>';
+    html += '<div class="card briefing-card" style="--acc:' + acc.c + ';--acc-dim:' + acc.dim + ';">';
+    html += '<div class="briefing-hero">';
+    html += '<div class="briefing-hero-badge">' + (CHAPTER_ICON[ch.chapter_key] || '') + '</div>';
+    html += '<div><div class="briefing-hero-eyebrow">Briefing</div>' +
+      '<div class="briefing-hero-title">' + escapeHtml(ch.briefing.title) + '</div></div>';
+    html += '</div>';
     html += '<div class="briefing-desc">' + escapeHtml(ch.briefing.description) + '</div>';
-    html += '<ul class="objectives">';
-    ch.briefing.objectives.forEach(function (o) { html += '<li>' + escapeHtml(o) + '</li>'; });
-    html += '</ul>';
+    html += '<div class="objective-chips">';
+    ch.briefing.objectives.forEach(function (o) {
+      html += '<div class="objective-chip"><div class="objective-chip-icon">' + OBJECTIVE_CHIP_ICON + '</div>' +
+        '<span>' + escapeHtml(o) + '</span></div>';
+    });
+    html += '</div>';
     html += '<div class="article-range">' + escapeHtml(ch.briefing.article_range) + '</div>';
     html += '</div>';
     html += '<button class="btn-primary" data-action="start-chapter" data-chapter="' + ch.chapter_key + '">' +
@@ -2228,7 +2466,11 @@
     var body;
     if (s.currentIsFollowup) {
       if (correct) {
-        body = 'Correct.';
+        // Follow-ups rarely have their own hand-authored copy yet — fall back to
+        // restating the parent question's correct_feedback rather than a bare
+        // "Correct." with no reinforcement of what was actually just tested.
+        var parentQ = getChapter(state.chapterKey).questions[state.session.questionIndex];
+        body = annotateGlossary(q.correct_feedback || (parentQ && parentQ.correct_feedback) || 'Correct.');
       } else {
         var correctOpt = q.options.filter(function (o) { return o.correct; })[0];
         body = 'Not quite — the correct answer is: ' + escapeHtml(correctOpt ? correctOpt.label : '');
@@ -2256,6 +2498,7 @@
       actions +
       '</div>';
     document.body.appendChild(sheet);
+    reserveBottomSpace(sheet.querySelector('.inner').offsetHeight);
   }
 
   function renderFeedbackTab(q, s) {
@@ -2281,16 +2524,28 @@
         '</button>';
     }
     document.body.appendChild(tab);
+    reserveBottomSpace(tab.offsetHeight);
+  }
+
+  // The feedback sheet/tab are fixed to the viewport bottom, so — unlike normal
+  // in-flow content — the page's own scroll range doesn't account for them.
+  // Reserving real bottom padding equal to their actual rendered height (not a
+  // guessed constant) guarantees the last option/button can always be scrolled
+  // clear of them, regardless of mechanic or how long the feedback text is.
+  function reserveBottomSpace(px) {
+    document.body.style.paddingBottom = px ? px + 'px' : '';
   }
 
   function removeFeedbackSheet() {
     var el = document.querySelector('.feedback-sheet');
     if (el) el.remove();
+    reserveBottomSpace(0);
   }
 
   function removeFeedbackTab() {
     var el = document.querySelector('.feedback-tab');
     if (el) el.remove();
+    reserveBottomSpace(0);
   }
 
   function renderComplete() {
@@ -2376,6 +2631,28 @@
       '<div class="glossary-def">' + escapeHtml(g.definition) + '</div>' +
       '<div class="glossary-src">' + escapeHtml(g.source) + '</div>' +
       '<button class="btn-primary" data-action="close-glossary">✓ Got it</button>' +
+      '</div>';
+    document.body.appendChild(el);
+  }
+
+  function renderAboutPopover() {
+    var el = document.createElement('div');
+    el.className = 'overlay about-popover';
+    el.id = 'about-overlay';
+    el.innerHTML =
+      '<div class="about-card">' +
+      '<div class="about-hero">' +
+      '<button class="about-close" data-action="close-about" aria-label="Close">✕</button>' +
+      '<div class="about-badge">' + BRAND_MARK.replace(/var\(--violet\)/g, 'var(--on-accent)') + '</div>' +
+      '<div class="about-eyebrow">About this game</div>' +
+      '<h2 class="about-title">Why this game exists</h2>' +
+      '</div>' +
+      '<div class="about-body">' +
+      '<p>Compliance Grid turns the Central Bank of Cyprus’s 2025 AML/CFT Directive into short, playable challenges — so the rules actually stick.</p>' +
+      '<p>No background needed. Every chapter builds on the last, and every question links back to the real article behind it.</p>' +
+      '<div class="about-src-pill">📄 CBC AML/CFT Directive 2025</div>' +
+      '</div>' +
+      '<button class="about-dismiss" data-action="close-about">Got it</button>' +
       '</div>';
     document.body.appendChild(el);
   }
@@ -2514,6 +2791,9 @@
       toggleTheme();
     } else if (action === 'enter-app') {
       state.screen = 'map';
+      render();
+    } else if (action === 'back-to-home') {
+      state.screen = 'home';
       render();
     } else if (action === 'open-chapter') {
       state.chapterKey = el.getAttribute('data-chapter');
@@ -2662,6 +2942,10 @@
       renderGlossaryPopover(el.getAttribute('data-term'));
     } else if (action === 'close-glossary') {
       var go = document.getElementById('glossary-overlay'); if (go) go.remove();
+    } else if (action === 'show-about') {
+      renderAboutPopover();
+    } else if (action === 'close-about') {
+      var ao = document.getElementById('about-overlay'); if (ao) ao.remove();
     }
   }
 
