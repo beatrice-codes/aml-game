@@ -16,7 +16,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
         {
           "id": "foundations-q1",
           "difficulty": "easy",
-          "mechanic": "spot_outlier",
+          "mechanic": "mcq",
           "scenario": "",
           "task_prompt": "What is this Directive's official short title?",
           "options": [
@@ -512,6 +512,17 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
               "correct": true
             }
           ],
+          "gate_steps": [
+            { "label": "Verify identity", "locked": true },
+            { "label": "Verify address", "locked": false },
+            { "label": "Confirm source of funds", "locked": false },
+            { "label": "Enhanced ongoing monitoring", "locked": false }
+          ],
+          "gate_pattern": {
+            "simplified": [true, false, false, false],
+            "standard": [true, true, true, false],
+            "enhanced": [true, true, true, true]
+          },
           "article_citation": "Art. 20",
           "correct_feedback": "Correct — indications of attempted ML/TF bar Simplified due diligence and trigger Enhanced due diligence, not just Standard.",
           "incorrect_feedback": "Not quite — indications of attempted ML/TF bar Simplified due diligence here, and require Enhanced, not just Standard.",
@@ -576,6 +587,30 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
             ],
             "article_citation": "Art. 20"
           }
+        },
+        {
+          "id": "rr-20",
+          "difficulty": "medium",
+          "mechanic": "order_chain",
+          "scenario": "",
+          "task_prompt": "Put the three due-diligence tiers in order, from the least intensive checks to the most intensive.",
+          "article_citation": "Art. 20; Art. 41; Art. 42",
+          "correct_feedback": "Correct order — Simplified is the lightest tier (only where risk is confirmed low), Standard is the default, and Enhanced is the most intensive, reserved for the mandatory high-risk triggers.",
+          "incorrect_feedback": "Not quite — Simplified is the lightest tier, Standard is the default in between, and Enhanced is the most intensive, applied only where a mandatory trigger requires it.",
+          "chain_items": [
+            {
+              "label": "Simplified Due Diligence",
+              "order": 1
+            },
+            {
+              "label": "Standard Due Diligence",
+              "order": 2
+            },
+            {
+              "label": "Enhanced Due Diligence",
+              "order": 3
+            }
+          ]
         },
         {
           "id": "rr-13",
@@ -695,6 +730,30 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
             ],
             "article_citation": "Art. 23"
           }
+        },
+        {
+          "id": "rr-21",
+          "difficulty": "medium",
+          "mechanic": "order_chain",
+          "scenario": "",
+          "task_prompt": "Put the annual risk-review cycle in order.",
+          "article_citation": "Art. 23",
+          "correct_feedback": "Correct order — the mandatory annual reassessment happens first, its findings are written up in the Risk Recording and Assessment Report, and that report then goes to the board and the CBC within three months of year-end.",
+          "incorrect_feedback": "Not quite — the annual reassessment has to happen before its findings can be written up, and the resulting report only then goes to the board and the CBC, within three months of year-end.",
+          "chain_items": [
+            {
+              "label": "Entity performs its mandatory annual risk reassessment",
+              "order": 1
+            },
+            {
+              "label": "Findings are written up in the Risk Recording and Assessment Report",
+              "order": 2
+            },
+            {
+              "label": "Report is submitted to the board and the CBC, within three months of year-end",
+              "order": 3
+            }
+          ]
         }
       ]
     },
@@ -714,7 +773,7 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
         {
           "id": "gate-q1",
           "difficulty": "easy",
-          "mechanic": "spot_outlier",
+          "mechanic": "mcq",
           "scenario": "",
           "task_prompt": "Which of these is a defining feature of a 'shell company' under Article 37?",
           "options": [
@@ -776,6 +835,17 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
               "tier": "Enhanced"
             }
           ],
+          "gate_steps": [
+            { "label": "Verify identity", "locked": true },
+            { "label": "Verify address", "locked": false },
+            { "label": "Confirm source of funds", "locked": false },
+            { "label": "Enhanced ongoing monitoring", "locked": false }
+          ],
+          "gate_pattern": {
+            "simplified": [true, false, false, false],
+            "standard": [true, true, true, false],
+            "enhanced": [true, true, true, true]
+          },
           "article_citation": "Art. 26; Art. 41",
           "correct_feedback": "Correct — Standard applies by default; Simplified needs a confirmed low-risk finding, Enhanced needs a high-risk trigger (e.g. Article 27).",
           "incorrect_feedback": "Not quite — Standard applies here by default; Simplified needs low-risk confirmation, Enhanced needs a high-risk trigger like Article 27.",
@@ -797,22 +867,19 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
         {
           "id": "gate-q15",
           "difficulty": "easy",
-          "mechanic": "calm_alert",
+          "mechanic": "build_gate",
           "scenario": "A merchant account has multiple directors/signatories; only one has had identity verified.",
-          "task_prompt": "Does verifying just one signatory meet ID requirements?",
-          "options": [
-            {
-              "label": "Pass",
-              "correct": false
-            },
-            {
-              "label": "Flag",
-              "correct": true
-            }
+          "task_prompt": "Toggle every person here who must be identity-verified before this account can open.",
+          "gate_steps": [
+            { "label": "The signatory who signed the application", "locked": true },
+            { "label": "Every other director or signatory on the account", "locked": false },
+            { "label": "Anyone else authorised to operate the account", "locked": false },
+            { "label": "Only signatories who have actually used the account so far", "locked": false }
           ],
+          "gate_pattern": [true, true, true, false],
           "article_citation": "Art. 33",
           "correct_feedback": "Correct — every director/signatory (and anyone authorised to operate the account) must be identity-verified, regardless of usage.",
-          "incorrect_feedback": "Not quite — this is a gap; every director/signatory and authorised operator must be identity-verified, not just one.",
+          "incorrect_feedback": "Not quite — this is a gap; every director/signatory and authorised operator must be identity-verified, not just whoever's used the account so far.",
           "followup_question": {
             "task_prompt": "For a merchant account with three signatories, how many must be identity-verified?",
             "options": [
@@ -851,6 +918,17 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
               "tier": "Enhanced"
             }
           ],
+          "gate_steps": [
+            { "label": "Verify identity", "locked": true },
+            { "label": "Verify address", "locked": false },
+            { "label": "Confirm source of funds", "locked": false },
+            { "label": "Enhanced ongoing monitoring", "locked": false }
+          ],
+          "gate_pattern": {
+            "simplified": [true, false, false, false],
+            "standard": [true, true, true, false],
+            "enhanced": [true, true, true, true]
+          },
           "article_citation": "Art. 41",
           "correct_feedback": "Correct — a merchant like this qualifies for Simplified Due Diligence once low risk and no suspicion are confirmed.",
           "incorrect_feedback": "Not quite — confirmed low risk and no suspicion here permit Simplified Due Diligence for this merchant.",
@@ -872,22 +950,19 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
         {
           "id": "gate-q3",
           "difficulty": "medium",
-          "mechanic": "calm_alert",
+          "mechanic": "build_gate",
           "scenario": "An 18-month-dormant merchant account resumes processing volume, and the merchant also requests a new payment product.",
-          "task_prompt": "Does this trigger a mandatory ID/profile update check?",
-          "options": [
-            {
-              "label": "Pass",
-              "correct": false
-            },
-            {
-              "label": "Flag",
-              "correct": true
-            }
+          "task_prompt": "Toggle every event here that triggers a mandatory ID/profile update check.",
+          "gate_steps": [
+            { "label": "Dormant account resuming activity", "locked": false },
+            { "label": "Merchant requesting a new payment product", "locked": false },
+            { "label": "Merchant's registered address unchanged", "locked": false },
+            { "label": "Routine login by the merchant", "locked": false }
           ],
+          "gate_pattern": [true, true, false, false],
           "article_citation": "Art. 25",
-          "correct_feedback": "Correct — both dormant-account reactivation and a new-product request are listed triggers for an update check.",
-          "incorrect_feedback": "Not quite — this is a mandatory trigger: both dormant-account reactivation and new-product requests require an update check.",
+          "correct_feedback": "Correct — both dormant-account reactivation and a new-product request are listed triggers for an update check; an unchanged address or a routine login are not.",
+          "incorrect_feedback": "Not quite — this is a mandatory trigger: both dormant-account reactivation and new-product requests require an update check, unlike an unchanged address or a routine login.",
           "followup_question": {
             "task_prompt": "Does a new-product request alone trigger an update check?",
             "options": [
@@ -917,22 +992,19 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
         {
           "id": "gate-q16",
           "difficulty": "medium",
-          "mechanic": "calm_alert",
+          "mechanic": "build_gate",
           "scenario": "A representative/agent acts for a merchant, but no authorisation document is on file.",
-          "task_prompt": "Is this acceptable practice, or should it be flagged as a compliance gap?",
-          "options": [
-            {
-              "label": "Pass",
-              "correct": false
-            },
-            {
-              "label": "Flag",
-              "correct": true
-            }
+          "task_prompt": "Toggle every check that applies before a representative/agent can act for this merchant.",
+          "gate_steps": [
+            { "label": "Obtain a signed authorisation agreement", "locked": false },
+            { "label": "Keep a copy of the authorisation on file", "locked": false },
+            { "label": "Verify the representative's own identity", "locked": true },
+            { "label": "Skip the paperwork for a single one-off transaction", "locked": false }
           ],
+          "gate_pattern": [true, true, true, false],
           "article_citation": "Art. 34",
-          "correct_feedback": "Correct — a copy of the authorisation agreement must be obtained and kept whenever a representative/agent acts for a merchant.",
-          "incorrect_feedback": "Not quite — a copy of the authorisation agreement must be obtained and kept before the representative/agent can act.",
+          "correct_feedback": "Correct — a copy of the authorisation agreement must be obtained and kept whenever a representative/agent acts for a merchant, alongside verifying the representative's own identity; there's no one-off exception.",
+          "incorrect_feedback": "Not quite — a copy of the authorisation agreement must be obtained and kept before the representative/agent can act, and there's no exception for a single transaction.",
           "followup_question": {
             "task_prompt": "Is a copy required even for just one transaction?",
             "options": [
@@ -1031,6 +1103,30 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
             ],
             "article_citation": "Art. 39"
           }
+        },
+        {
+          "id": "gate-q18",
+          "difficulty": "medium",
+          "mechanic": "order_chain",
+          "scenario": "",
+          "task_prompt": "Put these due-diligence steps in the order a customer relationship moves through them.",
+          "article_citation": "Art. 26; Art. 42",
+          "correct_feedback": "Correct order — identity is verified before the relationship is onboarded, source of funds is confirmed as part of that onboarding, and enhanced ongoing monitoring only applies once the relationship is live, continuing for its life.",
+          "incorrect_feedback": "Not quite — identity verification comes first (it gates onboarding), then source-of-funds confirmation as part of onboarding itself, and only once the relationship exists does enhanced ongoing monitoring begin.",
+          "chain_items": [
+            {
+              "label": "Verify the customer's identity",
+              "order": 1
+            },
+            {
+              "label": "Confirm the source of funds as part of onboarding",
+              "order": 2
+            },
+            {
+              "label": "Apply enhanced ongoing monitoring for the life of the relationship",
+              "order": 3
+            }
+          ]
         },
         {
           "id": "the_gate-quickcall",
@@ -1228,6 +1324,17 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
               "tier": "Enhanced"
             }
           ],
+          "gate_steps": [
+            { "label": "Verify identity", "locked": true },
+            { "label": "Verify address", "locked": false },
+            { "label": "Confirm source of funds", "locked": false },
+            { "label": "Enhanced ongoing monitoring", "locked": false }
+          ],
+          "gate_pattern": {
+            "simplified": [true, false, false, false],
+            "standard": [true, true, true, false],
+            "enhanced": [true, true, true, true]
+          },
           "correct_feedback": "Correct — trust/foundation accounts are a mandatory EDD trigger under Art. 42(1)(a) (also Art. 64(1) of the Law). Required measures include verifying the trust's legal basis, beneficial owners, and the original trust deed.",
           "incorrect_feedback": "Not quite — trust/foundation accounts are one of four relationship types under Art. 42(1) requiring mandatory enhanced due diligence, regardless of apparent risk. Simplified or standard measures don't apply.",
           "followup_question": {
@@ -1698,22 +1805,44 @@ window.__COMPLIANCE_GRID_CONTENT__ = {
         {
           "id": "flag-05",
           "difficulty": "medium",
-          "mechanic": "calm_alert",
-          "scenario": "A merchant account that's been dormant for months suddenly shows a burst of activity, with no clear business explanation.",
-          "task_prompt": "Flag this, or let it pass?",
+          "mechanic": "spot_outlier",
+          "scenario": "",
+          "task_prompt": "Which of these is a genuine red flag for a merchant-acquiring relationship, per Annex III?",
           "article_citation": "Annex III (merchant acquiring)",
           "options": [
             {
-              "label": "Pass",
+              "label": "A merchant account, dormant for months, suddenly shows a burst of activity with no clear business explanation",
+              "correct": true
+            },
+            {
+              "label": "A merchant's refund rate matches similar merchants — nothing unusual",
               "correct": false
             },
             {
-              "label": "Flag",
-              "correct": true
+              "label": "A modest, seasonal volume increase that was disclosed at onboarding",
+              "correct": false
+            },
+            {
+              "label": "A merchant renews its trade license on time",
+              "correct": false
             }
           ],
-          "correct_feedback": "Correct to flag — a sudden burst of activity on a previously dormant merchant account, without explanation, is a listed red flag.",
-          "incorrect_feedback": "This should have been flagged — unexplained activity on a dormant merchant account is a listed merchant-acquiring red flag."
+          "correct_feedback": "Correct — a sudden burst of activity on a previously dormant account, without explanation, is the listed red flag; the others are just normal, disclosed, or healthy merchant behavior.",
+          "incorrect_feedback": "Not quite — the red flag here is the unexplained burst of activity on a dormant account; the other options describe entirely normal merchant behavior.",
+          "followup_question": {
+            "task_prompt": "Is a sudden, unexplained burst of activity on a previously dormant account worth flagging?",
+            "options": [
+              {
+                "label": "Yes",
+                "correct": true
+              },
+              {
+                "label": "No",
+                "correct": false
+              }
+            ],
+            "article_citation": "Annex III (merchant acquiring)"
+          }
         },
         {
           "id": "flag-09",

@@ -807,26 +807,32 @@
     border-radius: var(--radius-md);
     background: #1c1c25;
     border: 1.5px solid var(--card-border);
-    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 16px;
-    perspective: 600px;
+  }
+  .gate-bar {
+    position: absolute;
+    top: 22px;
+    left: 30%;
+    width: 40%;
+    height: 1.4px;
+    background: #3a3850;
   }
   .gate-leaf {
     position: absolute;
-    top: 0; bottom: 0;
-    width: 50%;
-    background: linear-gradient(160deg, var(--violet-dim), #1c1c25);
-    border: 1px solid var(--card-border);
+    top: 22px;
+    width: 2px;
+    height: 46px;
+    background: var(--violet);
     transform-origin: top center;
     transition: transform .4s cubic-bezier(.2,.8,.2,1);
   }
-  .gate-leaf.gate-left { left: 0; transform-origin: top left; }
-  .gate-leaf.gate-right { right: 0; transform-origin: top right; }
-  .gate-visual.gate-open .gate-leaf.gate-left { transform: rotateY(-30deg) translateX(-6%); }
-  .gate-visual.gate-open .gate-leaf.gate-right { transform: rotateY(30deg) translateX(6%); }
+  .gate-leaf.gate-left { left: 34%; }
+  .gate-leaf.gate-right { right: 34%; }
+  .gate-visual.gate-open .gate-leaf.gate-left { transform: rotate(-30deg); }
+  .gate-visual.gate-open .gate-leaf.gate-right { transform: rotate(30deg); }
   .gate-visual.gate-wrong { animation: wrong-shake .3s ease-out; }
   .gate-ripple {
     position: absolute;
@@ -937,8 +943,9 @@
   .stamp-tile.numeric { flex: 1 1 calc(25% - 8px); min-width: 70px; text-align: center; font-weight: 700; font-size: 16px; }
   .stamp-mark {
     position: absolute;
-    top: 6px; right: 8px;
-    width: 26px; height: 26px;
+    top: 50%; left: 50%;
+    margin: -17px 0 0 -17px;
+    width: 34px; height: 34px;
     border-radius: 50%;
     border: 2px solid var(--violet);
     color: var(--violet);
@@ -1027,11 +1034,10 @@
   }
   .match-threads path {
     fill: none;
-    stroke: #ece6d8;
+    stroke: #d9c9a3;
     stroke-width: 1.6;
     stroke-linecap: round;
   }
-  .match-threads path.solved { stroke: #d9c9a3; }
   .match-hint { text-align: center; font-size: 11.5px; color: var(--text-faint); margin-top: 10px; }
 
   /* ---------- order the chain: drag to reorder, glassy stack ---------- */
@@ -1068,21 +1074,56 @@
   }
   .chain-wrap.wrong .chain-item { animation: wrong-shake .3s ease-out; }
 
-  /* ---------- spot the outlier: tap the odd one out ---------- */
+  /* ---------- spot the outlier: tap the odd one out — scattered chip grid, one card pops ---------- */
   .outlier-grid {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 10px;
     margin-bottom: 6px;
   }
   .outlier-chip {
+    position: relative;
     text-align: left;
-    padding: 14px 16px;
-    border-radius: 18px;
+    padding: 18px 14px 14px;
+    border-radius: 4px 18px 18px 18px;
     background: #1c1c25;
     border: 1.5px solid var(--card-border);
-    font-size: 14px;
-    line-height: 1.4;
+    font-size: 13.5px;
+    line-height: 1.35;
+    transition: transform .18s, opacity .18s, border-color .15s, background .15s;
+  }
+  .outlier-chip .outlier-idx {
+    position: absolute;
+    top: 7px; left: 11px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-faint);
+    letter-spacing: 0.04em;
+  }
+  .outlier-chip .outlier-label-text { display: block; margin-top: 12px; }
+  .outlier-chip:nth-child(4n+1) { transform: rotate(-1.2deg); }
+  .outlier-chip:nth-child(4n+2) { transform: rotate(0.9deg); }
+  .outlier-chip:nth-child(4n+3) { transform: rotate(0.6deg); }
+  .outlier-chip:nth-child(4n+4) { transform: rotate(-0.8deg); }
+  .outlier-chip.selected {
+    border-color: var(--violet);
+    background: var(--violet-dim);
+    transform: rotate(0deg) scale(1.02);
+  }
+  .outlier-chip.reveal-correct {
+    border-color: var(--green);
+    background: var(--green-dim);
+    transform: rotate(0deg) scale(1.05);
+    z-index: 1;
+  }
+  .outlier-chip.reveal-wrong {
+    border-color: var(--terracotta);
+    background: var(--terracotta-dim);
+    transform: rotate(0deg);
+  }
+  .outlier-chip.outlier-fade {
+    opacity: 0.4;
+    transform: rotate(0deg);
   }
 </style>
 </head>
@@ -1505,40 +1546,54 @@
     return html;
   }
 
-  /* ---------- build the gate: fixed CDD checklist, binary open/shut ---------- */
-  var GATE_STEPS = [
+  /* ---------- build the gate: per-question due-diligence checklist, binary open/shut ---------- */
+  // Fallback defaults, only used if a build_gate question somehow omits its own data.
+  var DEFAULT_GATE_STEPS = [
     { label: 'Verify identity', locked: true },
     { label: 'Verify address', locked: false },
     { label: 'Confirm source of funds', locked: false },
     { label: 'Enhanced ongoing monitoring', locked: false }
   ];
-  var GATE_PATTERN = {
+  var DEFAULT_GATE_PATTERN = {
     simplified: [true, false, false, false],
     standard: [true, true, true, false],
     enhanced: [true, true, true, true]
   };
 
-  function ensureGateSteps(s) {
-    if (!Array.isArray(s.gateSteps)) s.gateSteps = [true, false, false, false];
+  function gateStepsFor(q) {
+    return q.gate_steps || DEFAULT_GATE_STEPS;
+  }
+
+  function ensureGateSteps(s, q) {
+    if (!Array.isArray(s.gateSteps)) {
+      s.gateSteps = gateStepsFor(q).map(function (step) { return !!step.locked; });
+    }
     return s.gateSteps;
   }
 
-  function expectedGateTier(q) {
-    var correctOpt = q.options.filter(function (o) { return o.correct; })[0];
-    return ((correctOpt && (correctOpt.tier || correctOpt.label)) || '').toLowerCase();
+  // A question's gate_pattern is either a flat array (one fixed correct checklist,
+  // e.g. "which of these actually trigger a check") or an object keyed by tier
+  // (e.g. simplified/standard/enhanced), resolved via whichever option is tagged correct.
+  function expectedGatePattern(q) {
+    if (Array.isArray(q.gate_pattern)) return q.gate_pattern;
+    var byTier = q.gate_pattern || DEFAULT_GATE_PATTERN;
+    var correctOpt = (q.options || []).filter(function (o) { return o.correct; })[0];
+    var tier = ((correctOpt && (correctOpt.tier || correctOpt.label)) || '').toLowerCase();
+    return byTier[tier] || byTier.standard;
   }
 
   function renderBuildGate(q, s) {
-    var steps = ensureGateSteps(s);
+    var stepDefs = gateStepsFor(q);
+    var steps = ensureGateSteps(s, q);
     var opened = s.answered && s.lastCorrect;
     var wrongShake = s.answered && !s.lastCorrect;
     var html = '<div class="gate-wrap">';
     html += '<div class="gate-visual' + (opened ? ' gate-open' : '') + (wrongShake ? ' gate-wrong' : '') + '">';
-    html += '<div class="gate-leaf gate-left"></div><div class="gate-leaf gate-right"></div>';
+    html += '<div class="gate-bar"></div><div class="gate-leaf gate-left"></div><div class="gate-leaf gate-right"></div>';
     if (opened) html += '<div class="gate-ripple">✓</div>';
     html += '</div>';
     html += '<div class="tier-steps">';
-    GATE_STEPS.forEach(function (step, i) {
+    stepDefs.forEach(function (step, i) {
       var active = !!steps[i];
       var cls = 'step-chip' + (active ? ' active' : '') + (step.locked ? ' locked' : '');
       html += '<button class="' + cls + '" ' + ((s.answered || step.locked) ? 'disabled' : '') +
@@ -1614,6 +1669,7 @@
       s.matchSolved = q.pairs.map(function () { return false; });
       s.matchSelectedTerm = null;
       s.matchWrong = null;
+      s.matchJustSolvedIdx = null;
     }
   }
 
@@ -1647,25 +1703,49 @@
     return html;
   }
 
+  var SVG_NS = 'http://www.w3.org/2000/svg';
+
   function positionMatchThreads() {
     var svg = document.getElementById('match-threads');
     var wrap = document.getElementById('match-wrap');
     if (!svg || !wrap) return;
+    var s = state.session;
+    var justSolvedIdx = s ? s.matchJustSolvedIdx : null;
     var wrapRect = wrap.getBoundingClientRect();
-    var paths = '';
+    var specs = [];
     wrap.querySelectorAll('.match-tile[data-role="term"].solved').forEach(function (termEl) {
-      var pairIdx = termEl.getAttribute('data-pair');
+      var pairIdx = parseInt(termEl.getAttribute('data-pair'), 10);
       var defEl = wrap.querySelector('.match-tile[data-role="def"][data-pair="' + pairIdx + '"]');
       if (!defEl) return;
       var tr = termEl.getBoundingClientRect(), dr = defEl.getBoundingClientRect();
       var x1 = tr.right - wrapRect.left, y1 = tr.top + tr.height / 2 - wrapRect.top;
       var x2 = dr.left - wrapRect.left, y2 = dr.top + dr.height / 2 - wrapRect.top;
       var mx = (x1 + x2) / 2;
-      paths += '<path class="solved" d="M' + x1 + ' ' + y1 + ' C ' + mx + ' ' + y1 + ', ' + mx + ' ' + y2 + ', ' + x2 + ' ' + y2 + '"/>';
+      specs.push({
+        d: 'M' + x1 + ' ' + y1 + ' C ' + mx + ' ' + y1 + ', ' + mx + ' ' + y2 + ', ' + x2 + ' ' + y2,
+        justSolved: pairIdx === justSolvedIdx
+      });
     });
-    svg.innerHTML = paths;
     svg.setAttribute('width', wrapRect.width);
     svg.setAttribute('height', wrapRect.height);
+    svg.innerHTML = '';
+    specs.forEach(function (spec) {
+      var path = document.createElementNS(SVG_NS, 'path');
+      path.setAttribute('class', 'solved');
+      path.setAttribute('d', spec.d);
+      svg.appendChild(path);
+      if (spec.justSolved) {
+        var len = path.getTotalLength();
+        path.style.strokeDasharray = len;
+        path.style.strokeDashoffset = len;
+        void path.getBoundingClientRect();
+        path.style.transition = 'stroke-dashoffset .8s ease-out';
+        path.style.strokeDashoffset = 0;
+      } else {
+        path.style.strokeDasharray = 'none';
+        path.style.strokeDashoffset = 0;
+      }
+    });
   }
 
   /* ---------- order the chain: drag to reorder (Pointer Events), Confirm locks it in ---------- */
@@ -1693,16 +1773,26 @@
     return html;
   }
 
-  /* ---------- spot the outlier: tap the odd one out, chip grid ---------- */
+  /* ---------- spot the outlier: tap the odd one out, scattered chip grid ---------- */
   function renderSpotOutlier(q, s) {
     var html = '<div class="outlier-grid">';
     q.options.forEach(function (opt, i) {
       var picked = s.selection === i;
       var cls = 'option-btn outlier-chip';
-      if (!s.answered) { if (picked) cls += ' selected'; }
-      else { if (opt.correct) cls += ' reveal-correct'; else if (picked) cls += ' reveal-wrong'; }
+      if (!s.answered) {
+        if (picked) cls += ' selected';
+      } else if (opt.correct) {
+        cls += ' reveal-correct';
+      } else if (picked) {
+        cls += ' reveal-wrong selected';
+      } else {
+        cls += ' outlier-fade';
+      }
       html += '<button class="' + cls + '" ' + (s.answered ? 'disabled' : '') +
-        ' data-action="select-option" data-index="' + i + '">' + escapeHtml(opt.label) + '</button>';
+        ' data-action="select-option" data-index="' + i + '">' +
+        '<span class="outlier-idx">' + (i + 1) + '</span>' +
+        '<span class="outlier-label-text">' + escapeHtml(opt.label) + '</span>' +
+        '</button>';
     });
     html += '</div>';
     return html;
@@ -1750,9 +1840,8 @@
 
   function gradeCurrent(q, s) {
     if (q.mechanic === 'build_gate' && !s.currentIsFollowup) {
-      var steps = ensureGateSteps(s);
-      var tier = expectedGateTier(q);
-      var pattern = GATE_PATTERN[tier] || GATE_PATTERN.standard;
+      var steps = ensureGateSteps(s, q);
+      var pattern = expectedGatePattern(q);
       return steps.every(function (v, i) { return v === pattern[i]; });
     }
     if (q.mechanic === 'order_chain' && !s.currentIsFollowup) {
@@ -1961,7 +2050,8 @@
       matchDefOrder: null,
       matchSolved: null,
       matchSelectedTerm: null,
-      matchWrong: null
+      matchWrong: null,
+      matchJustSolvedIdx: null
     };
     if (state.session.questionIndex >= ch.questions.length) {
       state.session.questionIndex = 0;
@@ -2036,6 +2126,7 @@
     s.matchSolved = null;
     s.matchSelectedTerm = null;
     s.matchWrong = null;
+    s.matchJustSolvedIdx = null;
     resetQuickcallState(s);
     persistResume();
     if (s.questionIndex >= ch.questions.length) { finishChapter(); return; }
@@ -2118,14 +2209,17 @@
       if (sDef.matchSolved[defPairIdx]) return;
       if (sDef.matchSelectedTerm === defPairIdx) {
         sDef.matchSolved[defPairIdx] = true;
+        sDef.matchJustSolvedIdx = defPairIdx;
         sDef.matchSelectedTerm = null;
         vibrate(12);
         render();
-        window.requestAnimationFrame(positionMatchThreads);
         if (sDef.matchSolved.every(Boolean)) {
           commitAnswer(currentQuestion(), sDef, true);
           render();
         }
+        setTimeout(function () {
+          if (state.session === sDef) sDef.matchJustSolvedIdx = null;
+        }, 850);
       } else {
         sDef.matchWrong = { termPairIdx: sDef.matchSelectedTerm, defPairIdx: defPairIdx };
         vibrate([15, 30]);
@@ -2138,9 +2232,11 @@
       }
     } else if (action === 'toggle-gate-step') {
       if (state.session.answered) return;
+      var qGate = currentQuestion();
       var stepIdx = parseInt(el.getAttribute('data-step'), 10);
-      if (GATE_STEPS[stepIdx] && GATE_STEPS[stepIdx].locked) return;
-      var steps = ensureGateSteps(state.session);
+      var stepDefs = gateStepsFor(qGate);
+      if (stepDefs[stepIdx] && stepDefs[stepIdx].locked) return;
+      var steps = ensureGateSteps(state.session, qGate);
       steps[stepIdx] = !steps[stepIdx];
       vibrate(8);
       render();
@@ -2261,20 +2357,43 @@
     if (!chainDrag) return;
     var cd = chainDrag;
     chainDrag = null;
-    cd.itemEl.classList.remove('dragging');
-    cd.itemEl.style.transition = '';
-    cd.itemEl.style.transform = '';
-    cd.rows.forEach(function (row) {
-      var item = row.querySelector('.chain-item');
-      if (item) { item.style.transform = ''; item.style.transition = ''; }
-    });
-    if (cd.currentSlot !== cd.startSlot && state.session && Array.isArray(state.session.chainOrder)) {
-      var order = state.session.chainOrder;
-      var moved = order.splice(cd.startSlot, 1)[0];
-      order.splice(cd.currentSlot, 0, moved);
-      vibrate(10);
+    var moved = cd.currentSlot !== cd.startSlot;
+
+    function finalize() {
+      cd.itemEl.classList.remove('dragging');
+      cd.itemEl.style.transition = '';
+      cd.itemEl.style.transform = '';
+      cd.rows.forEach(function (row) {
+        var item = row.querySelector('.chain-item');
+        if (item) { item.style.transform = ''; item.style.transition = ''; }
+      });
+      if (moved && state.session && Array.isArray(state.session.chainOrder)) {
+        var order = state.session.chainOrder;
+        var movedItem = order.splice(cd.startSlot, 1)[0];
+        order.splice(cd.currentSlot, 0, movedItem);
+        vibrate(10);
+      }
+      render();
     }
-    render();
+
+    if (moved) {
+      // Animate the dragged item settling into its target slot before the full
+      // re-render swaps in the final DOM — otherwise a rebuild-from-scratch render
+      // has nothing to transition from and the drop reads as an instant jump.
+      var settleOffset = (cd.currentSlot - cd.startSlot) * cd.itemHeight;
+      cd.itemEl.style.transition = 'transform .18s cubic-bezier(.2,.8,.2,1)';
+      cd.itemEl.style.transform = 'translateY(' + settleOffset + 'px)';
+      cd.rows.forEach(function (row) {
+        var item = row.querySelector('.chain-item');
+        if (item && item !== cd.itemEl) {
+          item.style.transition = 'transform .18s cubic-bezier(.2,.8,.2,1)';
+          item.style.transform = '';
+        }
+      });
+      setTimeout(finalize, 180);
+    } else {
+      finalize();
+    }
   });
 
   /* ---------- glossary auto-surface on new terms ---------- */
